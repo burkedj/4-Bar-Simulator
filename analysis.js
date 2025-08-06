@@ -234,8 +234,6 @@ function getLinkageProperties() {
     <b>Range of Motion:</b> (${A_min.toFixed(1)}°, ${A_max.toFixed(1)}°)<br>
     <b>Current Angle:</b> ${inputAngle.toFixed(1)}°<br>
     <br>
-    th_c: ${getLinkAngles()[2].toFixed(1)}, ${getLinkAngles()[4].toFixed(1)}, th_Cp: ${couplerSetAngle.toFixed(1)}, A1Cp: ${couplerSetLength.toFixed(1)} <br>
-    L: ${getCouplerGeom()[0].toFixed(1)}, A: ${getCouplerGeom()[1].toFixed(1)}
     <b>Output Link:</b> ${outputClass} - ${openCrossed}<br>
     <b>Range of Motion:</b> (${B_min.toFixed(1)}°, ${B_max.toFixed(1)}°)<br>
     <b>Current Angle:</b> ${outputAngle.toFixed(1)}° <br>
