@@ -1,7 +1,7 @@
 let lengthsVisible = false;
 let coordsVisible = false;
 let groundVisible = true;
-let editMode = true
+// let editMode = true
 
 const offsetX = 225;
 const offsetY = 225;

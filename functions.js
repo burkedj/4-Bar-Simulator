@@ -95,12 +95,6 @@ function rotateInputLink(angleDeg) {
     const W = 2*b*(d-a*Math.cos(angleIn));
 
     let tanw = 0;
-    
-    // if (!editMode) {
-    //     linkConfig = linkageConfig;
-    // } else {
-    //     linkConfig = getOpenCrossed();
-    // }
 
     if (linkageConfig === "Crossed") {
         tanw = (-V-Math.sqrt(V*V - U*U + W*W))/(W - U);

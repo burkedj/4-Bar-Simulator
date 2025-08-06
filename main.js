@@ -40,7 +40,7 @@ const circles = jointGroup.selectAll("circle")
     // })
     .call(d3.drag()
         .on("drag", function(event, d) {
-            if (editMode === false) return; // Only allow toggling in edit mode
+            // if (editMode === false) return; // Only allow toggling in edit mode
             if (d.ground) {
                 d.x = event.x;
                 d.y = originalJoints.find(j => j.id === d.id).y;
