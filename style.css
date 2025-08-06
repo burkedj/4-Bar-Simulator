@@ -1,0 +1,9 @@
+button:disabled {
+    opacity: 0.85;
+    cursor: not-allowed;
+}
+
+button {
+    font-family: sans-serif;
+    font-size: 9pt;
+}

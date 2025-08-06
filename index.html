@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>4-Bar Linage Visualizer</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>Interactive 4-Bar Linkage</h2>
+    <div style="display: flex; gap: 20px;">
+        <div>
+            <h3 id="modeLabel">Edit Mode</h3>
+            <button id="toggleMode" style="margin-bottom: 5px">Switch Mode</button>
+            <button id="resetZoom">Reset View</button>
+            <button id="resetLinkage">Reset Linkage</button>
+            <br>
+            <svg id="editorView" width="600" height="400"
+                style="border:1px solid black;"
+                viewBox="0 0 600 400">
+            </svg>
+        </div>
+    </div>
+    <div id="simControls" style="margin-top: 0px; margin-bottom: 10px; display: block;font-family: sans-serif; font-size: 11pt">
+        <label for="inputAngleSlider">Drive Angle:</label>
+        <input type="range" id="inputAngleSlider" value="90" min="0" max="360" step="1">
+        <span id="angleValue"></span>
+    </div>
+    <b style="margin-top: 4px; font-size: 10pt; font-family: sans-serif;">Show/Hide: 
+    <button id="toggleLengths">Link Lengths</button>
+    <button id="toggleCoords">Joint Coordinates</button>
+    <button id="toggleGround">Ground Link</button>
+    </b>
+    <div id="linkageSummary" style="margin-top: 8px; font-family: sans-serif; font-size: 13px;"></div>
+    <button id="shareConfig">Share (URL)</button>
+    <script src="defaults.js"></script>
+    <script src="conversions.js"></script>
+    <script src="geometry.js"></script>
+    <script src="analysis.js"></script>
+    <script src="functions.js"></script>
+    <script src="handlers.js"></script>
+    <script src="main.js"></script>
+    
+</body>
+</html>
