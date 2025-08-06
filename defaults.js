@@ -1,6 +1,7 @@
 let lengthsVisible = false;
 let coordsVisible = false;
 let groundVisible = true;
+let couplerVisible = true;
 // let editMode = true
 
 const offsetX = 225;

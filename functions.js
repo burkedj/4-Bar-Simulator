@@ -32,6 +32,7 @@ function toggleCoupler(link) {
             .style("display", d => {
                 if (d.id === "Cp") return "none"
             })
+        couplerVisible = false;
     } else {
         const original = getOriginalCoupler();
         link.nodes = [...original.nodes];
@@ -39,6 +40,7 @@ function toggleCoupler(link) {
             .style("display", d => {
                 if (d.id === "Cp") return "block"
             });
+        couplerVisible = true;
     }
 }
 
@@ -113,14 +115,15 @@ function rotateInputLink(angleDeg) {
     outMoving.y = outFixed.y - outLength * Math.sin(angleOut); // SVG Y-axis is downward
 
     // Coupler point
-    const couplerLink = links.find(l => l.id === "c");
-    const Cp = couplerLink.nodes[2];
+    if (couplerVisible) {
+        const couplerLink = links.find(l => l.id === "c");
+        const Cp = couplerLink.nodes[2];
 
-    const th_A1Cp_rad = degToRad(couplerSetAngle - getLinkAngles()[2]);
+        const th_A1Cp_rad = degToRad(couplerSetAngle - getLinkAngles()[2]);
 
-    Cp.x = joints[1].x + couplerSetLength * Math.cos(th_A1Cp_rad);
-    Cp.y = joints[1].y + couplerSetLength * Math.sin(th_A1Cp_rad);
-    
+        Cp.x = joints[1].x + couplerSetLength * Math.cos(th_A1Cp_rad);
+        Cp.y = joints[1].y + couplerSetLength * Math.sin(th_A1Cp_rad);
+    }
 }
 
 function setupSimulationControls() {

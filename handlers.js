@@ -66,10 +66,4 @@ inputAngleSlider.addEventListener("pointerdown", () => {
     couplerSetLength = getCouplerGeom()[0];
 })
 
-// inputSlider.addEventListener("pointerdown", () => {
-//     lockedConfig = linkageConfig;
-// })
-// inputSlider.addEventListener("pointerup", () => {
-//     lockedConfig = null;
-// })
 ;
