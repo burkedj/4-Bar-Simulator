@@ -44,22 +44,22 @@ document.getElementById("shareConfig").addEventListener("click", () => {
         .catch(() => alert("Failed to copy URL."));
 })
 
-document.getElementById("toggleMode").addEventListener("click", () => {
-    editMode = !editMode;
-    document.getElementById("modeLabel").textContent = editMode
-        ? "Edit Mode"
-        : "Simulation Mode";
+// document.getElementById("toggleMode").addEventListener("click", () => {
+//     editMode = !editMode;
+//     document.getElementById("modeLabel").textContent = editMode
+//         ? "Edit Mode"
+//         : "Simulation Mode";
 
-    document.getElementById("resetLinkage").disabled = !editMode;
+//     document.getElementById("resetLinkage").disabled = !editMode;
 
-    // couplerSetAngle = getCouplerGeom()[1];
-    // couplerSetLength = getCouplerGeom()[0];
-    // document.getElementById("simControls").style.display = editMode ? "none" : "block";
-    // document.getElementById("simControls").style.display = "block";
+//     // couplerSetAngle = getCouplerGeom()[1];
+//     // couplerSetLength = getCouplerGeom()[0];
+//     // document.getElementById("simControls").style.display = editMode ? "none" : "block";
+//     // document.getElementById("simControls").style.display = "block";
 
-    updateDiagram();  // Re-render with new mode
+//     updateDiagram();  // Re-render with new mode
     
-})
+// })
 
 inputAngleSlider.addEventListener("pointerdown", () => {
     couplerSetAngle = getCouplerGeom()[1];
