@@ -4,8 +4,8 @@ let groundVisible = true;
 let couplerVisible = true;
 // let editMode = true
 
-const offsetX = 225;
-const offsetY = 225;
+const offsetX = 225+40;
+const offsetY = 220;
 
 const linkScale = 10;
 
@@ -20,7 +20,7 @@ const defaultJoints = [
 
 const defaultX = -200;
 const defaultY = -125;
-const defaultScale = 1.75;
+const defaultScale = 1.8;
 
 const linkOpactity = 0.5;
 
