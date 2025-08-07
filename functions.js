@@ -49,23 +49,29 @@ function getOriginalCoupler() {
 }
 
 function initializeSlider() {
-    const [minAngle, maxAngle, inputClass] = getInputLimits(); // in degrees
-    const currentAngle = getInputAngle(); // in degrees
+    let [minAngle, maxAngle, inputClass] = getInputLimits(); // in degrees
+    let currentAngle = getInputAngle(); // in degrees
 
     const inputSlider = document.getElementById("inputAngleSlider");
     const angleDisplay = document.getElementById("angleValue");
+
+    if (inputClass === "0-Rocker") {
+        if (currentAngle > 180) {
+            currentAngle = currentAngle -360
+        }
+    }
 
     inputSlider.min = minAngle + simAngleTol;
     inputSlider.max = maxAngle - simAngleTol;
     inputSlider.value = currentAngle;
     
-    angleDisplay.textContent = `${currentAngle.toFixed(0)}°, ${inputClass}: (${minAngle.toFixed(0)}, ${maxAngle.toFixed(0)})`; 
+    angleDisplay.textContent = `${currentAngle.toFixed(0)}°`; 
 
 }
 
-function setCouplerPoint () {
+// function setCouplerPoint () {
 
-}
+// }
 
 function rotateInputLink(angleDeg) {
     const lengths = getLinkLengths();
@@ -150,10 +156,8 @@ function updateDiagram() {
             return 3.5;
         })
         .attr("stroke", d => {
-            if (d.static) return "";
-            // if (d.type === "node") return "";
             if (d.type === "ground") return "black";
-            return "";
+            return "transparent";
         })
 
     polygons

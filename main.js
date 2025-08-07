@@ -27,7 +27,7 @@ const circles = jointGroup.selectAll("circle")
     .append("circle")
     .attr("r", 4)
     .attr("fill", "white")
-    .attr("stroke-width", 2)
+    .attr("stroke-width", 2.2)
     .attr("opacity", 1)
     // .on("dblclick", function(event, d) {
     //     if (editMode === false) return; // Only allow toggling in edit mode
