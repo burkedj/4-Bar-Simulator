@@ -193,6 +193,15 @@ function getCouplerGeom() {
     return [couplerLength, couplerAngle];
 }
 
+function calcCouplerPosition() {
+    const th_A1Cp_rad = degToRad(couplerSetAngle - getLinkAngles()[2]);
+
+    const Cp_x = joints[1].x + couplerSetLength * Math.cos(th_A1Cp_rad);
+    const Cp_y = joints[1].y + couplerSetLength * Math.sin(th_A1Cp_rad);
+
+    return [Cp_x, Cp_y];
+}
+
 function getOpenCrossed() {
     const th_a = getLinkAngles()[0];
     const th_b = getLinkAngles()[1];

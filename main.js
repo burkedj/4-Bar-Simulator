@@ -81,7 +81,7 @@ const zoom = d3.zoom()
         zoomGroup.attr("transform", event.transform);
     });
 
-const originalCoupler = {id: "c", nodes: [joints[1], joints[2], joints[4]]};
+let originalCoupler = {id: "c", nodes: [joints[1], joints[2], joints[4]]};
 
 svg.call(zoom)
     .on("dblclick.zoom", null); // Disable double-click zoom
@@ -93,7 +93,7 @@ svg.selectAll(".link")
     .on("dblclick", function(event, d) {
         if (d.id === "c") {
             toggleCoupler(d);
-            updateDiagram();
+            updateDiagram()
         }
     });
 

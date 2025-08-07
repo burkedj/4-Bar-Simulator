@@ -32,20 +32,20 @@ function toggleCoupler(link) {
             .style("display", d => {
                 if (d.id === "Cp") return "none"
             })
-        couplerVisible = false;
+        couplerSetAngle = getCouplerGeom()[1];
+        couplerSetLength = getCouplerGeom()[0];
     } else {
-        const original = getOriginalCoupler();
+        const [Cp_x, Cp_y] = calcCouplerPosition();
+        originalCoupler.nodes[2].x = Cp_x;
+        originalCoupler.nodes[2].y = Cp_y;
+        const original = originalCoupler;
         link.nodes = [...original.nodes];
         circles
             .style("display", d => {
                 if (d.id === "Cp") return "block"
             });
-        couplerVisible = true;
     }
-}
-
-function getOriginalCoupler() {
-    return originalCoupler;
+    couplerVisible = !couplerVisible;
 }
 
 function initializeSlider() {
