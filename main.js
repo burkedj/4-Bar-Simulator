@@ -20,6 +20,19 @@ const polygons = polyGroup.selectAll("polygon")
     // })
 
 // Draw joints
+// const goundJointGroup = zoomGroup.append("g")
+// const rings = goundJointGroup.selectAll("ring")
+//     .data(joints.find(g => g.type === "ground"))
+//     // .filter(d => d.type === "ground")
+//     .enter()
+//     .append("circle")
+//     .attr("class","ring")
+//     .attr("r", 12)
+//     .attr("fill", "blue")
+//     // .attr("opacity", 0)
+//     .attr("stroke", "red")
+//     .attr("stroke-width", 6);
+
 const jointGroup = zoomGroup.append("g")
 const circles = jointGroup.selectAll("circle")
     .data(joints)
@@ -27,7 +40,6 @@ const circles = jointGroup.selectAll("circle")
     .append("circle")
     .attr("r", 4)
     .attr("fill", "white")
-    .attr("stroke-width", 2.2)
     .attr("opacity", 1)
     // .on("dblclick", function(event, d) {
     //     if (editMode === false) return; // Only allow toggling in edit mode

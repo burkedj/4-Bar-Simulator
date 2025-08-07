@@ -4,7 +4,7 @@ let groundVisible = true;
 let couplerVisible = true;
 // let editMode = true
 
-const offsetX = 225+40;
+const offsetX = 220;
 const offsetY = 220;
 
 const linkScale = 10;

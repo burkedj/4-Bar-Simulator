@@ -159,6 +159,14 @@ function updateDiagram() {
             if (d.type === "ground") return "black";
             return "transparent";
         })
+        .attr("stroke-width", d => {
+        if (d.type === "ground") return 2.2
+        return 6
+        })
+    // rings
+    //     // .filter(d => d.type === "ground")
+    //     .attr("cx", d => d.x).attr("cy", d => d.y)
+    //     .attr("r", 10);
 
     polygons
         .attr("points", d => d.nodes.map(j => `${j.x},${j.y}`).join(" "))
