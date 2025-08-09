@@ -35,3 +35,5 @@ let linkageConfig = "Open"
 let couplerSetLength = 0;
 let couplerSetAngle = 0;
 
+let groundAngle = 0;
+

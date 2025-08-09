@@ -29,6 +29,8 @@ function getLinkAngles () {
     } else if (A1.y > A0.y) {
         th_a = 360 + th_a;
     }
+    th_a = th_a;
+    if (th_a < 0 )  th_a = 360 + th_a;
 
     let th_b = radToDeg(Math.atan(-(B1.y-B0.y)/(B1.x-B0.x)));
     if (B1.x < B0.x) {
@@ -36,6 +38,8 @@ function getLinkAngles () {
     } else if (B1.y > B0.y) {
         th_b = 360 + th_b;
     }
+    th_b = th_b;
+    if (th_b < 0 )  th_b = 360 + th_b;
 
     let th_c = -radToDeg(Math.atan((B1.y-A1.y)/(B1.x-A1.x)));
     if (B1.x < A1.x) {
@@ -43,19 +47,24 @@ function getLinkAngles () {
     } else if (B1.y > A1.y) {
         th_c = 360 + th_c;
     }
+    th_c = th_c;
+    if (th_c < 0 )  th_c = 360 + th_c;
 
-    let th_d = radToDeg(Math.atan((B0.y-A0.y)/(B0.x-A0.x)));
+    let th_d = -radToDeg(Math.atan((B0.y-A0.y)/(B0.x-A0.x)));
     if (B0.x < A0.x) {
         th_d = 180 + th_d;
     } else if (B0.y > A0.y) {
         th_d = 360 + th_d;
     }
+
     let th_A1Cp = -radToDeg(Math.atan((Cp.y-A1.y)/(Cp.x-A1.x)));
     if (Cp.x < A1.x) {
         th_A1Cp = 180 + th_A1Cp;
     } else if (Cp.y > A1.y) {
         th_A1Cp = 360 + th_A1Cp;
     }
+    th_A1Cp = th_A1Cp;
+    if (th_A1Cp < 0 )  th_A1Cp = 360 + th_A1Cp;
 
     let th_B0A1 = -radToDeg(Math.atan((A1.y-B0.y)/(A1.x-B0.x)));
     if (A1.x < B0.x) {
@@ -63,6 +72,9 @@ function getLinkAngles () {
     } else if (A1.y > B0.y) {
         th_B0A1 = 360 + th_B0A1;
     }
+    th_B0A1 = th_B0A1;
+    if (th_B0A1 < 0 )  th_B0A1 = 360 + th_B0A1;
+    
 
     return [th_a, th_b, th_c, th_d, th_A1Cp, th_B0A1];
 }
@@ -82,24 +94,30 @@ function getInputLimits() {
     const A_max_temp = ((c+b)*(c+b) - a*a - d*d)/(2*a*d);
 
     const A_min_rad = Math.acos(A_min_temp);
-    const A_max_rad = Math.acos(A_max_temp);    
+    const A_max_rad = Math.acos(A_max_temp);
+
+    let A_min_deg = radToDeg(Math.acos(A_min_temp));
+    if (A_min_deg < 0 )  A_min_deg = 360 + A_min_deg;
+
+    let A_max_deg = radToDeg(Math.acos(A_max_temp));
+    if (A_max_deg < 0 )  A_max_deg = 360 + A_max_deg;
 
     if (Number.isNaN(A_min_rad) & Number.isNaN(A_max_rad)) {
         A_min = 0;
         A_max = 360;
         inputClass = "Crank";
     } else if (Number.isNaN(A_min_rad)) {
-        A_max = 180-radToDeg(A_max_rad);
+        A_max = 180-A_max_deg;
         A_min = -A_max;
         // A_min = 360-A_max;
         inputClass = "0-Rocker";
     } else if (Number.isNaN(A_max_rad)) {
-        A_min = 180-radToDeg(A_min_rad);
+        A_min = 180-A_min_deg;
         A_max = 360-A_min;
         inputClass = "π-Rocker";
     } else {
-        A_min = 180-radToDeg(A_min_rad);
-        A_max = 180-radToDeg(A_max_rad);
+        A_min = 180-A_min_deg;
+        A_max = 180-A_max_deg;
         inputClass = "Rocker";
     }
 
@@ -163,24 +181,6 @@ function getOutputAngle() {
     return outputAngle;
 }
 
-function calcOutputAngle(inputAngle) {
-    const lengths = getLinkLengths();
-
-    const a = lengths["a"]; // input
-    const b = lengths["b"]; // output
-    const c = lengths["c"]; // coupler
-    const d = lengths["d"]; // ground
-
-    const U = a*a + b*b - c*c + d*d - 2*a*d*Math.cos(inputAngle);
-    const V = 2*a*b*Math.sin(inputAngle);
-    const W = 2*b*(d-a*Math.cos(inputAngle));
-
-    const tanw = (-V+Math.sqrt(V*V - U*U + W*W))/(W - U);
-    const angleOut = Math.atan(tanw)*2;
-
-    return angleOut;
-}
-
 function getCouplerGeom() {
     let couplerLength = Math.sqrt((joints[4].x-joints[1].x)*(joints[4].x-joints[1].x) + (joints[4].y-joints[1].y)*(joints[4].y-joints[1].y));
     let couplerAngle = -(getLinkAngles()[4]-getLinkAngles()[2]);
@@ -225,6 +225,55 @@ function getOpenCrossed() {
     return linkConfig;
 }
 
+function calcOutputAngle(angle) {
+    const lengths = getLinkLengths();
+
+    const a = lengths["a"]; // input
+    const b = lengths["b"]; // output
+    const c = lengths["c"]; // coupler
+    const d = lengths["d"]; // ground
+
+    const U = a*a + b*b - c*c + d*d - 2*a*d*Math.cos(angle);
+    const V = 2*a*b*Math.sin(angle);
+    const W = 2*b*(d-a*Math.cos(angle));
+
+    let tanw = 0;
+
+    if (linkageConfig === "Crossed") {
+        tanw = (-V-Math.sqrt(V*V - U*U + W*W))/(W - U);
+    } else {
+        tanw = (-V+Math.sqrt(V*V - U*U + W*W))/(W - U);
+    }
+
+    let angleOut = radToDeg(Math.atan(tanw)*2);
+
+    angleOut = angleOut;
+    if (angleOut < 0 )  angleOut = 360 + angleOut;
+
+    angleOut = degToRad(angleOut);
+
+    return angleOut;
+};
+
+// function calcNodePosition(node, angle){
+//     if (node === "A1") {
+//         const lngth = getLinkLengths()["a"]*linkScale;
+//         const nx = lngth * Math.cos(degToRad(angle));
+//         const ny = lngth * Math.sin(degToRad(angle));
+//     } else if (node === "B1") {
+//         const lngth = getLinkLengths()["b"]*linkScale;
+//         const nx = lngth * Math.cos(degToRad(calcOutputAngle(angle)));
+//         const ny = lngth * Math.sin(degToRad(calcOutputAngle(angle))); 
+//     } else if (node === "Cp") {
+//         const lngth = couplerSetLength;
+//         const 
+//     }
+
+
+//     return [nx, ny]
+// }
+
+
 function getLinkageProperties() {
 
     const [A_min, A_max ,inputClass] = getInputLimits();
@@ -242,7 +291,7 @@ function getLinkageProperties() {
     return `<b>Input Link:</b> ${inputClass}<br>
     <b>Range of Motion:</b> (${A_min.toFixed(1)}°, ${A_max.toFixed(1)}°)<br>
     <b>Current Angle:</b> ${inputAngle.toFixed(1)}°<br>
-    <br>
+    ${getLinkAngles()[3].toFixed(1)}<br>
     <b>Output Link:</b> ${outputClass} - ${openCrossed}<br>
     <b>Range of Motion:</b> (${B_min.toFixed(1)}°, ${B_max.toFixed(1)}°)<br>
     <b>Current Angle:</b> ${outputAngle.toFixed(1)}° <br>

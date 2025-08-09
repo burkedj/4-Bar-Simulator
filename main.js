@@ -20,19 +20,6 @@ const polygons = polyGroup.selectAll("polygon")
     // })
 
 // Draw joints
-// const goundJointGroup = zoomGroup.append("g")
-// const rings = goundJointGroup.selectAll("ring")
-//     .data(joints.find(g => g.type === "ground"))
-//     // .filter(d => d.type === "ground")
-//     .enter()
-//     .append("circle")
-//     .attr("class","ring")
-//     .attr("r", 12)
-//     .attr("fill", "blue")
-//     // .attr("opacity", 0)
-//     .attr("stroke", "red")
-//     .attr("stroke-width", 6);
-
 const jointGroup = zoomGroup.append("g")
 const circles = jointGroup.selectAll("circle")
     .data(joints)
@@ -50,6 +37,15 @@ const circles = jointGroup.selectAll("circle")
     //     d.ground = !d.ground; // Toggle fixed state on double click
     //     updateDiagram()
     // })
+
+const dragGroup = zoomGroup.append("g")
+const dragnodes = dragGroup.selectAll("circle")
+    .data(joints)
+    .enter()
+    .append("circle")
+    .attr("r", 10)
+    .attr("fill", "black")
+    .attr("opacity", 0)
     .call(d3.drag()
         .on("drag", function(event, d) {
             // if (editMode === false) return; // Only allow toggling in edit mode

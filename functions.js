@@ -69,21 +69,14 @@ function initializeSlider() {
 
 }
 
-// function setCouplerPoint () {
-
-// }
-
 function rotateInputLink(angleDeg) {
     const lengths = getLinkLengths();
-    const angles = getLinkAngles();
+    // const angles = getLinkAngles();
 
     const a = lengths["a"]; // input
     const b = lengths["b"]; // output
     const c = lengths["c"]; // coupler
     const d = lengths["d"]; // ground
-
-    // couplerSetLength = Math.sqrt((joints[4].x-joints[1].x)*(joints[4].x-joints[1].x) + (joints[4].y-joints[1].y)*(joints[4].y-joints[1].y))
-    // couplerSetAngle = angles[4]-angles[2];
 
     const inLength = a * linkScale;
     const outLength = b * linkScale;
@@ -91,28 +84,13 @@ function rotateInputLink(angleDeg) {
     const angleAdj = angleDeg;
 
     const angleIn = degToRad(angleAdj);
+    const angleOut = calcOutputAngle(angleIn);
 
     const inputLink = links.find(l => l.id === "a");
     const [inFixed, inMoving] = inputLink.nodes;
 
     inMoving.x = inFixed.x + inLength * Math.cos(angleIn);
     inMoving.y = inFixed.y - inLength * Math.sin(angleIn); // SVG Y-axis is downward
-
-    const U = a*a + b*b - c*c + d*d - 2*a*d*Math.cos(angleIn);
-    const V = 2*a*b*Math.sin(angleIn);
-    const W = 2*b*(d-a*Math.cos(angleIn));
-
-    let tanw = 0;
-
-    if (linkageConfig === "Crossed") {
-        tanw = (-V-Math.sqrt(V*V - U*U + W*W))/(W - U);
-    } else {
-        tanw = (-V+Math.sqrt(V*V - U*U + W*W))/(W - U);
-    }
-
-    const angleOut = Math.atan(tanw)*2;
-
-    // const angleOut = calcOutputAngle(angleIn);
 
     const outputLink = links.find(l => l.id === "b");
     const [outMoving, outFixed] = outputLink.nodes;
@@ -163,6 +141,10 @@ function updateDiagram() {
         if (d.type === "ground") return 2.2
         return 6
         })
+
+    dragnodes
+        .attr("cx", d => d.x).attr("cy", d => d.y)
+
     // rings
     //     // .filter(d => d.type === "ground")
     //     .attr("cx", d => d.x).attr("cy", d => d.y)
@@ -212,6 +194,8 @@ function updateDiagram() {
             const length = Math.sqrt(dx * dx + dy * dy)/linkScale;
             return length.toFixed(1);
         })
+
+    groundAngle = getLinkAngles()[3];
 
     // const linkLengths = getLinkLengths();
     document.getElementById("linkageSummary").innerHTML = getLinkageProperties() 

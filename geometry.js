@@ -1,4 +1,6 @@
-const joints = defaultJoints.map(j => ({ ...j }));
+let joints = defaultJoints.map(j => ({ ...j }));
+
+let jointz = joints;
 
 const originalJoints = joints.map(j => ({ ...j })); // Store original positions
 
