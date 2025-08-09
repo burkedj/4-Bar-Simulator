@@ -147,17 +147,17 @@ function getOutputLimits() {
         B_max = 360;
         outputClass = "Crank";
     } else if (Number.isNaN(B_min_rad)) {
-        B_max = 180-radToDeg(B_max_rad);
-        B_min = -B_max;
+        B_max = radToDeg(B_max_rad);
+        B_min = 360-B_max;
         // B_min = 360-B_max;
         outputClass = "0-Rocker"
     } else if (Number.isNaN(B_max_rad)) {
-        B_min = 180-radToDeg(B_min_rad);
-        B_max = 360-B_min;
+        B_min = radToDeg(B_min_rad);
+        B_max = -B_min;
         outputClass = "π-Rocker"
     } else {
-        B_min = 180-radToDeg(B_min_rad);
-        B_max = 180-radToDeg(B_max_rad);
+        B_min = radToDeg(B_min_rad);
+        B_max = radToDeg(B_max_rad);
         outputClass = "Rocker"
     }
 
@@ -255,23 +255,45 @@ function calcOutputAngle(angle) {
     return angleOut;
 };
 
-// function calcNodePosition(node, angle){
-//     if (node === "A1") {
-//         const lngth = getLinkLengths()["a"]*linkScale;
-//         const nx = lngth * Math.cos(degToRad(angle));
-//         const ny = lngth * Math.sin(degToRad(angle));
-//     } else if (node === "B1") {
-//         const lngth = getLinkLengths()["b"]*linkScale;
-//         const nx = lngth * Math.cos(degToRad(calcOutputAngle(angle)));
-//         const ny = lngth * Math.sin(degToRad(calcOutputAngle(angle))); 
-//     } else if (node === "Cp") {
-//         const lngth = couplerSetLength;
-//         const 
-//     }
+function calcNodePosition(node, angle){
+    let origin = [0,0]
+    let lngth = 0
+    if (node === "A1") {
+        origin = joints.find(j => j.id === "A0");
+        lngth = getLinkLengths()["a"]*linkScale;
+        nx = origin.x + lngth * Math.cos(degToRad(angle));
+        ny = origin.y - lngth * Math.sin(degToRad(angle));
+    } else if (node === "B1") {
+        origin = joints.find(j => j.id === "B0");
+        lngth = getLinkLengths()["b"]*linkScale;
+        // const bAngle = radToDeg(calcOutputAngle(angle));
+        nx = origin.x + lngth * Math.cos(degToRad(angle));
+        ny = origin.y - lngth * Math.sin(degToRad(angle));
+    } else if (node === "Cp") {
+        calcCouplerPosition()
+    }
 
+    return [nx, ny]
+    // return [300,200];
+}
 
-//     return [nx, ny]
-// }
+function calcNodePath(node, steps){
+    const traceNode = tracers.findIndex(d => d.id === node); //get the index for the desired node within tracers array
+    tracers[traceNode].points.length = 0; //clear the existing points for this node tracer
+    let traceStart = 0;
+    let traceEnd = 0;
+    if (node === "A1") {
+        [traceStart, traceEnd] = getInputLimits()
+    } else if (node === "B1") {
+        [traceStart, traceEnd] = getOutputLimits()
+    }
+    for (let i = 0; i < steps; i++) {
+        traceAngle = traceStart + (i/steps) * (traceEnd-traceStart);
+        const tPoint = calcNodePosition(node, traceAngle);
+        tracers[traceNode].points.push(tPoint);
+    }
+    tracers[traceNode].points.push(calcNodePosition(node, traceEnd))
+}
 
 
 function getLinkageProperties() {

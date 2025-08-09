@@ -1,6 +1,4 @@
-let joints = defaultJoints.map(j => ({ ...j }));
-
-let jointz = joints;
+const joints = defaultJoints.map(j => ({ ...j }));
 
 const originalJoints = joints.map(j => ({ ...j })); // Store original positions
 
@@ -11,3 +9,8 @@ const links = [
     {id: "b", nodes: [joints[2], joints[3]], color: "darkblue", type: "output"},
 ]
 
+const tracers = [
+    {id: "A1", color: "darkred", points: []},
+    {id: "B1", color: "darkblue", points: []},
+    {id: "Cp", color: "darkgreen", points: []}
+];

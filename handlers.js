@@ -15,6 +15,12 @@ document.getElementById("toggleGround").addEventListener("click", () => {
         .style("display", groundVisible ? "block" : "none");
 })
 
+document.getElementById("toggleTracers").addEventListener("click", () => {
+    tracersVisible = !tracersVisible;
+    paths
+        .style("display", tracersVisible ? "block" : "none")
+})
+
 document.getElementById("resetZoom").addEventListener("click", () => {
     svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity
         .translate(defaultX, defaultY)

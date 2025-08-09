@@ -2,6 +2,8 @@ const svg = d3.select("#editorView");
 
 const zoomGroup = svg.append("g")
 
+
+
 // Draw links
 const polyGroup = zoomGroup.append("g")
 const polygons = polyGroup.selectAll("polygon")
@@ -37,6 +39,27 @@ const circles = jointGroup.selectAll("circle")
     //     d.ground = !d.ground; // Toggle fixed state on double click
     //     updateDiagram()
     // })
+
+const tracePointGroup = zoomGroup.append("g")
+const tracePoints = tracePointGroup.selectAll("circle")
+    .data(joints.filter(d => d.type !== "ground"))
+    .enter()
+    .append("circle")
+    .attr("r", 1.5)
+    .attr("fill", d => d.color)
+    .attr("opacity", 0)
+
+const pathGroup = zoomGroup.append("g")
+const paths = pathGroup.selectAll("polyline")
+    .data(tracers)
+    .enter()
+    .append("polyline")
+    .attr("stroke", d => d.color)
+    .attr("fill","none")
+    .attr("points", d => d.points)
+    .attr("stroke-dasharray", "3,2")
+    .attr("opacity", linkOpactity)
+    .style("display", "none")
 
 const dragGroup = zoomGroup.append("g")
 const dragnodes = dragGroup.selectAll("circle")

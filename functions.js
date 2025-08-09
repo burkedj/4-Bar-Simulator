@@ -125,7 +125,17 @@ function setupSimulationControls() {
 }
 
 function updateDiagram() {
-    
+    calcNodePath("A1", 100)
+    calcNodePath("B1", 100)
+    calcNodePath("Cp",100)
+
+    paths
+        .attr("points", d => d.points)
+
+    tracePoints
+        .attr("cx", d => d.x).attr("cy", d => d.y)
+
+
     circles
         .attr("cx", d => d.x).attr("cy", d => d.y)
         .attr("r", d => {

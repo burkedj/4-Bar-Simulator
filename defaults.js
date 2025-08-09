@@ -2,6 +2,7 @@ let lengthsVisible = false;
 let coordsVisible = false;
 let groundVisible = true;
 let couplerVisible = true;
+let tracersVisible = false;
 // let editMode = true
 
 const offsetX = 220;
@@ -10,13 +11,15 @@ const offsetY = 220;
 const linkScale = 10;
 
 const defaultJoints = [
-    { id: "A0", x: offsetX, y: offsetY , fixed: true , ground : true, type: "ground"},
-    { id: "A1", x: offsetX, y: offsetY-50, fixed: false , ground : false, type: "joint"},
-    { id: "B1", x: offsetX+117, y: offsetY-78, fixed: false , ground : false, type: "joint"},
-    { id: "B0", x: offsetX+100, y: offsetY, fixed: false , ground : true, type: "ground"},
+    { id: "A0", color: "black", x: offsetX, y: offsetY , fixed: true , ground : true, type: "ground"},
+    { id: "A1", color: "darkred", x: offsetX, y: offsetY-50, fixed: false , ground : false, type: "joint"},
+    { id: "B1", color: "darkblue", x: offsetX+117, y: offsetY-78, fixed: false , ground : false, type: "joint"},
+    { id: "B0", color: "black", x: offsetX+100, y: offsetY, fixed: false , ground : true, type: "ground"},
 
-    {id: "Cp", x: (offsetX+117+offsetX)/2, y: offsetY-78, fixed: false, ground: false, type: "node", color: "darkgreen"}
+    {id: "Cp", color: "darkgreen", x: (offsetX+117+offsetX)/2, y: offsetY-78, fixed: false, ground: false, type: "node", color: "darkgreen"}
 ];
+
+// const traceSteps = 5;
 
 const defaultX = -200;
 const defaultY = -125;
