@@ -160,6 +160,10 @@ function getOutputLimits() {
         B_max = radToDeg(B_max_rad);
         outputClass = "Rocker"
     }
+    if (getOpenCrossed() === "Crossed") {
+        B_min = 360-B_min;
+        B_max = 360-B_max;
+    }
 
     return [B_min, B_max ,outputClass];
 

@@ -19,6 +19,8 @@ document.getElementById("toggleTracers").addEventListener("click", () => {
     tracersVisible = !tracersVisible;
     paths
         .style("display", tracersVisible ? "block" : "none")
+    tracePoints
+        .style("display", tracersVisible ? "block" : "none")
 })
 
 document.getElementById("resetZoom").addEventListener("click", () => {
