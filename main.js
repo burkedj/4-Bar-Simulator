@@ -74,9 +74,13 @@ const dragnodes = dragGroup.selectAll("circle")
     .call(d3.drag()
         .on("drag", function(event, d) {
             // if (editMode === false) return; // Only allow toggling in edit mode
+            if (d.id === "A0") return
             if (d.ground) {
                 d.x = event.x;
                 d.y = originalJoints.find(j => j.id === d.id).y;
+                if (joints[3].x < joints[0].x) {
+                    d.x = originalJoints.find(j => j.id === "A0").x
+                }
             } else {
                 d.x = event.x;
                 d.y = event.y;

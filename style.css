@@ -8,8 +8,14 @@ button {
     font-size: 10pt;
 }
 
-input[type="range"] {
+input[type="range"][orient="horizontal"] {
     width: 440px;
+}
+input[type="range"][orient="vertical"] {
+    writing-mode: vertical-lr;
+    width: 10px;
+    /* height: 350px; */
+    margin-top: 20px;
 }
 
 label {
