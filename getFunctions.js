@@ -29,7 +29,7 @@ function getLinkAngles () {
     } else if (A1.y > A0.y) {
         th_a = 360 + th_a;
     }
-    th_a = th_a;
+    // th_a = th_a;
     if (th_a < 0 )  th_a = 360 + th_a;
 
     let th_b = radToDeg(Math.atan(-(B1.y-B0.y)/(B1.x-B0.x)));
@@ -38,7 +38,7 @@ function getLinkAngles () {
     } else if (B1.y > B0.y) {
         th_b = 360 + th_b;
     }
-    th_b = th_b;
+    // th_b = th_b;
     if (th_b < 0 )  th_b = 360 + th_b;
 
     let th_c = -radToDeg(Math.atan((B1.y-A1.y)/(B1.x-A1.x)));
@@ -47,7 +47,7 @@ function getLinkAngles () {
     } else if (B1.y > A1.y) {
         th_c = 360 + th_c;
     }
-    th_c = th_c;
+    // th_c = th_c;
     if (th_c < 0 )  th_c = 360 + th_c;
 
     let th_d = -radToDeg(Math.atan((B0.y-A0.y)/(B0.x-A0.x)));
@@ -63,7 +63,7 @@ function getLinkAngles () {
     } else if (Cp.y > A1.y) {
         th_A1Cp = 360 + th_A1Cp;
     }
-    th_A1Cp = th_A1Cp;
+    // th_A1Cp = th_A1Cp;
     if (th_A1Cp < 0 )  th_A1Cp = 360 + th_A1Cp;
 
     let th_B0A1 = -radToDeg(Math.atan((A1.y-B0.y)/(A1.x-B0.x)));
@@ -72,7 +72,7 @@ function getLinkAngles () {
     } else if (A1.y > B0.y) {
         th_B0A1 = 360 + th_B0A1;
     }
-    th_B0A1 = th_B0A1;
+    // th_B0A1 = th_B0A1;
     if (th_B0A1 < 0 )  th_B0A1 = 360 + th_B0A1;
     
 
@@ -222,6 +222,15 @@ function getCouplerGeom() {
     return [couplerLength, couplerAngle];
 }
 
+function getCouplerPosition() {
+    const th_A1Cp_rad = degToRad(couplerSetAngle - getLinkAngles()[2]);
+
+    const Cp_x = joints[1].x + couplerSetLength * Math.cos(th_A1Cp_rad);
+    const Cp_y = joints[1].y + couplerSetLength * Math.sin(th_A1Cp_rad);
+
+    return [Cp_x, Cp_y];
+}
+
 function getOpenCrossed() {
     const th_a = getLinkAngles()[0];
     const th_b = getLinkAngles()[1];
@@ -250,7 +259,7 @@ function getOpenCrossed() {
         if (tempAngle < (getInputLimits()[0]+simAngleTol*2)) {
             linkConfig = "Crossed";
         } 
-        else if (tempAngle > (getInputLimits()[1]-0.02)) {
+        else if (tempAngle > (getInputLimits()[1]-simAngleTol*2)) {
             linkConfig = "Open";
         }
     }
@@ -264,7 +273,8 @@ function getLinkageProperties() {
     const [B_min, B_max ,outputClass] = getOutputLimits();
 
     const inputAngle = getInputAngle();
-    const outputAngle = getOutputAngle();
+    // const outputAngle = getOutputAngle();
+    const outputAngle = radToDeg(calcOutputAngle(degToRad(inputAngle),linkageConfig));
     const openCrossed = getOpenCrossed();
 
     const th_a = getLinkAngles()[0];

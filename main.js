@@ -2,8 +2,6 @@ const svg = d3.select("#editorView");
 
 const zoomGroup = svg.append("g")
 
-
-
 // Draw links
 const polyGroup = zoomGroup.append("g")
 const polygons = polyGroup.selectAll("polygon")
@@ -54,7 +52,7 @@ const paths = pathGroup.selectAll("polyline")
 
 const tracePointGroup = zoomGroup.append("g")
 const tracePoints = tracePointGroup.selectAll("circle")
-    .data(joints.filter(d => d.type !== "ground" & d.id !== "Cp"))
+    .data(joints.filter(d => d.type !== "ground"))
     .enter()
     .append("circle")
     .attr("r", 1.25)
@@ -112,13 +110,16 @@ const lengths = linklengthGroup.selectAll("text")
     .style("pointer-events", "none")
     .style("display", "none");
 
+
+let originalCoupler = {id: "c", nodes: [joints[1], joints[2], joints[4]]};
+
 const zoom = d3.zoom()
     .scaleExtent([0.25, 4])
     .on("zoom", (event) => {
-        zoomGroup.attr("transform", event.transform);
+        // zoomGroup.attr("transform", event.transform);
+        currentZoomTransform = event.transform;
+        viewTransform();
     });
-
-let originalCoupler = {id: "c", nodes: [joints[1], joints[2], joints[4]]};
 
 svg.call(zoom)
     .on("dblclick.zoom", null); // Disable double-click zoom
@@ -134,9 +135,11 @@ svg.selectAll(".link")
         }
     });
 
-getCouplerGeom();
+setCouplerGeom()
+drawTracePaths()
 // Initial draw
 loadJointsFromURL();
 loadViewFromURL();
 setupSimulationControls();
+setupRotationControls()
 updateDiagram();

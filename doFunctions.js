@@ -35,7 +35,7 @@ function toggleCoupler(link) {
         couplerSetAngle = getCouplerGeom()[1];
         couplerSetLength = getCouplerGeom()[0];
     } else {
-        const [Cp_x, Cp_y] = calcCouplerPosition();
+        const [Cp_x, Cp_y] = getCouplerPosition();
         originalCoupler.nodes[2].x = Cp_x;
         originalCoupler.nodes[2].y = Cp_y;
         const original = originalCoupler;
@@ -66,11 +66,51 @@ function initializeSlider() {
     inputSlider.value = currentAngle;
     
     angleDisplay.textContent = `${currentAngle.toFixed(0)}°`; 
+}
 
+function rotationSlider() {
+    const rotationSlider = document.getElementById("rotateSlider");
+    const rotationValue = document.getElementById("rotateValue");
+
+    rotationValue = 0;
+
+    rotationSlider.value = rotationValue;
+
+    rotationValue.textContent = `${rotationValue.toFixed(0)}°`;
+}
+
+function rotateDiagram(rotAngle) {
+    currentRotation = rotAngle;
+}
+
+function viewTransform() {
+    const pivot = joints[0]
+    const cx = pivot.x;
+    const cy = pivot.y;
+
+    const rotation = `rotate(${currentRotation}, ${cx}, ${cy})`
+    const zoom = `
+        translate(${currentZoomTransform.x}, ${currentZoomTransform.y})
+        scale(${currentZoomTransform.k})
+    `;
+
+    zoomGroup.attr("transform", `${zoom} ${rotation} `);
 }
 
 function setOpenCrossed() {
    linkageConfig = getOpenCrossed();
+}
+
+function setCouplerGeom() {
+    couplerSetAngle = getCouplerGeom()[1];
+    couplerSetLength = getCouplerGeom()[0];
+}
+
+function drawTracePaths() {
+    const steps = 100;
+    calcNodePath("A1", steps);
+    calcNodePath("B1", steps);
+    // calcNodePath("Cp", steps);
 }
 
 function rotateInputLink(angleDeg) {
@@ -114,26 +154,9 @@ function rotateInputLink(angleDeg) {
     }
 }
 
-function setupSimulationControls() {
-    const inputSlider = document.getElementById("inputAngleSlider");
-    const angleDisplay = document.getElementById("angleValue");
-
-    inputSlider.addEventListener("input", () => {
-        const angleDeg = parseFloat(inputSlider.value);
-        angleDisplay.textContent = `${angleDeg.toFixed(1)}°`;
-
-        rotateInputLink(angleDeg);
-        updateDiagram();
-    });
-
-}
-
 function updateDiagram() {
-    calcNodePath("A1", 100)
-    calcNodePath("B1", 100)
-    calcNodePath("Cp",100)
-
     setOpenCrossed();
+    drawTracePaths()
 
     paths
         .attr("points", d => d.points)
@@ -184,11 +207,6 @@ function updateDiagram() {
             if (d.type === "ground") return 1;
             return linkOpactity;
         })
-        // .attr("stroke-dasharray", d => {
-        //     if (d.type === "ground") return "6,6"
-        //     return "0"
-        // })
-
 
     const origin = joints.find(j => j.id === "A0");
 
@@ -215,6 +233,7 @@ function updateDiagram() {
 
     // const linkLengths = getLinkLengths();
     document.getElementById("linkageSummary").innerHTML = getLinkageProperties() 
+    viewTransform();
     initializeSlider();
 }
 

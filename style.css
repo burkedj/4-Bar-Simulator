@@ -13,9 +13,13 @@ input[type="range"][orient="horizontal"] {
 }
 input[type="range"][orient="vertical"] {
     writing-mode: vertical-lr;
+    direction: rtl;
+    appearance: slider-vertical;
+    vertical-align: bottom;
     width: 10px;
     /* height: 350px; */
     margin-top: 20px;
+    /* margin-bottom: 5px */
 }
 
 label {

@@ -28,6 +28,12 @@ document.getElementById("resetZoom").addEventListener("click", () => {
         .translate(defaultX, defaultY)
         .scale(defaultScale)
     );
+    rotateDiagram(defaultRotation);
+    const rotationSlider = document.getElementById("rotateSlider");
+    const rotationValue = document.getElementById("rotateValue");
+
+    rotationSlider.value = currentRotation;
+    rotationValue.textContent = `${currentRotation.toFixed(0)}°`;
 })
 
 document.getElementById("resetLinkage").addEventListener("click", () => {
@@ -52,26 +58,38 @@ document.getElementById("shareConfig").addEventListener("click", () => {
         .catch(() => alert("Failed to copy URL."));
 })
 
-// document.getElementById("toggleMode").addEventListener("click", () => {
-//     editMode = !editMode;
-//     document.getElementById("modeLabel").textContent = editMode
-//         ? "Edit Mode"
-//         : "Simulation Mode";
-
-//     document.getElementById("resetLinkage").disabled = !editMode;
-
-//     // couplerSetAngle = getCouplerGeom()[1];
-//     // couplerSetLength = getCouplerGeom()[0];
-//     // document.getElementById("simControls").style.display = editMode ? "none" : "block";
-//     // document.getElementById("simControls").style.display = "block";
-
-//     updateDiagram();  // Re-render with new mode
-    
-// })
-
 inputAngleSlider.addEventListener("pointerdown", () => {
-    couplerSetAngle = getCouplerGeom()[1];
-    couplerSetLength = getCouplerGeom()[0];
+    setCouplerGeom();
 })
+
+function setupSimulationControls() {
+    const inputSlider = document.getElementById("inputAngleSlider");
+    const angleDisplay = document.getElementById("angleValue");
+
+    inputSlider.addEventListener("input", () => {
+        const angleDeg = parseFloat(inputSlider.value);
+        angleDisplay.textContent = `${angleDeg.toFixed(1)}°`;
+
+        rotateInputLink(angleDeg);
+        updateDiagram();
+    });
+
+}
+
+function setupRotationControls() {
+    const rotationSlider = document.getElementById("rotateSlider");
+    const rotationValue = document.getElementById("rotateValue");
+
+    rotationSlider.addEventListener("input", () => {
+        const rotAngle = parseFloat(rotationSlider.value);
+        rotationValue.textContent = `${rotAngle.toFixed(0)}°`;
+
+        // currentPanX = d3.zoomTransform(zoom).x;
+        // currentPanY = d3.zoomTransform(zoom).y;
+        // currentZoom = d3.zoomTransform(zoom).k;
+        rotateDiagram(rotAngle);
+        updateDiagram();
+    })
+}
 
 ;

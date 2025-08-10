@@ -24,6 +24,7 @@ const defaultJoints = [
 const defaultX = -200;
 const defaultY = -125;
 const defaultScale = 1.8;
+const defaultRotation = 0;
 
 const linkOpactity = 0.5;
 
@@ -37,6 +38,12 @@ let linkageConfig = "Open"
 
 let couplerSetLength = 0;
 let couplerSetAngle = 0;
+
+let currentRotation = 0;
+// let currentPanX = d3.zoomTransform(zoom).x;
+// let currentPanY = d3.zoomTransform(zoom).y;
+// let currentZoom = d3.zoomTransform(zoom).k;
+let currentZoomTransform = d3.zoomIdentity;
 
 // let groundAngle = 0;
 
