@@ -80,12 +80,11 @@ function getLinkAngles () {
 }
 
 function getInputLimits() {
-    const lengths = getLinkLengths();
 
-    const a = lengths["a"]; // input
-    const b = lengths["b"]; // output
-    const c = lengths["c"]; // coupler
-    const d = lengths["d"]; // ground
+    const a = aLength; // input
+    const b = bLength; // output
+    const c = cLength; // coupler
+    const d = dLength; // ground
 
     let A_min = 0;
     let A_max = 360;
@@ -136,12 +135,11 @@ function getInputLimits() {
 }
 
 function getOutputLimits() {
-    const lengths = getLinkLengths();
 
-    const a = lengths["a"]; // input
-    const b = lengths["b"]; // output
-    const c = lengths["c"]; // coupler
-    const d = lengths["d"]; // ground
+    const a = aLength; // input
+    const b = bLength; // output
+    const c = cLength; // coupler
+    const d = dLength; // ground
 
     let B_min = 0;
     let B_max = 360;

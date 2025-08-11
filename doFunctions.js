@@ -1,3 +1,12 @@
+function setLinkLengths() {
+    const lengths = getLinkLengths();
+
+    aLength = lengths["a"];
+    bLength = lengths["b"];
+    cLength = lengths["c"];
+    dLength = lengths["d"];
+}
+
 function loadJointsFromURL(){
     const params = new URLSearchParams(window.location.search);
     const jointsParam = params.get("j");
@@ -15,6 +24,7 @@ function loadJointsFromURL(){
             joints[i].ground = coord.ground;
         }
     });
+    setCouplerGeom();
 }
 function loadViewFromURL(){
     const params = new URLSearchParams(window.location.search);
@@ -137,13 +147,11 @@ function drawTracePaths() {
 }
 
 function rotateInputLink(angleDeg) {
-    const lengths = getLinkLengths();
-    // const angles = getLinkAngles();
 
-    const a = lengths["a"]; // input
-    const b = lengths["b"]; // output
-    const c = lengths["c"]; // coupler
-    const d = lengths["d"]; // ground
+    const a = aLength; // input
+    const b = bLength; // output
+    const c = cLength; // coupler
+    const d = dLength; // ground
 
     const inLength = a * linkScale;
     const outLength = b * linkScale;
@@ -177,9 +185,51 @@ function rotateInputLink(angleDeg) {
     }
 }
 
+function animateLinkage() {
+    const range = getInputLimits()[1] - getInputLimits()[0];
+    // const incrAngle = 5;
+    // const steps = (range/incrAngle).toFixed(0);
+    const steps = 72;
+    const incrAngle = range/steps;
+    const duration = 3000
+
+    let step = 0;
+    // let dir = 1;
+
+
+    let currentAngle = getInputAngle();
+    const minAngle = getInputLimits()[0];
+    const maxAngle = getInputLimits()[1];
+
+    // while (step < 1) {
+    //     step = step + 1;
+        currentAngle = currentAngle + animationDir*(maxAngle-minAngle)/steps;
+        setTimeout(() => {console.log("waiting...")},100);
+        if (currentAngle > maxAngle) {
+            if (getInputLimits()[2] === "Crank") {
+                currentAngle = minAngle+incrAngle;
+            } else {
+                currentAngle = maxAngle-incrAngle;
+                animationDir = -1;
+            }
+        } 
+        else if (currentAngle < minAngle) {
+            if (getInputLimits()[2] === "Crank") {
+                currentAngle = maxAngle-incrAngle;
+            } else {
+                currentAngle = minAngle+incrAngle;
+                animationDir = 1;
+            }
+        }
+        rotateInputLink(currentAngle);
+        updateDiagram();
+    // }
+}
+
 function updateDiagram() {
+    setLinkLengths();
     setOpenCrossed();
-    drawTracePaths()
+    drawTracePaths();
 
     paths
         .attr("points", d => d.points)
@@ -252,9 +302,6 @@ function updateDiagram() {
             return length.toFixed(1);
         })
 
-    // groundAngle = getLinkAngles()[3];
-
-    // const linkLengths = getLinkLengths();
     document.getElementById("linkageSummary").innerHTML = getLinkageProperties() 
     viewTransform();
     initializeSlider();

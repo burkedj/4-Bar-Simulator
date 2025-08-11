@@ -57,12 +57,11 @@ function calcCouplerPosition(inAngle) {
 }
 
 function calcOutputAngle(angle, config) {
-    const lengths = getLinkLengths();
 
-    const a = lengths["a"]; // input
-    const b = lengths["b"]; // output
-    const c = lengths["c"]; // coupler
-    const d = lengths["d"]; // ground
+    const a = aLength; // input
+    const b = bLength; // output
+    const c = cLength; // coupler
+    const d = dLength; // ground
 
     const U = a*a + b*b - c*c + d*d - 2*a*d*Math.cos(angle);
     const V = 2*a*b*Math.sin(angle);
@@ -91,12 +90,12 @@ function calcNodePosition(node, angle){
     let lngth = 0
     if (node === "A1") {
         origin = joints.find(j => j.id === "A0");
-        lngth = getLinkLengths()["a"]*linkScale;
+        lngth = aLength*linkScale;
         nx = origin.x + lngth * Math.cos(degToRad(angle));
         ny = origin.y - lngth * Math.sin(degToRad(angle));
     } else if (node === "B1") {
         origin = joints.find(j => j.id === "B0");
-        lngth = getLinkLengths()["b"]*linkScale;
+        lngth = bLength*linkScale;
         nx = origin.x + lngth * Math.cos(degToRad(angle));
         ny = origin.y - lngth * Math.sin(degToRad(angle));
     } else if (node === "Cp") {

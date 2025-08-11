@@ -3,10 +3,11 @@ let coordsVisible = false;
 let groundVisible = true;
 let couplerVisible = true;
 let tracersVisible = false;
-// let editMode = true
+let animationRunning = false;
+let animationDir = 1;
 
-const offsetX = 220;
-const offsetY = 220;
+const offsetX = 225;
+const offsetY = 225+25;
 
 const linkScale = 10;
 
@@ -23,7 +24,7 @@ const defaultJoints = [
 
 const defaultX = -200;
 const defaultY = -125;
-const defaultScale = 1.8;
+const defaultScale = 1.75;
 const defaultRotation = 0;
 
 const linkOpactity = 0.5;
@@ -39,11 +40,10 @@ let linkageConfig = "Open"
 let couplerSetLength = 0;
 let couplerSetAngle = 0;
 
+let aLength = 0;
+let bLength = 0;
+let cLength = 0;
+let dLength = 0;
+
 let currentRotation = 0;
-// let currentPanX = d3.zoomTransform(zoom).x;
-// let currentPanY = d3.zoomTransform(zoom).y;
-// let currentZoom = d3.zoomTransform(zoom).k;
 let currentZoomTransform = d3.zoomIdentity;
-
-// let groundAngle = 0;
-

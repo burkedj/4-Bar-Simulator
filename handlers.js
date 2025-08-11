@@ -58,6 +58,11 @@ document.getElementById("shareConfig").addEventListener("click", () => {
         .catch(() => alert("Failed to copy URL."));
 })
 
+document.getElementById("runAnimation").addEventListener("click", () => {
+    animationRunning = !animationRunning;
+    animateLinkage();
+})
+
 inputAngleSlider.addEventListener("pointerdown", () => {
     setCouplerGeom();
 })
