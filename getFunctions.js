@@ -255,11 +255,11 @@ function getOpenCrossed() {
     if (getInputLimits()[2] === "0-Rocker" & th_a > 180) {
         tempAngle = th_a -360;
     }
-    if (getOutputLimits()[2] !== "Rocker" | (getOutputLimits()[2] === "Rocker" & getInputLimits()[2] === "Rocker")) {
+    if ((getOutputLimits()[2] !== "Rocker" | (getOutputLimits()[2] === "Rocker" & getInputLimits()[2] === "Rocker")) & getInputLimits()[2] !== "Crank") {
         if (tempAngle < (getInputLimits()[0]+simAngleTol*2)) {
             linkConfig = "Crossed";
         } 
-        else if (tempAngle > (getInputLimits()[1]-simAngleTol*2)) {
+        else if ((tempAngle > (getInputLimits()[1]-simAngleTol*2)) & getInputLimits()[2] !== "Crank") {
             linkConfig = "Open";
         }
     }

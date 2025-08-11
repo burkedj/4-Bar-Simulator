@@ -83,18 +83,41 @@ function rotateDiagram(rotAngle) {
     currentRotation = rotAngle;
 }
 
+function rotateText(angle) {
+    joints.forEach(joint => {
+        const jx = joint.x;
+        const jy = joint.y;
+        coords
+            .filter(d => d.id === joint.id) 
+            .attr("transform",`rotate(${angle}, ${jx}, ${jy})`)
+    })
+
+    links.forEach(link => {
+        const id = link.id;
+        const nodes = link.nodes;
+        const lx = (nodes[1].x + nodes[0].x)/2;
+        const ly = (nodes[1].y + nodes[0].y)/2;
+        lengths
+            .filter(d => d.id === link.id)
+            .attr("transform", `rotate(${angle},${lx},${ly})`)
+    })
+}
+
 function viewTransform() {
     const pivot = joints[0]
     const cx = pivot.x;
     const cy = pivot.y;
 
-    const rotation = `rotate(${currentRotation}, ${cx}, ${cy})`
+    const rotation = `rotate(${-currentRotation}, ${cx}, ${cy})`
     const zoom = `
         translate(${currentZoomTransform.x}, ${currentZoomTransform.y})
         scale(${currentZoomTransform.k})
     `;
 
+    rotateText(currentRotation);
+
     zoomGroup.attr("transform", `${zoom} ${rotation} `);
+
 }
 
 function setOpenCrossed() {
