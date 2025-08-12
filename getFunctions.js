@@ -288,27 +288,10 @@ function getLinkageProperties() {
     const outputAngle = radToDeg(calcOutputAngle(degToRad(inputAngle),linkageConfig));
     const openCrossed = getOpenCrossed();
 
-    const a = aLength; // input
-    const b = bLength; // output
-    const c = cLength; // coupler
-    const d = dLength; // ground
-
-    const U = a*a + b*b - c*c + d*d - 2*a*d*Math.cos(inputAngle);
-    const V = 2*a*b*Math.sin(inputAngle);
-    const W = 2*b*(d-a*Math.cos(inputAngle));
-
-    let tanw = 0;
-
-    if (linkageConfig === "Crossed") {
-        tanw = (-V-Math.sqrt(V*V - U*U + W*W))/(W - U);
-    } else {
-        tanw = (-V+Math.sqrt(V*V - U*U + W*W))/(W - U);
-    }
-
     return `<b>Input Link:</b> ${inputClass}<br>
     <b>Range of Motion:</b> (${A_min.toFixed(1)}°, ${A_max.toFixed(1)}°)<br>
     <b>Current Angle:</b> ${inputAngle.toFixed(1)}°<br>
-    ${tanw.toFixed(3)}<br>
+    <br>
     <b>Output Link:</b> ${outputClass} - ${openCrossed}<br>
     <b>Range of Motion:</b> (${B_min.toFixed(1)}°, ${B_max.toFixed(1)}°)<br>
     <b>Current Angle:</b> ${outputAngle.toFixed(1)}° <br>
