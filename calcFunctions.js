@@ -77,6 +77,8 @@ function calcNodePath(node, steps, config){
         [traceStart, traceEnd] = getOutputLimits()
     } else if (node === "Cp") {
         [traceStart, traceEnd] = getInputLimits()
+        traceStart = traceStart+simAngleTol;
+        traceEnd = traceEnd-simAngleTol;
     }
     for (let i = 0; i < steps; i++) {
         traceAngle = traceStart + (i/steps) * (traceEnd-traceStart);
