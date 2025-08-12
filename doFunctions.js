@@ -285,7 +285,6 @@ function stopAnimationLoop() {
 function updateDiagram() {
     setLinkLengths();
     setOpenCrossed();
-    drawTracePaths();
 
     paths
         .attr("points", d => d.points)

@@ -9,6 +9,7 @@ let animationTimer = null;
 let animationDir = 1;
 let animationSpeed = 10; //rpm
 const animationFrameRate = 60; // fps
+const simAngleTol = 0.001;
 
 let aTracersVis = false;
 let bTracersVis = false;
@@ -39,8 +40,6 @@ const linkOpactity = 0.5;
 
 const labelOffsetX = 5;
 const labelOffsetY = -3;
-
-const simAngleTol = 0.001;
 
 let lockedConfig = null;
 let linkageConfig = "Open"

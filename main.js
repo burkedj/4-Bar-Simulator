@@ -145,11 +145,13 @@ svg.selectAll(".link")
 //     });
 
 setCouplerGeom()
-drawTracePaths()
+// drawTracePaths()
 // Initial draw
 loadJointsFromURL();
 loadViewFromURL();
 setupSimulationControls();
+initializeSlider();
 setupRotationControls()
 setupAnimationSpeed()
 updateDiagram();
+drawTracePaths();
