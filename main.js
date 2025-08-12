@@ -73,13 +73,10 @@ const dragnodes = dragGroup.selectAll("circle")
                 d.x = event.x;
                 d.y = event.y;
             }
+            setLinkLengths();
             setCouplerGeom();
-            // if (d.type === "ground") return; // Prevent dragging ground joints
-            // d.x = event.x;
-            // d.y = event.y;
             drawTracePaths();
             updateDiagram();
-            // drawTracePaths();
         })
     );
 

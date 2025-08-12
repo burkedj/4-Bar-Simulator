@@ -108,17 +108,6 @@ function initializeSlider() {
     angleDisplay.textContent = `${currentAngle.toFixed(0)}°`; 
 }
 
-// function rotationSlider() {
-//     const rotationSlider = document.getElementById("rotateSlider");
-//     const rotationValue = document.getElementById("rotateValue");
-
-//     rotationValue = 0;
-
-//     rotationSlider.value = rotationValue;
-
-//     rotationValue.textContent = `${rotationValue.toFixed(0)}°`;
-// }
-
 function rotateDiagram(rotAngle) {
     currentRotation = rotAngle;
 }
@@ -170,11 +159,10 @@ function setCouplerGeom() {
 }
 
 function drawTracePaths() {
-    const steps = 100;
-
-    calcNodePath("A1", steps, linkageConfig);
-    calcNodePath("B1", steps, linkageConfig);
-    calcNodePath("Cp", steps, linkageConfig);
+    // const steps = 500;
+    calcNodePath("A1", 100, linkageConfig);
+    calcNodePath("B1", 100, linkageConfig);
+    calcNodePath("Cp", 1000, linkageConfig);
 }
 
 function toggleTracer(node) {
@@ -204,8 +192,8 @@ function rotateInputLink(angleDeg) {
 
     const a = aLength; // input
     const b = bLength; // output
-    const c = cLength; // coupler
-    const d = dLength; // ground
+    // const c = cLength; // coupler
+    // const d = dLength; // ground
 
     const inLength = a * linkScale;
     const outLength = b * linkScale;
@@ -283,7 +271,6 @@ function stopAnimationLoop() {
 }
 
 function updateDiagram() {
-    setLinkLengths();
     setOpenCrossed();
 
     paths
@@ -358,6 +345,6 @@ function updateDiagram() {
 
     document.getElementById("linkageSummary").innerHTML = getLinkageProperties() 
     viewTransform();
-    initializeSlider();
+    // initializeSlider();
 }
 

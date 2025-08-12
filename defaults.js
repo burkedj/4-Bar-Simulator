@@ -47,10 +47,10 @@ let linkageConfig = "Open"
 let couplerSetLength = 0;
 let couplerSetAngle = 0;
 
-let aLength = 0;
-let bLength = 0;
-let cLength = 0;
-let dLength = 0;
+let aLength = 5;
+let bLength = 8;
+let cLength = 12;
+let dLength = 10;
 
 let currentRotation = 0;
 let currentZoomTransform = d3.zoomIdentity;
