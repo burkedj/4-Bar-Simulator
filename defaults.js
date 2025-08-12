@@ -6,9 +6,9 @@ let couplerVisible = true;
 
 let animationActive = false;
 let animationTimer = null;
-let animationInterval = null;
-let animationDelay = 100;
 let animationDir = 1;
+let animationSpeed = 10; //rpm
+const animationFrameRate = 60; // fps
 
 let aTracersVis = false;
 let bTracersVis = false;

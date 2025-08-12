@@ -151,4 +151,5 @@ loadJointsFromURL();
 loadViewFromURL();
 setupSimulationControls();
 setupRotationControls()
+setupAnimationSpeed()
 updateDiagram();

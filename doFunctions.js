@@ -108,16 +108,16 @@ function initializeSlider() {
     angleDisplay.textContent = `${currentAngle.toFixed(0)}°`; 
 }
 
-function rotationSlider() {
-    const rotationSlider = document.getElementById("rotateSlider");
-    const rotationValue = document.getElementById("rotateValue");
+// function rotationSlider() {
+//     const rotationSlider = document.getElementById("rotateSlider");
+//     const rotationValue = document.getElementById("rotateValue");
 
-    rotationValue = 0;
+//     rotationValue = 0;
 
-    rotationSlider.value = rotationValue;
+//     rotationSlider.value = rotationValue;
 
-    rotationValue.textContent = `${rotationValue.toFixed(0)}°`;
-}
+//     rotationValue.textContent = `${rotationValue.toFixed(0)}°`;
+// }
 
 function rotateDiagram(rotAngle) {
     currentRotation = rotAngle;
@@ -240,50 +240,39 @@ function rotateInputLink(angleDeg) {
 }
 
 function incrementLinkage() {
-    const range = getInputLimits()[1] - getInputLimits()[0];
-    // const incrAngle = 5;
-    // const steps = (range/incrAngle).toFixed(0);
-    const steps = 180;
-    const incrAngle = range/steps;
-    // const duration = 3000
-
-    // let step = 0;
+    // const range = getInputLimits()[1] - getInputLimits()[0];
+    
+    const incrAngle = animationSpeed/10
 
     let currentAngle = getInputAngle();
     const minAngle = getInputLimits()[0];
     const maxAngle = getInputLimits()[1];
 
-    // while (step < 1) {
-    //     step = step + 1;
-        currentAngle = currentAngle + animationDir*(maxAngle-minAngle)/steps;
-        if (currentAngle > maxAngle) {
-            if (getInputLimits()[2] === "Crank") {
-                currentAngle = minAngle+incrAngle;
-            } else {
-                currentAngle = maxAngle-simAngleTol;
-                animationDir = -1;
-            }
-        } 
-        else if (currentAngle < minAngle) {
-            if (getInputLimits()[2] === "Crank") {
-                currentAngle = maxAngle-incrAngle;
-            } else {
-                currentAngle = minAngle+simAngleTol;
-                animationDir = 1;
-            }
+    currentAngle = currentAngle + animationDir*incrAngle;
+    if (currentAngle > maxAngle) {
+        if (getInputLimits()[2] === "Crank") {
+            currentAngle = minAngle+incrAngle;
+        } else {
+            currentAngle = maxAngle-simAngleTol;
+            animationDir = -1;
         }
-        rotateInputLink(currentAngle);
-        updateDiagram();
-    // }
+    } 
+    else if (currentAngle < minAngle) {
+        if (getInputLimits()[2] === "Crank") {
+            currentAngle = maxAngle-incrAngle;
+        } else {
+            currentAngle = minAngle+simAngleTol;
+            animationDir = 1;
+        }
+    }
+    rotateInputLink(currentAngle);
+    updateDiagram();
 }
 
 function startAnimationLoop() {
     animationTimer = d3.timer(() => {
-    // animationInterval = setInterval(() => {
         incrementLinkage();
-        updateDiagram();
     }
-    // , animationDelay
 );
 }
 function stopAnimationLoop() {
@@ -291,8 +280,6 @@ function stopAnimationLoop() {
         animationTimer.stop();
         animationTimer = null;
     }
-    // clearInterval(animationInterval);
-    // animationInterval = null;
 }
 
 function updateDiagram() {
