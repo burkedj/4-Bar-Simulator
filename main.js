@@ -15,9 +15,6 @@ const polygons = polyGroup.selectAll("polygon")
     .attr("stroke-width", 12)
     .style("stroke-linejoin", "round")
     .attr("points", d => d.nodes.map(j => `${j.x},${j.y}`).join(" "))
-    // .style("display", function(event, d) {
-    //     if (d.type === "ground") return "none";
-    // })
 
 // Draw joints
 const jointGroup = zoomGroup.append("g")
@@ -28,15 +25,6 @@ const circles = jointGroup.selectAll("circle")
     .attr("r", 4)
     .attr("fill", "white")
     .attr("opacity", 1)
-    // .on("dblclick", function(event, d) {
-    //     if (editMode === false) return; // Only allow toggling in edit mode
-    //     // if (joints[1] == d) return; //
-    //     return; // This turns off double click. Remove this line to reenable
-    //     event.preventDefault();
-    //     event.stopPropagation();
-    //     d.ground = !d.ground; // Toggle fixed state on double click
-    //     updateDiagram()
-    // })
 
 const pathGroup = zoomGroup.append("g")
 const paths = pathGroup.selectAll("polyline")
@@ -47,7 +35,7 @@ const paths = pathGroup.selectAll("polyline")
     .attr("fill","none")
     .attr("points", d => d.points)
     .attr("stroke-dasharray", "3,2")
-    .attr("opacity", linkOpactity)
+    .attr("opacity", 0.65)
     .style("display", "none")
 
 const tracePointGroup = zoomGroup.append("g")
@@ -66,6 +54,7 @@ const dragnodes = dragGroup.selectAll("circle")
     .data(joints)
     .enter()
     .append("circle")
+    .attr("class", "trace")
     .attr("r", 10)
     .attr("fill", "black")
     .attr("opacity", 0)
@@ -73,6 +62,7 @@ const dragnodes = dragGroup.selectAll("circle")
         .on("drag", function(event, d) {
             // if (editMode === false) return; // Only allow toggling in edit mode
             if (d.id === "A0") return
+            if (d.id === "Cp" & !couplerVisible) return
             if (d.ground) {
                 d.x = event.x;
                 d.y = originalJoints.find(j => j.id === d.id).y;
@@ -87,7 +77,9 @@ const dragnodes = dragGroup.selectAll("circle")
             // if (d.type === "ground") return; // Prevent dragging ground joints
             // d.x = event.x;
             // d.y = event.y;
+            drawTracePaths();
             updateDiagram();
+            // drawTracePaths();
         })
     );
 
@@ -135,6 +127,22 @@ svg.selectAll(".link")
             updateDiagram()
         }
     });
+
+// svg.selectAll(".trace")
+//     .on("dblclick", function(event, d) {
+//         // tracersVisible = !tracersVisible;
+//         // let tracerVis = true;
+//         // if (d.id === "A1") {
+//         //     tracerVis = aTracersVis;
+//         // }
+//         aTracersVis = !aTracersVis;
+//         paths
+//             .filter(d => d.id === "A1")
+//             .style("display", aTracersVis ? "block" : "none")
+//         tracePoints
+//             .filter(d => d.id === event.id)
+//             .style("display", aTracersVis ? "block" : "none")
+//     });
 
 setCouplerGeom()
 drawTracePaths()

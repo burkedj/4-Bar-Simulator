@@ -5,7 +5,12 @@ document.getElementById("toggleLengths").addEventListener("click", () => {
 
 document.getElementById("toggleCoords").addEventListener("click", () => {
     coordsVisible = !coordsVisible;
-    coords.style("display", coordsVisible ? "block" : "none");
+    coords
+        .filter(d => d.id !== "Cp")
+        .style("display", coordsVisible ? "block" : "none")
+    coords
+        .filter(d => d.id === "Cp")
+        .style("display", coordsVisible & couplerVisible ? "block" : "none");
 })
 
 document.getElementById("toggleGround").addEventListener("click", () => {
@@ -16,11 +21,14 @@ document.getElementById("toggleGround").addEventListener("click", () => {
 })
 
 document.getElementById("toggleTracers").addEventListener("click", () => {
-    tracersVisible = !tracersVisible;
-    paths
-        .style("display", tracersVisible ? "block" : "none")
-    tracePoints
-        .style("display", tracersVisible ? "block" : "none")
+    aTracersVis = !aTracersVis;
+    bTracersVis = !bTracersVis;
+    cTracersVis = !cTracersVis;
+
+    toggleTracer("A1");
+    toggleTracer("B1");
+    toggleTracer("Cp");
+    updateDiagram();
 })
 
 document.getElementById("resetZoom").addEventListener("click", () => {
@@ -43,13 +51,15 @@ document.getElementById("resetLinkage").addEventListener("click", () => {
         j.ground = originalJoints[i].ground;
         j.type = originalJoints[i].type;
     });
+    setCouplerGeom();
     updateDiagram();
 })
 
 document.getElementById("shareConfig").addEventListener("click", () => {
-    const jointString = joints.map(j => `${j.x.toFixed(2)},${j.y.toFixed(2)},${j.ground ? 1 : 0}`).join(";");
+    const jointString = joints.map(j => `${j.x.toFixed(1)},${j.y.toFixed(1)},${j.ground ? 1 : 0}`).join(";");
     const transform = d3.zoomTransform(svg.node());
-    const viewString = `z=${transform.k.toFixed(3)}&x=${transform.x.toFixed(1)}&y=${transform.y.toFixed(1)}`;
+    const rotation = currentRotation;
+    const viewString = `z=${transform.k.toFixed(1)}&x=${transform.x.toFixed(1)}&y=${transform.y.toFixed(1)}&r=${rotation}`;
 
     const url = `${window.location.origin}${window.location.pathname}?j=${jointString}&${viewString}`;
 
@@ -58,9 +68,18 @@ document.getElementById("shareConfig").addEventListener("click", () => {
         .catch(() => alert("Failed to copy URL."));
 })
 
-document.getElementById("runAnimation").addEventListener("click", () => {
-    animationRunning = !animationRunning;
-    animateLinkage();
+document.getElementById("toggleAnimation").addEventListener("click", () => {
+    animationActive = !animationActive;
+
+    const button = document.getElementById("toggleAnimation");
+    button.textContent = animationActive ? "Pause" : "Play";
+
+    if (animationActive) {
+        startAnimationLoop();
+    } else {
+        stopAnimationLoop();
+    }
+    // incrementLinkage();
 })
 
 inputAngleSlider.addEventListener("pointerdown", () => {
@@ -89,9 +108,6 @@ function setupRotationControls() {
         const rotAngle = parseFloat(rotationSlider.value);
         rotationValue.textContent = `${rotAngle.toFixed(0)}°`;
 
-        // currentPanX = d3.zoomTransform(zoom).x;
-        // currentPanY = d3.zoomTransform(zoom).y;
-        // currentZoom = d3.zoomTransform(zoom).k;
         rotateDiagram(rotAngle);
         updateDiagram();
     })

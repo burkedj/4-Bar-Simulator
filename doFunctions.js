@@ -31,19 +31,37 @@ function loadViewFromURL(){
     const zoomScale = parseFloat(params.get("z")) || defaultScale;
     const zoomX = parseFloat(params.get("x")) || defaultX;
     const zoomY = parseFloat(params.get("y")) || defaultY;
+    const rotation = parseFloat(params.get("r")) || currentRotation;
     
     svg.call(zoom.transform, d3.zoomIdentity.translate(zoomX, zoomY).scale(zoomScale));
+    rotateDiagram(rotation);
+    currentRotation = rotation;
+
+    const rotationSlider = document.getElementById("rotateSlider");
+    const rotationValue = document.getElementById("rotateValue");
+
+    rotationSlider.value = currentRotation
+    rotationValue.textContent = `${currentRotation.toFixed(0)}°`;
 }
 
 function toggleCoupler(link) {
     if (link.nodes.length === 3) {
         link.nodes = link.nodes.slice(0,2);
-        circles
-            .style("display", d => {
-                if (d.id === "Cp") return "none"
-            })
+
         couplerSetAngle = getCouplerGeom()[1];
         couplerSetLength = getCouplerGeom()[0];
+        circles
+            .filter(d => d.id === "Cp")
+            .style("display",  "none")
+        coords
+            .filter(d => d.id === "Cp")
+            .style("display", "none")
+        paths
+            .filter(d => d.id === "Cp")
+            .style("display", "none")
+        tracePoints
+            .filter(d => d.id === "Cp")
+            .style("display", "none")
     } else {
         const [Cp_x, Cp_y] = getCouplerPosition();
         originalCoupler.nodes[2].x = Cp_x;
@@ -51,9 +69,21 @@ function toggleCoupler(link) {
         const original = originalCoupler;
         link.nodes = [...original.nodes];
         circles
-            .style("display", d => {
-                if (d.id === "Cp") return "block"
-            });
+            .filter(d => d.id === "Cp")
+            .style("display",  "block")
+        if (coordsVisible) {
+            coords
+                .filter(d => d.id === "Cp")
+                .style("display", "block")
+        }
+        if (cTracersVis) {
+            paths
+                .filter(d => d.id === "Cp")
+                .style("display", "block")
+            tracePoints
+                .filter(d => d.id === "Cp")
+                .style("display", "block")
+        }
     }
     couplerVisible = !couplerVisible;
 }
@@ -141,9 +171,33 @@ function setCouplerGeom() {
 
 function drawTracePaths() {
     const steps = 100;
-    calcNodePath("A1", steps);
-    calcNodePath("B1", steps);
-    // calcNodePath("Cp", steps);
+
+    calcNodePath("A1", steps, linkageConfig);
+    calcNodePath("B1", steps, linkageConfig);
+    calcNodePath("Cp", steps, linkageConfig);
+}
+
+function toggleTracer(node) {
+    if (node === "A1") {
+        tracerVis = aTracersVis
+    } else if (node === "B1") {
+        tracerVis = bTracersVis
+    } else if (node === "Cp") {
+        tracerVis = cTracersVis
+    }
+    paths
+        .filter(d => d.id === node & d.id === "Cp")
+        .style("display", tracerVis & couplerVisible ? "block" : "none")
+    tracePoints
+        .filter(d => d.id === node  & d.id === "Cp")
+        .style("display", tracerVis & couplerVisible? "block" : "none")
+
+    paths
+        .filter(d => d.id === node & d.id !== "Cp")
+        .style("display", tracerVis ? "block" : "none")
+    tracePoints
+        .filter(d => d.id === node  & d.id !== "Cp")
+        .style("display", tracerVis? "block" : "none")
 }
 
 function rotateInputLink(angleDeg) {
@@ -185,17 +239,15 @@ function rotateInputLink(angleDeg) {
     }
 }
 
-function animateLinkage() {
+function incrementLinkage() {
     const range = getInputLimits()[1] - getInputLimits()[0];
     // const incrAngle = 5;
     // const steps = (range/incrAngle).toFixed(0);
-    const steps = 72;
+    const steps = 180;
     const incrAngle = range/steps;
-    const duration = 3000
+    // const duration = 3000
 
-    let step = 0;
-    // let dir = 1;
-
+    // let step = 0;
 
     let currentAngle = getInputAngle();
     const minAngle = getInputLimits()[0];
@@ -204,12 +256,11 @@ function animateLinkage() {
     // while (step < 1) {
     //     step = step + 1;
         currentAngle = currentAngle + animationDir*(maxAngle-minAngle)/steps;
-        setTimeout(() => {console.log("waiting...")},100);
         if (currentAngle > maxAngle) {
             if (getInputLimits()[2] === "Crank") {
                 currentAngle = minAngle+incrAngle;
             } else {
-                currentAngle = maxAngle-incrAngle;
+                currentAngle = maxAngle-simAngleTol;
                 animationDir = -1;
             }
         } 
@@ -217,13 +268,31 @@ function animateLinkage() {
             if (getInputLimits()[2] === "Crank") {
                 currentAngle = maxAngle-incrAngle;
             } else {
-                currentAngle = minAngle+incrAngle;
+                currentAngle = minAngle+simAngleTol;
                 animationDir = 1;
             }
         }
         rotateInputLink(currentAngle);
         updateDiagram();
     // }
+}
+
+function startAnimationLoop() {
+    animationTimer = d3.timer(() => {
+    // animationInterval = setInterval(() => {
+        incrementLinkage();
+        updateDiagram();
+    }
+    // , animationDelay
+);
+}
+function stopAnimationLoop() {
+    if (animationTimer) {
+        animationTimer.stop();
+        animationTimer = null;
+    }
+    // clearInterval(animationInterval);
+    // animationInterval = null;
 }
 
 function updateDiagram() {
@@ -236,7 +305,6 @@ function updateDiagram() {
 
     tracePoints
         .attr("cx", d => d.x).attr("cy", d => d.y)
-
 
     circles
         .attr("cx", d => d.x).attr("cy", d => d.y)

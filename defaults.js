@@ -2,12 +2,20 @@ let lengthsVisible = false;
 let coordsVisible = false;
 let groundVisible = true;
 let couplerVisible = true;
-let tracersVisible = false;
-let animationRunning = false;
+// let tracersVisible = false;
+
+let animationActive = false;
+let animationTimer = null;
+let animationInterval = null;
+let animationDelay = 100;
 let animationDir = 1;
 
-const offsetX = 225;
-const offsetY = 225+25;
+let aTracersVis = false;
+let bTracersVis = false;
+let cTracersVis = false;
+
+const offsetX = 230;
+const offsetY = 230+25;
 
 const linkScale = 10;
 
