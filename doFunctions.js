@@ -345,6 +345,6 @@ function updateDiagram() {
 
     document.getElementById("linkageSummary").innerHTML = getLinkageProperties() 
     viewTransform();
-    // initializeSlider();
+    initializeSlider();
 }
 
