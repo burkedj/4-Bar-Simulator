@@ -117,20 +117,20 @@ document.getElementById("toggleAnimation").addEventListener("click", () => {
     const button = document.getElementById("toggleAnimation");
     button.textContent = animationActive ? "Pause" : "Play";
 
-    const angleSlider = document.getElementById("inputAngleSlider");
-    angleSlider.style.display = animationActive ? "none" : "inline-block"
+    // const angleSlider = document.getElementById("inputAngleSlider");
+    // angleSlider.style.display = animationActive ? "none" : "inline-block"
 
-    const angleValue = document.getElementById("angleValue");
-    angleValue.style.display = animationActive ? "none" : "inline-block"
+    // const angleValue = document.getElementById("angleValue");
+    // angleValue.style.display = animationActive ? "none" : "inline-block"
 
-    const speedSlider = document.getElementById("inputSpeedSlider");
-    speedSlider.style.display = animationActive ? "inline-block" : "none"
-    const speedDisplay = document.getElementById("speedValue");
-    speedDisplay.textContent = `${animationSpeed.toFixed(0)} rpm`
-    speedDisplay.style.display = animationActive ? "inline-block" : "none";
+    // const speedSlider = document.getElementById("inputSpeedSlider");
+    // speedSlider.style.display = animationActive ? "inline-block" : "none"
+    // const speedDisplay = document.getElementById("speedValue");
+    // speedDisplay.textContent = `${animationSpeed.toFixed(0)} rpm`
+    // speedDisplay.style.display = animationActive ? "inline-block" : "none";
 
-    const sliderLab = document.getElementById("sliderLabel");
-    sliderLab.textContent = animationActive ? "Drive Speed:" : "Drive Angle:"
+    // const sliderLab = document.getElementById("sliderLabel");
+    // sliderLab.textContent = animationActive ? "Drive Speed:" : "Drive Angle:"
 
     if (animationActive) {
         startAnimationLoop();
@@ -174,6 +174,8 @@ function setupRotationControls() {
 function setupAnimationSpeed() {
     const speedSlider = document.getElementById("inputSpeedSlider");
     const speedDisplay = document.getElementById("speedValue");
+
+    speedDisplay.textContent = `${animationSpeed.toFixed(0)} rpm`;
 
     speedSlider.addEventListener("input", () => {
         const speedRPM = parseFloat(speedSlider.value);
