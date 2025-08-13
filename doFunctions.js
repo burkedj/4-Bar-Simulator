@@ -319,3 +319,13 @@ function updateDiagram() {
     initializeSlider();
 }
 
+function dblclickTracers(d){
+    if (d === "A1") {
+        toggleTracer("A1");
+    } else if (d === "B1") {
+        toggleTracer("B1");
+    } else if (d === "Cp") {
+        toggleTracer("Cp");
+    }
+    updateDiagram();
+}

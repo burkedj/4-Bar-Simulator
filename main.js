@@ -56,7 +56,7 @@ const dragnodes = dragGroup.selectAll("circle")
     .enter()
     .append("circle")
     .attr("class", "trace")
-    .attr("r", 20)
+    .attr("r", 10)
     .attr("fill", "black")
     .attr("opacity", 0)
     .call(d3.drag()
@@ -127,16 +127,23 @@ svg.selectAll(".link")
     });
 
 svg.selectAll(".trace")
-    .on ("dblclick", function(event, d) {
-        if (d.id === "A1") {
-            toggleTracer("A1");
-        } else if (d.id === "B1") {
-            toggleTracer("B1");
-        } else if (d.id === "Cp") {
-            toggleTracer("Cp");
-        }
-        updateDiagram();
-    });
+  .on("pointerdown", handleJointTap);
+
+// svg.selectAll(".trace")
+//   .on("touchstart", handleJointTap)
+//   .on("mousedown", handleJointTap); // for desktop fallback
+
+// svg.selectAll(".trace")
+//     .on ("dblclick", function(event, d) {
+//         if (d.id === "A1") {
+//             toggleTracer("A1");
+//         } else if (d.id === "B1") {
+//             toggleTracer("B1");
+//         } else if (d.id === "Cp") {
+//             toggleTracer("Cp");
+//         }
+//         updateDiagram();
+//     });
 
 // svg.selectAll(".trace")
 //     .on("dblclick", function(event, d) {

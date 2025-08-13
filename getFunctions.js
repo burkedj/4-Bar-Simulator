@@ -291,7 +291,7 @@ function getLinkageProperties() {
     return `<b>Input Link:</b> ${inputClass}<br>
     <b>Range of Motion:</b> (${A_min.toFixed(1)}°, ${A_max.toFixed(1)}°)<br>
     <b>Current Angle:</b> ${inputAngle.toFixed(1)}°<br>
-    ${lengthsVisible}<br>
+    <br>
     <b>Output Link:</b> ${outputClass} - ${openCrossed}<br>
     <b>Range of Motion:</b> (${B_min.toFixed(1)}°, ${B_max.toFixed(1)}°)<br>
     <b>Current Angle:</b> ${outputAngle.toFixed(1)}° <br>

@@ -158,7 +158,14 @@ function setupAnimationSpeed() {
 
     updateDiagram();
     });
+}
 
+function handleJointTap(event, d) {
+  const now = Date.now();
+  if (now - lastTapTime < 300) {
+    dblclickTracers(d.id);
+  }
+  lastTapTime = now;
 }
 
 ;
