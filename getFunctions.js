@@ -240,8 +240,8 @@ function getOpenCrossed() {
     const th_c = getLinkAngles()[2]
     const th_B0A1 = getLinkAngles()[5];
 
-    const B0 = joints[2];
-    const B1 = joints[3];
+    // const B0 = joints[2];
+    // const B1 = joints[3];
 
     let linkConfig = "Open"
     if (th_a > 180) {
@@ -258,7 +258,7 @@ function getOpenCrossed() {
     if (getInputLimits()[2] === "0-Rocker" & th_a > 180) {
         tempAngle = th_a -360;
     }
-    if ((getOutputLimits()[2] !== "Rocker" | (getOutputLimits()[2] === "Rocker" & getInputLimits()[2] === "Rocker")) & getInputLimits()[2] !== "Crank") {
+    if (crossoverActive & ((getOutputLimits()[2] !== "Rocker" | (getOutputLimits()[2] === "Rocker" & getInputLimits()[2] === "Rocker")) & getInputLimits()[2] !== "Crank")) {
         if (tempAngle < (getInputLimits()[0]+simAngleTol*2)) {
             if (linkageConfig == "Open") {
                 linkConfig = "Crossed";

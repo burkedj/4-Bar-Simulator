@@ -57,10 +57,10 @@ function loadViewFromURL(){
     currentRotation = rotation;
 
     const rotationSlider = document.getElementById("rotateSlider");
-    const rotationValue = document.getElementById("rotateValue");
+    // const rotationValue = document.getElementById("rotateValue");
 
     rotationSlider.value = currentRotation
-    rotationValue.textContent = `${currentRotation.toFixed(0)}°`;
+    // rotationValue.textContent = `${currentRotation.toFixed(0)}°`;
 }
 
 function toggleCoupler(link) {
@@ -159,6 +159,17 @@ function toggleTracer(node) {
         tracerVis = cTracersVis
     }
     setTracerVis(node, tracerVis);
+}
+
+function dblclickTracers(d){
+    if (d === "A1") {
+        toggleTracer("A1");
+    } else if (d === "B1") {
+        toggleTracer("B1");
+    } else if (d === "Cp") {
+        toggleTracer("Cp");
+    }
+    updateDiagram();
 }
 
 function rotateInputLink(angleDeg) {
@@ -270,6 +281,10 @@ function updateDiagram() {
 
     dragnodes
         .attr("cx", d => d.x).attr("cy", d => d.y)
+        .attr("r", d => {
+            if(d.type === "node") return 13;
+            return 10;
+        })
 
     polygons
         .attr("points", d => d.nodes.map(j => `${j.x},${j.y}`).join(" "))
@@ -313,19 +328,24 @@ function updateDiagram() {
             const length = Math.sqrt(dx * dx + dy * dy)/linkScale;
             return length.toFixed(1);
         })
+    
+    labels
+        .attr("x", d => d.x)
+        .attr("y", d => d.y)
+        .text(`${currentRotation.toFixed(0)}°`)
+        .style("display", d => {
+            if (currentRotation === 0) return "none";
+            return "block";
+        })
 
     document.getElementById("linkageSummary").innerHTML = getLinkageProperties() 
     viewTransform();
     initializeSlider();
-}
-
-function dblclickTracers(d){
-    if (d === "A1") {
-        toggleTracer("A1");
-    } else if (d === "B1") {
-        toggleTracer("B1");
-    } else if (d === "Cp") {
-        toggleTracer("Cp");
+    if (getInputLimits()[2] === "Crank") {
+        document.getElementById("toggleDir").disabled = false;
+        document.getElementById("toggleCross").disabled = true;
+    } else {
+        document.getElementById("toggleDir").disabled = true;
+        document.getElementById("toggleCross").disabled = false;
     }
-    updateDiagram();
 }

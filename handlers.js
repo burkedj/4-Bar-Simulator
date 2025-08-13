@@ -20,16 +20,21 @@ document.getElementById("toggleGround").addEventListener("click", () => {
         .style("display", groundVisible ? "block" : "none");
 })
 
-// document.getElementById("toggleTracers").addEventListener("click", () => {
-//     aTracersVis = !aTracersVis;
-//     bTracersVis = !bTracersVis;
-//     cTracersVis = !cTracersVis;
+document.getElementById("toggleTracers").addEventListener("click", () => {
+    if (aTracersVis || bTracersVis || cTracersVis) {
+        aTracersVis = false;
+        bTracersVis = false;
+        cTracersVis = false;
+    } else {
+        aTracersVis = true;
+        bTracersVis = true;
+        cTracersVis = true;
+    }
+    setTracerVis("A1", aTracersVis);
+    setTracerVis("B1", bTracersVis);
+    setTracerVis("Cp", cTracersVis);
 
-//     toggleTracer("A1");
-//     toggleTracer("B1");
-//     toggleTracer("Cp");
-//     updateDiagram();
-// })
+})
 
 document.getElementById("resetZoom").addEventListener("click", () => {
     svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity
@@ -55,6 +60,15 @@ document.getElementById("resetLinkage").addEventListener("click", () => {
     setOpenCrossed();
     setLinkLengths();
     setCouplerGeom();
+    drawTracePaths();
+    updateDiagram();
+})
+
+document.getElementById("toggleDir").addEventListener("click", () => {
+    animationDir *= -1;
+})
+document.getElementById("toggleCross").addEventListener("click", () => {
+    crossoverActive = !crossoverActive;
     drawTracePaths();
     updateDiagram();
 })
@@ -89,6 +103,12 @@ document.getElementById("shareConfig").addEventListener("click", () => {
 document.getElementById("toggleAnimation").addEventListener("click", () => {
     animationActive = !animationActive;
 
+    if (animationActive) {
+        document.getElementById("shareConfig").disabled = true;
+    } else {
+        document.getElementById("shareConfig").disabled = false;
+    }
+
     const button = document.getElementById("toggleAnimation");
     button.textContent = animationActive ? "Pause" : "Play";
 
@@ -112,7 +132,6 @@ document.getElementById("toggleAnimation").addEventListener("click", () => {
     } else {
         stopAnimationLoop();
     }
-    // incrementLinkage();
 })
 
 inputAngleSlider.addEventListener("pointerdown", () => {
@@ -135,14 +154,15 @@ function setupSimulationControls() {
 
 function setupRotationControls() {
     const rotationSlider = document.getElementById("rotateSlider");
-    const rotationValue = document.getElementById("rotateValue");
+    // const rotationValue = document.getElementById("rotateValue");
 
     rotationSlider.addEventListener("input", () => {
         const rotAngle = parseFloat(rotationSlider.value);
-        rotationValue.textContent = `${rotAngle.toFixed(0)}°`;
+        // rotationValue.textContent = `${rotAngle.toFixed(0)}°`;
 
-        rotateDiagram(rotAngle);
-        updateDiagram();
+    traceLimits[0].text = `${currentRotation.toFixed(0)}°`;
+    rotateDiagram(rotAngle);
+    updateDiagram();
     })
 }
 

@@ -1,6 +1,7 @@
 const svg = d3.select("#editorView");
 
 const zoomGroup = svg.append("g")
+const overlayGroup = svg.append("g")
 
 // Draw links
 const polyGroup = zoomGroup.append("g")
@@ -61,7 +62,6 @@ const dragnodes = dragGroup.selectAll("circle")
     .attr("opacity", 0)
     .call(d3.drag()
         .on("drag", function(event, d) {
-            // if (editMode === false) return; // Only allow toggling in edit mode
             if (d.id === "A0") return
             if (d.id === "Cp" & !couplerVisible) return
             if (d.ground) {
@@ -100,6 +100,15 @@ const lengths = linklengthGroup.selectAll("text")
     .attr("text-anchor", "middle")
     .style("pointer-events", "none")
     .style("display", "none");
+
+const labsGroup = overlayGroup.append("g")
+const labels = labsGroup.selectAll("text")
+    .data(labCoords)
+    .enter()
+    .append("text")
+    .attr("font-size", "16px")
+    .attr("fill", "black")
+    .style("text-anchor", "end")
 
 
 let originalCoupler = {id: "c", nodes: [joints[1], joints[2], joints[4]]};
@@ -144,23 +153,6 @@ svg.selectAll(".trace")
 //         }
 //         updateDiagram();
 //     });
-
-// svg.selectAll(".trace")
-//     .on("dblclick", function(event, d) {
-//         // tracersVisible = !tracersVisible;
-//         // let tracerVis = true;
-//         // if (d.id === "A1") {
-//         //     tracerVis = aTracersVis;
-//         // }
-//         aTracersVis = !aTracersVis;
-//         paths
-//             .filter(d => d.id === "A1")
-//             .style("display", aTracersVis ? "block" : "none")
-//         tracePoints
-//             .filter(d => d.id === event.id)
-//             .style("display", aTracersVis ? "block" : "none")
-//     });
-
 
 loadJointsFromURL();
 loadViewFromURL();

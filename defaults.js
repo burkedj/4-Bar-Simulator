@@ -10,6 +10,7 @@ let animationDir = 1;
 let animationSpeed = 10; //rpm
 const animationFrameRate = 60; // fps
 const simAngleTol = 0.001;
+let crossoverActive = true;
 
 let aTracersVis = false;
 let bTracersVis = false;
@@ -41,7 +42,7 @@ const linkOpactity = 0.5;
 const labelOffsetX = 5;
 const labelOffsetY = -3;
 
-let lockedConfig = null;
+// let lockedConfig = null;
 let linkageConfig = "Open"
 
 let couplerSetLength = 0;
@@ -57,40 +58,6 @@ let currentZoomTransform = d3.zoomIdentity;
 
 let lastTapTime = 0;
 
-// svg.selectAll(".trace")
-//     .on ("dblclick", function(event, d) {
-//         if (d.id === "A1") {
-//             toggleTracer("A1");
-//         } else if (d.id === "B1") {
-//             toggleTracer("B1");
-//         } else if (d.id === "Cp") {
-//             toggleTracer("Cp");
-//         }
-//         updateDiagram();
-//     });
-
-// function dblclickTracers(d){
-//     if (d === "A1") {
-//         toggleTracer("A1");
-//     } else if (d === "B1") {
-//         toggleTracer("B1");
-//     } else if (d === "Cp") {
-//         toggleTracer("Cp");
-//     }
-//     updateDiagram();
-// }
-
-// function handleJointTap(event, d) {
-//   const now = Date.now();
-//   if (now - lastTapTime < 1000) {
-//     dblclickTracers(d.id);
-//   }
-//   lastTapTime = now;
-// }
-
-// svg.selectAll(".trace")
-//   .on("pointerdown", handleJointTap);
-
-// svg.selectAll(".trace")
-//   .on("touchstart", handleJointTap)
-//   .on("mousedown", handleJointTap); // for desktop fallback
+const labCoords = [
+    {id: "rotation", x: 595, y: 494, text: ""},
+]   
