@@ -69,6 +69,11 @@ document.getElementById("toggleDir").addEventListener("click", () => {
 })
 document.getElementById("toggleCross").addEventListener("click", () => {
     crossoverActive = !crossoverActive;
+    if (!crossoverActive) {
+        document.getElementById("toggleCross").style.textDecoration = "line-through";
+    } else {
+        document.getElementById("toggleCross").style.textDecoration = "none";
+    }
     drawTracePaths();
     updateDiagram();
 })

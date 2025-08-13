@@ -88,8 +88,6 @@ function calcNodePath(node, steps, config){
             inLims[0] = inLims[0] + simAngleTol;
             inLims[1] = inLims[1] - simAngleTol;
             const outAtIn = [radToDeg(calcOutputAngle(degToRad(inLims[0])), config), radToDeg(calcOutputAngle(degToRad(inLims[1])), config)];
-            outAtIn[0] = outAtIn[0] + 10;
-            outAtIn[1] = outAtIn[1] - 10;
             if (config === "Open") {
                 if (getOutputLimits()[2] === "0-Rocker") {
                     traceStart = outAtIn[0];
@@ -125,8 +123,8 @@ function calcNodePath(node, steps, config){
                 }
             }
         }
-        traceStart = traceStart + simAngleTol;
-        traceEnd = traceEnd - simAngleTol;
+        // traceStart = traceStart + simAngleTol;
+        // traceEnd = traceEnd - simAngleTol;
     } else if (node === "Cp") {
         [traceStart, traceEnd] = getInputLimits()
         traceStart = traceStart+simAngleTol;
