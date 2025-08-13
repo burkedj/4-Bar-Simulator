@@ -11,6 +11,7 @@ button {
 
 input[type="range"][orient="horizontal"] {
     width: 300px;
+    margin-top: 4px;
 }
 input[type="range"][orient="vertical"] {
     /* writing-mode: vertical-lr; */
