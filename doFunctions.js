@@ -1,12 +1,3 @@
-function setLinkLengths() {
-    const lengths = getLinkLengths();
-
-    aLength = lengths["a"];
-    bLength = lengths["b"];
-    cLength = lengths["c"];
-    dLength = lengths["d"];
-}
-
 function loadJointsFromURL(){
     const params = new URLSearchParams(window.location.search);
     const jointsParam = params.get("j");
@@ -24,7 +15,35 @@ function loadJointsFromURL(){
             joints[i].ground = coord.ground;
         }
     });
+
+    const cpVis = params.get("cp") === "1";
+    const gVis = params.get("gv") === "1";
+    const aTraceVis = params.get("at") === "1";
+    const bTraceVis = params.get("bt") === "1";
+    const cTraceVis = params.get("ct") === "1";
+
+    couplerVisible = cpVis;
+    groundVisible = gVis;
+    aTracersVis = aTraceVis;
+    bTracersVis = bTraceVis;
+    cTracersVis = cTraceVis;
+
+    const coordsVis = params.get("cv") === "1";
+    const lengthsVis = params.get("lv") === "1";
+
+    coordsVisible = coordsVis;
+    lengthsVisible = lengthsVis;
+    setLabelsVis();
+
+    setOpenCrossed();
+    setLinkLengths();
     setCouplerGeom();
+    setCouplerVis(couplerVisible);
+    setTracerVis("A1", aTracersVis);
+    setTracerVis("B1", bTracersVis);
+    setTracerVis("Cp", cTracersVis);
+    drawTracePaths();
+    updateDiagram();
 }
 function loadViewFromURL(){
     const params = new URLSearchParams(window.location.search);
@@ -47,43 +66,15 @@ function loadViewFromURL(){
 function toggleCoupler(link) {
     if (link.nodes.length === 3) {
         link.nodes = link.nodes.slice(0,2);
-
-        couplerSetAngle = getCouplerGeom()[1];
-        couplerSetLength = getCouplerGeom()[0];
-        circles
-            .filter(d => d.id === "Cp")
-            .style("display",  "none")
-        coords
-            .filter(d => d.id === "Cp")
-            .style("display", "none")
-        paths
-            .filter(d => d.id === "Cp")
-            .style("display", "none")
-        tracePoints
-            .filter(d => d.id === "Cp")
-            .style("display", "none")
+        setCouplerGeom();
+        setCouplerVis(false);
     } else {
         const [Cp_x, Cp_y] = getCouplerPosition();
         originalCoupler.nodes[2].x = Cp_x;
         originalCoupler.nodes[2].y = Cp_y;
         const original = originalCoupler;
         link.nodes = [...original.nodes];
-        circles
-            .filter(d => d.id === "Cp")
-            .style("display",  "block")
-        if (coordsVisible) {
-            coords
-                .filter(d => d.id === "Cp")
-                .style("display", "block")
-        }
-        if (cTracersVis) {
-            paths
-                .filter(d => d.id === "Cp")
-                .style("display", "block")
-            tracePoints
-                .filter(d => d.id === "Cp")
-                .style("display", "block")
-        }
+        setCouplerVis(true);
     }
     couplerVisible = !couplerVisible;
 }
@@ -149,15 +140,6 @@ function viewTransform() {
 
 }
 
-function setOpenCrossed() {
-   linkageConfig = getOpenCrossed();
-}
-
-function setCouplerGeom() {
-    couplerSetAngle = getCouplerGeom()[1];
-    couplerSetLength = getCouplerGeom()[0];
-}
-
 function drawTracePaths() {
     // const steps = 500;
     calcNodePath("A1", 100, linkageConfig);
@@ -167,25 +149,16 @@ function drawTracePaths() {
 
 function toggleTracer(node) {
     if (node === "A1") {
+        aTracersVis = !aTracersVis;
         tracerVis = aTracersVis
     } else if (node === "B1") {
+        bTracersVis = !bTracersVis;
         tracerVis = bTracersVis
     } else if (node === "Cp") {
+        cTracersVis = !cTracersVis;
         tracerVis = cTracersVis
     }
-    paths
-        .filter(d => d.id === node & d.id === "Cp")
-        .style("display", tracerVis & couplerVisible ? "block" : "none")
-    tracePoints
-        .filter(d => d.id === node  & d.id === "Cp")
-        .style("display", tracerVis & couplerVisible? "block" : "none")
-
-    paths
-        .filter(d => d.id === node & d.id !== "Cp")
-        .style("display", tracerVis ? "block" : "none")
-    tracePoints
-        .filter(d => d.id === node  & d.id !== "Cp")
-        .style("display", tracerVis? "block" : "none")
+    setTracerVis(node, tracerVis);
 }
 
 function rotateInputLink(angleDeg) {
@@ -298,11 +271,6 @@ function updateDiagram() {
     dragnodes
         .attr("cx", d => d.x).attr("cy", d => d.y)
 
-    // rings
-    //     // .filter(d => d.type === "ground")
-    //     .attr("cx", d => d.x).attr("cy", d => d.y)
-    //     .attr("r", 10);
-
     polygons
         .attr("points", d => d.nodes.map(j => `${j.x},${j.y}`).join(" "))
         .attr("stroke-width", d => {
@@ -321,6 +289,9 @@ function updateDiagram() {
             if (d.type === "ground") return 1;
             return linkOpactity;
         })
+    polygons
+        .filter(d => d.type === "ground")
+        .style("display", groundVisible ? "block" : "none");
 
     const origin = joints.find(j => j.id === "A0");
 

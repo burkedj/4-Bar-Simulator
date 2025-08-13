@@ -9,7 +9,7 @@ button {
 }
 
 input[type="range"][orient="horizontal"] {
-    width: 375px;
+    width: 350px;
 }
 input[type="range"][orient="vertical"] {
     /* writing-mode: vertical-lr; */

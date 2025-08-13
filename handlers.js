@@ -20,16 +20,16 @@ document.getElementById("toggleGround").addEventListener("click", () => {
         .style("display", groundVisible ? "block" : "none");
 })
 
-document.getElementById("toggleTracers").addEventListener("click", () => {
-    aTracersVis = !aTracersVis;
-    bTracersVis = !bTracersVis;
-    cTracersVis = !cTracersVis;
+// document.getElementById("toggleTracers").addEventListener("click", () => {
+//     aTracersVis = !aTracersVis;
+//     bTracersVis = !bTracersVis;
+//     cTracersVis = !cTracersVis;
 
-    toggleTracer("A1");
-    toggleTracer("B1");
-    toggleTracer("Cp");
-    updateDiagram();
-})
+//     toggleTracer("A1");
+//     toggleTracer("B1");
+//     toggleTracer("Cp");
+//     updateDiagram();
+// })
 
 document.getElementById("resetZoom").addEventListener("click", () => {
     svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity
@@ -51,17 +51,35 @@ document.getElementById("resetLinkage").addEventListener("click", () => {
         j.ground = originalJoints[i].ground;
         j.type = originalJoints[i].type;
     });
+
+    setOpenCrossed();
+    setLinkLengths();
     setCouplerGeom();
+    drawTracePaths();
     updateDiagram();
 })
 
 document.getElementById("shareConfig").addEventListener("click", () => {
     const jointString = joints.map(j => `${j.x.toFixed(1)},${j.y.toFixed(1)},${j.ground ? 1 : 0}`).join(";");
+    
     const transform = d3.zoomTransform(svg.node());
     const rotation = currentRotation;
     const viewString = `z=${transform.k.toFixed(1)}&x=${transform.x.toFixed(1)}&y=${transform.y.toFixed(1)}&r=${rotation}`;
 
-    const url = `${window.location.origin}${window.location.pathname}?j=${jointString}&${viewString}`;
+    const cVis = couplerVisible ? 1 : 0;
+    const gVis = groundVisible ? 1 : 0;
+    const aTraceVis = aTracersVis ? 1 : 0;
+    const bTraceVis = bTracersVis ? 1 : 0; 
+    const cTraceVis = cTracersVis ? 1 : 0;
+
+    const configString = `cp=${cVis}&gv=${gVis}&at=${aTraceVis}&bt=${bTraceVis}&ct=${cTraceVis}`;
+
+    const coordsVis = coordsVisible ? 1 : 0;
+    const lengthsVis = lengthsVisible ? 1 : 0;
+
+    const labelString = `cv=${coordsVis}&lv=${lengthsVis}`;
+
+    const url = `${window.location.origin}${window.location.pathname}?j=${jointString}&${viewString}&${configString}&${labelString}`;
 
     navigator.clipboard.writeText(url)
         .then(() => alert("Shareable URL copied to clipboard!"))

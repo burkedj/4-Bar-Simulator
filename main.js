@@ -37,6 +37,7 @@ const paths = pathGroup.selectAll("polyline")
     .attr("stroke-dasharray", "3,2")
     .attr("opacity", 0.65)
     .style("display", "none")
+    .style("pointer-events", "none");
 
 const tracePointGroup = zoomGroup.append("g")
 const tracePoints = tracePointGroup.selectAll("circle")
@@ -104,7 +105,7 @@ const lengths = linklengthGroup.selectAll("text")
 let originalCoupler = {id: "c", nodes: [joints[1], joints[2], joints[4]]};
 
 const zoom = d3.zoom()
-    .scaleExtent([0.25, 4])
+    .scaleExtent([0.25, 10])
     .on("zoom", (event) => {
         // zoomGroup.attr("transform", event.transform);
         currentZoomTransform = event.transform;
@@ -125,6 +126,18 @@ svg.selectAll(".link")
         }
     });
 
+svg.selectAll(".trace")
+    .on ("dblclick", function(event, d) {
+        if (d.id === "A1") {
+            toggleTracer("A1");
+        } else if (d.id === "B1") {
+            toggleTracer("B1");
+        } else if (d.id === "Cp") {
+            toggleTracer("Cp");
+        }
+        updateDiagram();
+    });
+
 // svg.selectAll(".trace")
 //     .on("dblclick", function(event, d) {
 //         // tracersVisible = !tracersVisible;
@@ -141,14 +154,13 @@ svg.selectAll(".link")
 //             .style("display", aTracersVis ? "block" : "none")
 //     });
 
-setCouplerGeom()
-// drawTracePaths()
-// Initial draw
+
 loadJointsFromURL();
 loadViewFromURL();
+setCouplerGeom()
 setupSimulationControls();
 initializeSlider();
 setupRotationControls()
 setupAnimationSpeed()
-updateDiagram();
 drawTracePaths();
+updateDiagram();

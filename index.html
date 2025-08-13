@@ -10,17 +10,15 @@
     <h2>4-Bar Linkage</h2>
     <div style="display: flex; gap: 20px;">
         <div>
-            <!-- <h3 id="modeLabel">Edit Mode</h3> -->
-            <!-- <button id="toggleMode" style="margin-bottom: 5px">Switch Mode</button> -->
             <button id="resetZoom">Reset View</button>
             <button id="resetLinkage">Reset Linkage</button>
+            <button id="shareConfig">Share (URL)</button>
             <br>
             <svg id="editorView" width="600" height="500"
-                style="border:1px solid black;"
+                style="border:1px solid black; margin-top: 4px;"
                 viewBox="0 0 600 500">
             </svg>
         </div>
-        <!-- <label for="rotateSlider">Rotate</label> -->
         <input type="range" id="rotateSlider" orient="vertical" value="0" min="0" max="360" step="1">
         <span id = "rotateValue" style="margin-top: 510px; margin-bottom: -5px; font-family: sans-serif; font-size: 10pt"></span>
     </div>
@@ -36,14 +34,13 @@
     <button id="toggleLengths">Link Lengths</button>
     <button id="toggleCoords">Joint Coordinates</button>
     <button id="toggleGround">Ground Link</button>
-    <button id="toggleTracers">Node Trace</button>
     </b>
     <div id="linkageSummary" style="margin-top: 8px; font-family: sans-serif; font-size: 9pt;"></div>
-    <button id="shareConfig">Share (URL)</button>
     <script src="defaults.js"></script>
     <script src="conversions.js"></script>
     <script src="geometry.js"></script>
     <script src="getFunctions.js"></script>
+    <script src="setFunctions.js"></script>
     <script src="calcFunctions.js"></script>
     <script src="doFunctions.js"></script>
     <script src="handlers.js"></script>

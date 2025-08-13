@@ -87,9 +87,7 @@ function calcNodePath(node, steps, config){
         } else {
             tPoint = calcNodePosition(node, traceAngle);
         }
-        if (!isNaN(tPoint[0]) & !isNaN(tPoint[1])) {
-            tracers[traceNode].points.push(tPoint);
-        }
+        tracers[traceNode].points.push(tPoint);
     }
     let fPoint = [0,0]
     if (node === "Cp") {
@@ -97,9 +95,7 @@ function calcNodePath(node, steps, config){
     } else {
         fPoint = calcNodePosition(node, traceEnd)
     }
-    if (!isNaN(fPoint[0]) & !isNaN(fPoint[1])) {
-        tracers[traceNode].points.push(fPoint)
-    }
+    tracers[traceNode].points.push(fPoint)
 
     if (node === "Cp" & getInputLimits()[2] !== "Crank") {
         let opConfig = "";
@@ -112,14 +108,10 @@ function calcNodePath(node, steps, config){
             traceAngle = traceEnd - (i/steps) * (traceEnd-traceStart);
             tPoint = calcJointPosition(node, traceAngle, opConfig);
 
-            if (!isNaN(tPoint[0]) & !isNaN(tPoint[1])) {
-                tracers[traceNode].points.push(tPoint);
-            }
+            tracers[traceNode].points.push(tPoint);
         }
         const sPoint = calcJointPosition(node, traceStart, opConfig)
-        if (!isNaN(sPoint[0]) & !isNaN(sPoint[1])) {
-            tracers[traceNode].points.push(sPoint)
-        }
+        tracers[traceNode].points.push(sPoint)
     }
 }
 
