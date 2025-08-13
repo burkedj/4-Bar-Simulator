@@ -37,6 +37,8 @@ const paths = pathGroup.selectAll("polyline")
     .attr("points", d => d.points)
     .attr("stroke-dasharray", "3,2")
     .attr("opacity", 0.65)
+    .attr("marker-start", "url(#markerCircle)")
+    .attr("marker-end", "url(#markerCircle)")
     .style("display", "none")
     .style("pointer-events", "none");
 

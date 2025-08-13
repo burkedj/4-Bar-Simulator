@@ -342,10 +342,10 @@ function updateDiagram() {
     viewTransform();
     initializeSlider();
     if (getInputLimits()[2] === "Crank") {
-        document.getElementById("toggleDir").disabled = false;
+        // document.getElementById("toggleDir").disabled = false;
         document.getElementById("toggleCross").disabled = true;
     } else {
-        document.getElementById("toggleDir").disabled = true;
+        // document.getElementById("toggleDir").disabled = true;
         document.getElementById("toggleCross").disabled = false;
     }
 }
