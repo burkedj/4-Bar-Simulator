@@ -35,10 +35,10 @@ const paths = pathGroup.selectAll("polyline")
     .attr("stroke", d => d.color)
     .attr("fill","none")
     .attr("points", d => d.points)
-    .attr("stroke-dasharray", "3,2")
-    .attr("opacity", 0.65)
-    .attr("marker-start", "url(#markerCircle)")
-    .attr("marker-end", "url(#markerCircle)")
+    .attr("stroke-dasharray", "1.5,1.5")
+    // .attr("opacity", 0.75)
+    // .attr("marker-start", "url(#markerCircle)")
+    // .attr("marker-end", "url(#markerCircle)")
     .style("display", "none")
     .style("pointer-events", "none");
 
@@ -47,10 +47,28 @@ const tracePoints = tracePointGroup.selectAll("circle")
     .data(joints.filter(d => d.type !== "ground"))
     .enter()
     .append("circle")
-    .attr("r", 1.25)
+    .attr("r", 1.5)
     .attr("fill", d => d.color)
     .attr("opacity", 1)
     .style("display", "none")
+
+// const traceEndsGroup = zoomGroup.append("g")
+// const traceEnds = traceEndsGroup.selectAll("circle")
+//     .data(traceLimits)
+//     .enter()
+//     .append("circle")
+//     .attr("r", 1.5)
+//     .attr("fill", d => d.color)
+//     .style("display", "none")
+// const traceStartsGroup = zoomGroup.append("g")
+// const traceStarts = traceStartsGroup.selectAll("circle")
+//     .data(traceLimits)
+//     .enter()
+//     .append("circle")
+//     .attr("r", 1.5)
+//     .attr("fill", d => d.color)
+//     .style("display", "none")
+
 
 
 const dragGroup = zoomGroup.append("g")
@@ -134,6 +152,12 @@ svg.selectAll(".link")
         if (d.id === "c") {
             toggleCoupler(d);
             updateDiagram()
+        } else if (d.id === "a") {
+            toggleTracer("A1");
+        } else if (d.id === "b") {
+            toggleTracer("B1");
+        } else if (d.id === "d") {
+            toggleGround();
         }
     });
 
@@ -163,5 +187,11 @@ setupSimulationControls();
 initializeSlider();
 setupRotationControls()
 setupAnimationSpeed()
+setTracerVis("A1", aTracersVis);
+setTracerVis("B1", bTracersVis);
+setTracerVis("Cp", cTracersVis);
+// setTracePoints("A1");
+// setTracePoints("B1");
+// setTracePoints("Cp");
 drawTracePaths();
 updateDiagram();

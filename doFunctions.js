@@ -63,6 +63,13 @@ function loadViewFromURL(){
     // rotationValue.textContent = `${currentRotation.toFixed(0)}°`;
 }
 
+function toggleGround() {
+    groundVisible = !groundVisible;
+    polygons
+        .filter(d => d.type === "ground")
+        .style("display", groundVisible ? "block" : "none");
+}
+
 function toggleCoupler(link) {
     if (link.nodes.length === 3) {
         link.nodes = link.nodes.slice(0,2);
@@ -168,6 +175,8 @@ function dblclickTracers(d){
         toggleTracer("B1");
     } else if (d === "Cp") {
         toggleTracer("Cp");
+    } else {
+        toggleGround();
     }
     updateDiagram();
 }
@@ -257,11 +266,19 @@ function stopAnimationLoop() {
 function updateDiagram() {
     setOpenCrossed();
 
+    // setTracePoints("A1");
+    // setTracePoints("B1");
+    // setTracePoints("Cp");
+
     paths
         .attr("points", d => d.points)
 
     tracePoints
         .attr("cx", d => d.x).attr("cy", d => d.y)
+    // traceEnds
+    //     .attr("cx", d => d.min[0]).attr("cy", d => d.min[1])
+    // traceStarts
+    //     .attr("cx", d => d.max[0]).attr("cy", d => d.max[1])
 
     circles
         .attr("cx", d => d.x).attr("cy", d => d.y)
@@ -342,10 +359,10 @@ function updateDiagram() {
     viewTransform();
     initializeSlider();
     if (getInputLimits()[2] === "Crank") {
-        // document.getElementById("toggleDir").disabled = false;
+        document.getElementById("toggleDir").disabled = false;
         document.getElementById("toggleCross").disabled = true;
     } else {
-        // document.getElementById("toggleDir").disabled = true;
+        document.getElementById("toggleDir").disabled = true;
         document.getElementById("toggleCross").disabled = false;
     }
 }

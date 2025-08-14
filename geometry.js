@@ -16,16 +16,7 @@ const tracers = [
 ];
 
 const traceLimits = [
-    {id: "A1", min: null, max: null},
-    {id: "B1", min: null, max: null},
-    {id: "Cp", min: null, max: null}
+    {id: "A1", min: [0,0], max: [0,0], color: "darkred"},
+    {id: "B1", min: [0,0], max: [0,0], color: "darkblue"},
+    {id: "Cp", min: [0,0], max: [0,0], color: "darkgreen"}
 ]
-
-function setTraceLimits(node, angle)
-{
-    const limit = traceLimits.find(l => l.id === node);
-    if (limit) {
-        limit.min = min;
-        limit.max = max;
-    }
-}

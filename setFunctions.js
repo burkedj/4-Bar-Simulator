@@ -51,6 +51,29 @@ function setCouplerVis(state) {
     }
 }
 
+// function setTracePoints(node)
+// {
+//     const traceLims = getTracerLimits(node, linkageConfig);
+//     let traceMinCoords = calcJointPosition(node, traceLims[0], linkageConfig);
+//     let traceMaxCoords = calcJointPosition(node, traceLims[1], linkageConfig);
+
+//     let origin = [0,0];
+//     if (node === "A1") {
+//         origin = [joints[0].x,joints[0].y];
+//     } else if (node === "B1") {
+//         origin = [joints[3].x,joints[3].y];
+//     } else if (node === "Cp") {
+//         origin = [joints[1].x,joints[1].y];
+//     }
+
+//     const trace = traceLimits.find(t => t.id === node);
+
+//     trace.min[0] = traceMinCoords[0];
+//     trace.min[1] = traceMinCoords[1];
+//     trace.max[0] = traceMaxCoords[0];
+//     trace.max[1] = traceMaxCoords[1];
+// }
+
 function setTracerVis(node, state) {
     paths
         .filter(d => d.id === node & d.id === "Cp")
@@ -58,6 +81,12 @@ function setTracerVis(node, state) {
     tracePoints
         .filter(d => d.id === node  & d.id === "Cp")
         .style("display", state & couplerVisible? "block" : "none")
+    // traceEnds
+    //     .filter(d => d.id === node  & d.id === "Cp")
+    //     .style("display", state & couplerVisible ? "block" : "none")
+    // traceStarts
+    //     .filter(d => d.id === node  & d.id === "Cp")
+    //     .style("display", state & couplerVisible ? "block" : "none")
 
     paths
         .filter(d => d.id === node & d.id !== "Cp")
@@ -65,6 +94,12 @@ function setTracerVis(node, state) {
     tracePoints
         .filter(d => d.id === node  & d.id !== "Cp")
         .style("display", state ? "block" : "none")
+    // traceEnds
+    //     .filter(d => d.id === node  & d.id !== "Cp")
+    //     .style("display", state ? "block" : "none")
+    // traceStarts
+    //     .filter(d => d.id === node  & d.id !== "Cp")
+    //     .style("display", state ? "block" : "none")
 }
 
 function setLabelsVis(){

@@ -14,7 +14,7 @@ let crossoverActive = true;
 
 let aTracersVis = false;
 let bTracersVis = false;
-let cTracersVis = false;
+let cTracersVis = true;
 
 const offsetX = 230;
 const offsetY = 230+25;

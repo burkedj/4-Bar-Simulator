@@ -62,74 +62,17 @@ function calcNodePosition(node, angle){
     // }
 
     return [nx, ny]
-    // return [300,200];
 }
 
-//for output link: When "Open"... 
-//  if 0-Rocker, then min occurs at input min & max = output max
-//  if pi-Rocker, then min = output min & max occurs at input min
-// when "Crossed"...
-//  if 0-Rocker then min = output min & max occurs at input max
-//  if pi-Rocker then min occurs at input max & max = output max
 function calcNodePath(node, steps, config){
     const traceNode = tracers.findIndex(d => d.id === node); //get the index for the desired node within tracers array
     tracers[traceNode].points.length = 0; //clear the existing points for this node tracer
     let traceStart = 0;
     let traceEnd = 0;
     let tPoint = 0;
-    if (node === "A1") {
-        [traceStart, traceEnd] = getInputLimits()
-    } else if (node === "B1") {
-        if (crossoverActive || getOutputLimits()[2] === "Rocker") {
-            [traceStart, traceEnd] = getOutputLimits()
-        }
-        else {
-            const inLims = getInputLimits();
-            inLims[0] = inLims[0] + simAngleTol;
-            inLims[1] = inLims[1] - simAngleTol;
-            const outAtIn = [radToDeg(calcOutputAngle(degToRad(inLims[0])), config), radToDeg(calcOutputAngle(degToRad(inLims[1])), config)];
-            if (config === "Open") {
-                if (getOutputLimits()[2] === "0-Rocker") {
-                    traceStart = outAtIn[0];
-                    if (traceStart > 180) {
-                        traceStart = traceStart - 360;
-                    }
-                    traceEnd = getOutputLimits()[1];
-                } else if (getOutputLimits()[2] === "π-Rocker") {
-                    traceStart = getOutputLimits()[0];
-                    traceEnd = outAtIn[0];
-                } else if (getOutputLimits()[2] === "Crank") {
-                    traceStart = outAtIn[0];
-                    if (traceStart > 180) {
-                        traceStart = traceStart - 360;
-                    }
-                    traceEnd = outAtIn[1];
-                } else {
 
-                }
-            } else {
-                if (getOutputLimits()[2] === "0-Rocker") {
-                    traceStart = getOutputLimits()[0];
-                    traceEnd = outAtIn[1];
-                    if (traceEnd > 180) {
-                        traceEnd = traceEnd - 360;
-                    }
-                } else if (getOutputLimits()[2] === "π-Rocker") {
-                    traceStart = outAtIn[1];
-                    traceEnd = getOutputLimits()[1];
-                } else if (getOutputLimits()[2] === "Crank") {
-                    traceStart = outAtIn[0];
-                    traceEnd = outAtIn[1];
-                }
-            }
-        }
-        // traceStart = traceStart + simAngleTol;
-        // traceEnd = traceEnd - simAngleTol;
-    } else if (node === "Cp") {
-        [traceStart, traceEnd] = getInputLimits()
-        traceStart = traceStart+simAngleTol;
-        traceEnd = traceEnd-simAngleTol;
-    }
+    [traceStart, traceEnd] = getTracerLimits(node, config);
+
     for (let i = 0; i < steps; i++) {
         traceAngle = traceStart + (i/steps) * (traceEnd-traceStart);
         if (node === "Cp") {

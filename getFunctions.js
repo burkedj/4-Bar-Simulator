@@ -278,6 +278,75 @@ function getOpenCrossed() {
     return linkConfig;
 }
 
+function getTracerLimits(node, config) {
+    let traceStart = 0;
+    let traceEnd = 360;
+    const inputLims = getInputLimits();
+    const inputMax = inputLims[1];
+    const inputClass = inputLims[2];
+    const outputLims = getOutputLimits();
+    const outputMin = outputLims[0];
+    const outputMax = outputLims[1];
+    const outputClass = outputLims[2];
+
+    const outFromIn = (angle, config) => {
+        return radToDeg(calcOutputAngle(degToRad(angle), config));
+    }
+
+    if (node === "A1") {
+        [traceStart, traceEnd] = inputLims
+    } else if (node === "B1") {
+        if (crossoverActive || outputClass === "Rocker") {
+            [traceStart, traceEnd] = outputLims;
+        }
+        else {
+            const inLims = inputLims;
+            inLims[0] = inLims[0] + simAngleTol;
+            inLims[1] = inLims[1] - simAngleTol;
+            const outAtIn = [outFromIn(inLims[0], config), outFromIn(inLims[1], config)];
+            if (config === "Open") {
+                if (outputClass === "0-Rocker") {
+                    traceStart = outAtIn[0];
+                    if (traceStart > 180) {
+                        traceStart = traceStart - 360;
+                    }
+                    traceEnd = outputMax;
+                } else if (outputClass === "π-Rocker") {
+                    traceStart = outputMin;
+                    traceEnd = outAtIn[0];
+                } else if (outputClass === "Crank") {
+                    traceStart = outAtIn[0];
+                    if (traceStart > 180) {
+                        traceStart = traceStart - 360;
+                    }
+                    traceEnd = outAtIn[1];
+                } else {
+
+                }
+            } else {
+                if (outputClass === "0-Rocker") {
+                    traceStart = outputMin;
+                    traceEnd = outAtIn[1];
+                    if (traceEnd > 180) {
+                        traceEnd = traceEnd - 360;
+                    }
+                } else if (outputClass === "π-Rocker") {
+                    traceStart = outAtIn[1];
+                    traceEnd = outputMax;
+                } else if (outputClass === "Crank") {
+                    traceStart = outAtIn[0];
+                    traceEnd = outAtIn[1];
+                }
+            }
+        }
+    } else if (node === "Cp") {
+        [traceStart, traceEnd] = inputLims;
+        traceStart = traceStart+simAngleTol;
+        traceEnd = traceEnd-simAngleTol;
+    }
+    return [traceStart, traceEnd];
+}
+
 function getLinkageProperties() {
 
     const [A_min, A_max ,inputClass] = getInputLimits();

@@ -18,6 +18,7 @@ document.getElementById("toggleGround").addEventListener("click", () => {
     polygons
         .filter(d => d.type === "ground")
         .style("display", groundVisible ? "block" : "none");
+    toggleGround();
 })
 
 document.getElementById("toggleTracers").addEventListener("click", () => {
