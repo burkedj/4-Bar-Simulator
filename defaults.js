@@ -11,6 +11,7 @@ let animationSpeed = 10; //rpm
 const animationFrameRate = 60; // fps
 const simAngleTol = 0.001;
 let crossoverActive = true;
+let animationReverse = false;
 
 let aTracersVis = false;
 let bTracersVis = false;

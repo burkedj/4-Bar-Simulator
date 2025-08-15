@@ -221,31 +221,44 @@ function rotateInputLink(angleDeg) {
 }
 
 function incrementLinkage() {
-    // const range = getInputLimits()[1] - getInputLimits()[0];
     
+    //convert rpm input to degrees per frame
     const incrAngle = animationSpeed/10
 
     let currentAngle = getInputAngle();
     const minAngle = getInputLimits()[0];
     const maxAngle = getInputLimits()[1];
 
+    //Increment the angle in the current direction
     currentAngle = currentAngle + animationDir*incrAngle;
+    //When the angle reaches the max limit...
     if (currentAngle > maxAngle) {
+        //For crank input, wrap around at limits. Otherwise, reverse direction
         if (getInputLimits()[2] === "Crank") {
             currentAngle = minAngle+incrAngle;
         } else {
-            currentAngle = maxAngle-simAngleTol;
-            animationDir = -1;
+            currentAngle = maxAngle - simAngleTol;
+            if (animationReverse) {
+                animationReverse = false;
+            } else {
+                animationDir = -1;
+            }
         }
     } 
+    //Same logic for min angle
     else if (currentAngle < minAngle) {
         if (getInputLimits()[2] === "Crank") {
-            currentAngle = maxAngle-incrAngle;
+            currentAngle = maxAngle - incrAngle;
         } else {
-            currentAngle = minAngle+simAngleTol;
-            animationDir = 1;
+            currentAngle = minAngle + simAngleTol;
+            if (animationReverse) {
+                animationReverse = false;
+            } else {
+                animationDir = 1;
+            }
         }
     }
+    //Set the input link to the new angle and update the display
     rotateInputLink(currentAngle);
     updateDiagram();
 }
@@ -359,10 +372,10 @@ function updateDiagram() {
     viewTransform();
     initializeSlider();
     if (getInputLimits()[2] === "Crank") {
-        document.getElementById("toggleDir").disabled = false;
+        // document.getElementById("toggleDir").disabled = false;
         document.getElementById("toggleCross").disabled = true;
     } else {
-        document.getElementById("toggleDir").disabled = true;
+        // document.getElementById("toggleDir").disabled = true;
         document.getElementById("toggleCross").disabled = false;
     }
 }

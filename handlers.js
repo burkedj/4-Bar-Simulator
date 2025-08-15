@@ -14,10 +14,6 @@ document.getElementById("toggleCoords").addEventListener("click", () => {
 })
 
 document.getElementById("toggleGround").addEventListener("click", () => {
-    groundVisible = !groundVisible;
-    polygons
-        .filter(d => d.type === "ground")
-        .style("display", groundVisible ? "block" : "none");
     toggleGround();
 })
 
@@ -67,6 +63,7 @@ document.getElementById("resetLinkage").addEventListener("click", () => {
 
 document.getElementById("toggleDir").addEventListener("click", () => {
     animationDir *= -1;
+    animationReverse = true;
 })
 document.getElementById("toggleCross").addEventListener("click", () => {
     crossoverActive = !crossoverActive;
@@ -78,6 +75,10 @@ document.getElementById("toggleCross").addEventListener("click", () => {
     drawTracePaths();
     updateDiagram();
 })
+
+// document.getElementById("downloadGif").addEventListener("click", () => {
+//     exportGIF();
+// })
 
 document.getElementById("shareConfig").addEventListener("click", () => {
     const jointString = joints.map(j => `${j.x.toFixed(1)},${j.y.toFixed(1)},${j.ground ? 1 : 0}`).join(";");
