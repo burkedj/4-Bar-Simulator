@@ -181,6 +181,72 @@ function dblclickTracers(d){
     updateDiagram();
 }
 
+function invertLinkage() {
+    const aVert = joints[1].y - joints[0].y;
+    const bVert = joints[2].y - joints[3].y;
+    const inputAngle = getInputAngle();
+
+    joints[1].y = joints[0].y - aVert;
+    joints[2].y = joints[3].y - bVert;
+
+    setOpenCrossed();
+
+    const newCp = calcJointPosition("Cp",degToRad(-inputAngle), linkageConfig);
+    joints[4].x = newCp[0];
+    joints[4].y = newCp[1];
+
+    couplerSetAngle = 360-couplerSetAngle;
+
+    rotateInputLink(-inputAngle);
+    drawTracePaths();    
+}
+
+function toggleOpenCrossed() {
+    if (linkageConfig === "Open") {
+        linkageConfig = "Crossed";
+    } else {
+        linkageConfig = "Open";
+    }
+    rotateInputLink(getInputAngle());
+    drawTracePaths();
+    updateDiagram();
+}
+
+// function swapInputOutput() {
+//     const inLength = aLength;
+//     const outLength = bLength;
+//     const inAngle = 180-getLinkAngles()[1];
+
+//     const couplerLink = links.find(l => l.id === "c");
+//     const Cp = couplerLink.nodes[2];
+//     // const th_A1Cp_rad = degToRad(couplerSetAngle - getLinkAngles()[2]);
+    
+//     aLength = outLength;
+//     bLength = inLength;
+
+//     const A1_new = calcNodePosition("A1", inAngle);
+//     const b_thNew = calcOutputAngle(degToRad(inAngle), linkageConfig);
+//     const B1_new = calcNodePosition("B1", radToDeg(b_thNew));
+
+//     // const newCouplerLength = Math.sqrt(cLength*cLength + couplerSetLength*couplerSetLength - 2*cLength*couplerSetLength*Math.cos(degToRad(couplerSetAngle)));
+//     // const newCouplerAngle = radToDeg(Math.acos((cLength*cLength + newCouplerLength*newCouplerLength - couplerSetLength*couplerSetLength)/(2*cLength*newCouplerLength)));
+
+//     joints[1].x = A1_new[0];
+//     joints[1].y = A1_new[1];
+//     joints[2].x = B1_new[0];
+//     joints[2].y = B1_new[1];
+//     // Cp.x = joints[1].x + couplerSetLength * Math.cos(th_A1Cp_rad);
+//     // Cp.y = joints[1].y + couplerSetLength * Math.sin(th_A1Cp_rad);
+
+//     // couplerSetLength = newCouplerLength;
+//     // couplerSetAngle = newCouplerAngle;
+
+//     setLinkLengths();
+//     setCouplerGeom();
+//     drawTracePaths();
+//     updateDiagram();
+// }
+
 function rotateInputLink(angleDeg) {
 
     const a = aLength; // input

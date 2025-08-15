@@ -76,6 +76,19 @@ document.getElementById("toggleCross").addEventListener("click", () => {
     updateDiagram();
 })
 
+document.getElementById("invertLinkage").addEventListener("click", () => {
+    invertLinkage();
+    updateDiagram();
+});
+document.getElementById("toggleOpenCrossed").addEventListener("click", () => {
+    toggleOpenCrossed();
+});
+
+// document.getElementById("swapInOut").addEventListener("click", () => {
+//     swapInputOutput();
+//     updateDiagram();
+// });
+
 // document.getElementById("downloadGif").addEventListener("click", () => {
 //     exportGIF();
 // })
@@ -112,8 +125,10 @@ document.getElementById("toggleAnimation").addEventListener("click", () => {
 
     if (animationActive) {
         document.getElementById("shareConfig").disabled = true;
+        // document.getElementById("swapInOut").disabled = true;
     } else {
         document.getElementById("shareConfig").disabled = false;
+        // document.getElementById("swapInOut").disabled = false;
     }
 
     const button = document.getElementById("toggleAnimation");
