@@ -6,7 +6,7 @@ button:disabled {
 button {
     font-family: sans-serif;
     font-size: 10pt;
-    margin-top: 4px;
+    margin-top: 6px;
 }
 
 input[type="range"][orient="horizontal"] {
