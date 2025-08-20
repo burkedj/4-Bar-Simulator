@@ -84,6 +84,15 @@ document.getElementById("toggleOpenCrossed").addEventListener("click", () => {
     toggleOpenCrossed();
 });
 
+document.getElementById("snapCoupler").addEventListener("click", () => {
+    couplerSnap = !couplerSnap;
+    if (couplerSnap) {
+        snapCoupler();
+    }
+    const button = document.getElementById("snapCoupler");
+    button.textContent = couplerSnap ? "Release Coupler Point" : "Snap Coupler Point";
+})
+
 // document.getElementById("swapInOut").addEventListener("click", () => {
 //     swapInputOutput();
 //     updateDiagram();
@@ -126,9 +135,12 @@ document.getElementById("toggleAnimation").addEventListener("click", () => {
     if (animationActive) {
         document.getElementById("shareConfig").disabled = true;
         // document.getElementById("swapInOut").disabled = true;
+        document.getElementById("snapCoupler").disabled = true;
+
     } else {
         document.getElementById("shareConfig").disabled = false;
         // document.getElementById("swapInOut").disabled = false;
+        document.getElementById("snapCoupler").disabled = false;
     }
 
     const button = document.getElementById("toggleAnimation");
@@ -182,7 +194,7 @@ function setupRotationControls() {
         const rotAngle = parseFloat(rotationSlider.value);
         // rotationValue.textContent = `${rotAngle.toFixed(0)}°`;
 
-    traceLimits[0].text = `${currentRotation.toFixed(0)}°`;
+    // traceLimits[0].text = `${currentRotation.toFixed(0)}°`;
     rotateDiagram(rotAngle);
     updateDiagram();
     })

@@ -74,9 +74,16 @@ function getLinkAngles () {
     }
     // th_B0A1 = th_B0A1;
     if (th_B0A1 < 0 )  th_B0A1 = 360 + th_B0A1;
-    
 
-    return [th_a, th_b, th_c, th_d, th_A1Cp, th_B0A1];
+    let th_B1Cp = -radToDeg(Math.atan((Cp.y - B1.y) / (Cp.x - B1.x)))
+    if (Cp.x < B1.x) {
+        th_B1Cp = 180 + th_B1Cp;
+    } else if (Cp.y > B1.y) {
+        th_B1Cp = 360 + th_B1Cp;
+    }
+    if (th_B1Cp < 0 )  th_B1Cp = 360 + th_B1Cp;
+
+    return [th_a, th_b, th_c, th_d, th_A1Cp, th_B0A1, th_B1Cp];
 }
 
 function getInputLimits() {

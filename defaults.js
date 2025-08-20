@@ -38,7 +38,7 @@ const defaultY = -125;
 const defaultScale = 1.75;
 const defaultRotation = 0;
 
-const linkOpactity = 0.5;
+const linkOpactity = 0.55;
 
 const labelOffsetX = 5;
 const labelOffsetY = -3;
@@ -48,6 +48,7 @@ let linkageConfig = "Open"
 
 let couplerSetLength = 0;
 let couplerSetAngle = 0;
+let couplerSnap = false;
 
 let aLength = 5;
 let bLength = 8;

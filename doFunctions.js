@@ -71,6 +71,8 @@ function toggleGround() {
 }
 
 function toggleCoupler(link) {
+    if (couplerSnap) return;
+
     if (link.nodes.length === 3) {
         link.nodes = link.nodes.slice(0,2);
         setCouplerGeom();
@@ -84,6 +86,11 @@ function toggleCoupler(link) {
         setCouplerVis(true);
     }
     couplerVisible = !couplerVisible;
+    if (couplerVisible) {
+        document.getElementById("snapCoupler").disabled = false;
+    } else {
+        document.getElementById("snapCoupler").disabled = true;
+    }
 }
 
 function initializeSlider() {
@@ -108,6 +115,8 @@ function initializeSlider() {
 
 function rotateDiagram(rotAngle) {
     currentRotation = rotAngle;
+    const rotationSlider = document.getElementById("rotateSlider");
+    rotationSlider.value = currentRotation;
 }
 
 function rotateText(angle) {
@@ -131,7 +140,8 @@ function rotateText(angle) {
 }
 
 function viewTransform() {
-    const pivot = joints[0]
+    // const pivot = joints[0]
+    const pivot = {x: (joints[3].x + joints[0].x)/2, y: (joints[3].y + joints[0].y)/2}
     const cx = pivot.x;
     const cy = pivot.y;
 
@@ -212,10 +222,25 @@ function toggleOpenCrossed() {
     updateDiagram();
 }
 
+function snapCoupler() {
+    // if (couplerSnap) {
+    //     const th_c = degToRad(getLinkAngles()[2]);
+    //     const couplerLink = links.find(l => l.id === "c");
+    //     const Cp = couplerLink.nodes[2];
+
+    //     Cp.x = joints[1].x + couplerSetLength * Math.cos(th_c);
+    //     Cp.y = joints[1].y - couplerSetLength * Math.sin(th_c);
+    // }
+
+    setCouplerGeom();
+    drawTracePaths();
+    updateDiagram();
+}
+
 // function swapInputOutput() {
 //     const inLength = aLength;
 //     const outLength = bLength;
-//     const inAngle = 180-getLinkAngles()[1];
+//     const newInAngle = 180-getLinkAngles()[1];
 
 //     const couplerLink = links.find(l => l.id === "c");
 //     const Cp = couplerLink.nodes[2];
@@ -224,27 +249,35 @@ function toggleOpenCrossed() {
 //     aLength = outLength;
 //     bLength = inLength;
 
-//     const A1_new = calcNodePosition("A1", inAngle);
-//     const b_thNew = calcOutputAngle(degToRad(inAngle), linkageConfig);
+//     const A1_new = calcNodePosition("A1", newInAngle);
+//     const b_thNew = calcOutputAngle(degToRad(newInAngle), linkageConfig);
 //     const B1_new = calcNodePosition("B1", radToDeg(b_thNew));
 
-//     // const newCouplerLength = Math.sqrt(cLength*cLength + couplerSetLength*couplerSetLength - 2*cLength*couplerSetLength*Math.cos(degToRad(couplerSetAngle)));
-//     // const newCouplerAngle = radToDeg(Math.acos((cLength*cLength + newCouplerLength*newCouplerLength - couplerSetLength*couplerSetLength)/(2*cLength*newCouplerLength)));
+//     const newCouplerLength = Math.sqrt((joints[4].x-joints[2].x)*(joints[4].x-joints[2].x) + (joints[4].y-joints[2].y)*(joints[4].y-joints[2].y))
+//     let th_B1Cp = -radToDeg(Math.atan((joints[4].y - joints[2].y) / (joints[4].x - joints[2].x)))
+//     if (joints[4].x > joints[2].x) th_B1Cp = th_B1Cp-180;
 
 //     joints[1].x = A1_new[0];
 //     joints[1].y = A1_new[1];
 //     joints[2].x = B1_new[0];
 //     joints[2].y = B1_new[1];
-//     // Cp.x = joints[1].x + couplerSetLength * Math.cos(th_A1Cp_rad);
-//     // Cp.y = joints[1].y + couplerSetLength * Math.sin(th_A1Cp_rad);
 
-//     // couplerSetLength = newCouplerLength;
-//     // couplerSetAngle = newCouplerAngle;
+//     couplerSetLength = newCouplerLength;
+
+//     Cp.x = joints[1].x + couplerSetLength * Math.cos(degToRad(th_B1Cp))
+//     Cp.y = joints[1].y + couplerSetLength * Math.sin(degToRad(th_B1Cp))
+
+//     let viewRotate = 0;
+//     if (currentRotation < 180) {
+//         viewRotate = currentRotation + 180
+//     } else {
+//         viewRotate = currentRotation -180
+//     }
 
 //     setLinkLengths();
 //     setCouplerGeom();
-//     drawTracePaths();
-//     updateDiagram();
+//     invertLinkage();
+//     rotateDiagram(viewRotate);
 // }
 
 function rotateInputLink(angleDeg) {

@@ -12,8 +12,22 @@ function setOpenCrossed() {
 }
 
 function setCouplerGeom() {
-    couplerSetAngle = getCouplerGeom()[1];
     couplerSetLength = getCouplerGeom()[0];
+    
+    if (couplerSnap) {
+        if (joints[4].x < joints[1].x) {
+            couplerSetLength = -couplerSetLength;
+        }
+        couplerSetAngle = 0;
+        const th_c = degToRad(getLinkAngles()[2]);
+        const couplerLink = links.find(l => l.id === "c");
+        const Cp = couplerLink.nodes[2];
+
+        Cp.x = joints[1].x + couplerSetLength * Math.cos(th_c);
+        Cp.y = joints[1].y - couplerSetLength * Math.sin(th_c);
+    } else {
+        couplerSetAngle = getCouplerGeom()[1];
+    }
 }
 
 function setCouplerVis(state) {
@@ -51,28 +65,28 @@ function setCouplerVis(state) {
     }
 }
 
-function setTracePoints(node)
-{
-    const traceLims = getTracerLimits(node, linkageConfig);
-    let traceMinCoords = calcJointPosition(node, traceLims[0], linkageConfig);
-    let traceMaxCoords = calcJointPosition(node, traceLims[1], linkageConfig);
+// function setTracePoints(node)
+// {
+//     const traceLims = getTracerLimits(node, linkageConfig);
+//     let traceMinCoords = calcJointPosition(node, traceLims[0], linkageConfig);
+//     let traceMaxCoords = calcJointPosition(node, traceLims[1], linkageConfig);
 
-    let origin = [0,0];
-    if (node === "A1") {
-        origin = [joints[0].x,joints[0].y];
-    } else if (node === "B1") {
-        origin = [joints[3].x,joints[3].y];
-    } else if (node === "Cp") {
-        origin = [joints[1].x,joints[1].y];
-    }
+//     let origin = [0,0];
+//     if (node === "A1") {
+//         origin = [joints[0].x,joints[0].y];
+//     } else if (node === "B1") {
+//         origin = [joints[3].x,joints[3].y];
+//     } else if (node === "Cp") {
+//         origin = [joints[1].x,joints[1].y];
+//     }
 
-    const trace = traceLimits.find(t => t.id === node);
+//     const trace = traceLimits.find(t => t.id === node);
 
-    trace.min[0] = traceMinCoords[0];
-    trace.min[1] = traceMinCoords[1];
-    trace.max[0] = traceMaxCoords[0];
-    trace.max[1] = traceMaxCoords[1];
-}
+//     trace.min[0] = traceMinCoords[0];
+//     trace.min[1] = traceMinCoords[1];
+//     trace.max[0] = traceMaxCoords[0];
+//     trace.max[1] = traceMaxCoords[1];
+// }
 
 function setTracerVis(node, state) {
     paths
