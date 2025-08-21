@@ -137,9 +137,10 @@ function calcJointPosition(node, angleDeg, config) {
     }
     if (th_c < 0 )  th_c = 360 + th_c;
     
-    // if (couplerSnap) couplerSetAngle = 0;
+    let CpAngle = couplerSetAngle;
+    if (couplerSnap) CpAngle = 0;
 
-    const th_A1Cp_rad = -degToRad(couplerSetAngle - th_c);
+    const th_A1Cp_rad = -degToRad(CpAngle - th_c);
 
     const Cpx = A1x + couplerSetLength * Math.cos(th_A1Cp_rad);
     const Cpy = A1y - couplerSetLength * Math.sin(th_A1Cp_rad);

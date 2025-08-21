@@ -220,6 +220,14 @@ function getOutputAngle() {
     return outputAngle;
 }
 
+function getTransmissionAngle() {
+    let th_trans = Math.abs(getLinkAngles()[1] - getLinkAngles()[2]);
+
+    if (th_trans > 180) th_trans = 360 - th_trans
+
+    return th_trans;
+}
+
 function getCouplerGeom() {
     let couplerLength = Math.sqrt((joints[4].x-joints[1].x)*(joints[4].x-joints[1].x) + (joints[4].y-joints[1].y)*(joints[4].y-joints[1].y));
     let couplerAngle = -(getLinkAngles()[4]-getLinkAngles()[2]);
@@ -364,12 +372,15 @@ function getLinkageProperties() {
     const outputAngle = radToDeg(calcOutputAngle(degToRad(inputAngle),linkageConfig));
     const openCrossed = getOpenCrossed();
 
-    return `<b>Input Link:</b> ${inputClass}<br>
-    <b>Range of Motion:</b> (${A_min.toFixed(1)}°, ${A_max.toFixed(1)}°)<br>
-    <b>Current Angle:</b> ${inputAngle.toFixed(1)}°<br>
-    <br>
-    <b>Output Link:</b> ${outputClass} - ${openCrossed}<br>
-    <b>Range of Motion:</b> (${B_min.toFixed(1)}°, ${B_max.toFixed(1)}°)<br>
-    <b>Current Angle:</b> ${outputAngle.toFixed(1)}° <br>
-    <br>`;
+    return `<b>Config:</b> ${openCrossed}<br>
+    <b>Transmission Angle (μ):</b> ${getTransmissionAngle().toFixed(1)}°<br>`;
+
+    // `<b>Input Link:</b> ${inputClass}<br>
+    // <b>Range of Motion:</b> (${A_min.toFixed(1)}°, ${A_max.toFixed(1)}°)<br>
+    // <b>Current Angle:</b> ${inputAngle.toFixed(1)}°<br>
+    // <br>
+    // <b>Output Link:</b> ${outputClass} - ${openCrossed}<br>
+    // <b>Range of Motion:</b> (${B_min.toFixed(1)}°, ${B_max.toFixed(1)}°)<br>
+    // <b>Current Angle:</b> ${outputAngle.toFixed(1)}° <br>
+    // <br>`
 }

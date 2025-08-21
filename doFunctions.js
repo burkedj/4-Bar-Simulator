@@ -117,6 +117,14 @@ function rotateDiagram(rotAngle) {
     currentRotation = rotAngle;
     const rotationSlider = document.getElementById("rotateSlider");
     rotationSlider.value = currentRotation;
+
+    if (currentRotation === 0) {
+        labCoords[0].visible = false;
+    } else {
+        labCoords[0].visible = true;
+    }
+    labCoords[0].text = `${currentRotation.toFixed(0)}°`;
+    
 }
 
 function rotateText(angle) {
@@ -154,6 +162,32 @@ function viewTransform() {
     rotateText(currentRotation);
 
     zoomGroup.attr("transform", `${zoom} ${rotation} `);
+
+}
+
+function updateStats() {
+    const [A_min, A_max ,inputClass] = getInputLimits();
+    const [B_min, B_max ,outputClass] = getOutputLimits();
+
+    const inputAngle = getInputAngle();
+    const outputAngle = radToDeg(calcOutputAngle(degToRad(inputAngle),linkageConfig));
+    const openCrossed = getOpenCrossed();
+
+    const inputALab = labCoords.find(d => d.id === "inputAngle")
+    const inputAText = `Input: ${inputAngle.toFixed(1)}°`;
+    inputALab.text = inputAText;
+
+    const inputCLab = labCoords.find(d => d.id === "inputClass")
+    const inputCText = `${inputClass} (${A_min.toFixed(1)}°, ${A_max.toFixed(1)}°)`;
+    inputCLab.text = inputCText;
+
+    const outputALab = labCoords.find(d => d.id === "outputAngle")
+    const outputAText = `Output: ${outputAngle.toFixed(1)}°`;
+    outputALab.text = outputAText;
+
+    const outputCLab = labCoords.find(d => d.id === "outputClass")
+    const outputCText = `${outputClass} (${B_min.toFixed(1)}°, ${B_max.toFixed(1)}°)`;
+    outputCLab.text = outputCText;
 
 }
 
@@ -223,15 +257,6 @@ function toggleOpenCrossed() {
 }
 
 function snapCoupler() {
-    // if (couplerSnap) {
-    //     const th_c = degToRad(getLinkAngles()[2]);
-    //     const couplerLink = links.find(l => l.id === "c");
-    //     const Cp = couplerLink.nodes[2];
-
-    //     Cp.x = joints[1].x + couplerSetLength * Math.cos(th_c);
-    //     Cp.y = joints[1].y - couplerSetLength * Math.sin(th_c);
-    // }
-
     setCouplerGeom();
     drawTracePaths();
     updateDiagram();
@@ -377,6 +402,7 @@ function stopAnimationLoop() {
 
 function updateDiagram() {
     setOpenCrossed();
+    updateStats()
 
     // setTracePoints("A1");
     // setTracePoints("B1");
@@ -461,11 +487,8 @@ function updateDiagram() {
     labels
         .attr("x", d => d.x)
         .attr("y", d => d.y)
-        .text(`${currentRotation.toFixed(0)}°`)
-        .style("display", d => {
-            if (currentRotation === 0) return "none";
-            return "block";
-        })
+        .text(d => d.text)
+        .style("display", d => d.visible ? "block" : "none");
 
     document.getElementById("linkageSummary").innerHTML = getLinkageProperties() 
     viewTransform();

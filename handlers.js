@@ -33,6 +33,14 @@ document.getElementById("toggleTracers").addEventListener("click", () => {
 
 })
 
+document.getElementById("toggleStats").addEventListener("click", () => {
+    labCoords[1].visible = !labCoords[1].visible
+    labCoords[2].visible = !labCoords[2].visible
+    labCoords[3].visible = !labCoords[3].visible
+    labCoords[4].visible = !labCoords[4].visible
+    updateDiagram();
+})
+
 document.getElementById("resetZoom").addEventListener("click", () => {
     svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity
         .translate(defaultX, defaultY)
@@ -54,6 +62,7 @@ document.getElementById("resetLinkage").addEventListener("click", () => {
         j.type = originalJoints[i].type;
     });
 
+    couplerSnap = false;
     setOpenCrossed();
     setLinkLengths();
     setCouplerGeom();
@@ -125,8 +134,12 @@ document.getElementById("shareConfig").addEventListener("click", () => {
     const url = `${window.location.origin}${window.location.pathname}?j=${jointString}&${viewString}&${configString}&${labelString}`;
 
     navigator.clipboard.writeText(url)
-        .then(() => alert("Shareable URL copied to clipboard!"))
+        // .then(() => alert("Shareable URL copied to clipboard!"))
+        .then(() => alert(`The URL has been updated with your configuration parameters. \nRefresh the browser window to return to this saved state at any time! \n\nOr copy the url to share or save for later use!`))
         .catch(() => alert("Failed to copy URL."));
+
+    window.location.href = url;
+
 })
 
 document.getElementById("toggleAnimation").addEventListener("click", () => {
