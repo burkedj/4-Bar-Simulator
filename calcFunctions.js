@@ -81,6 +81,11 @@ function calcNodePath(node, steps, config){
             tPoint = calcNodePosition(node, traceAngle);
         }
         tracers[traceNode].points.push(tPoint);
+
+        viewMinX = Math.min(tPoint[0], viewMinX, joints[0].x, joints[3].x);
+        viewMaxX = Math.max(tPoint[0], viewMaxX, joints[0].x, joints[3].x);
+        viewMinY = Math.min(tPoint[1], viewMinY, joints[0].y, joints[3].y);
+        viewMaxY = Math.max(tPoint[1], viewMaxY, joints[0].y, joints[3].y);
     }
     let fPoint = [0,0]
     if (node === "Cp") {
@@ -102,6 +107,11 @@ function calcNodePath(node, steps, config){
             tPoint = calcJointPosition(node, traceAngle, opConfig);
 
             tracers[traceNode].points.push(tPoint);
+
+            viewMinX = Math.min(tPoint[0], viewMinX, joints[0].x, joints[3].x);
+            viewMaxX = Math.max(tPoint[0], viewMaxX, joints[0].x, joints[3].x);
+            viewMinY = Math.min(tPoint[1], viewMinY, joints[0].y, joints[3].y);
+            viewMaxY = Math.max(tPoint[1], viewMaxY, joints[0].y, joints[3].y);
         }
         const sPoint = calcJointPosition(node, traceStart, opConfig)
         tracers[traceNode].points.push(sPoint)

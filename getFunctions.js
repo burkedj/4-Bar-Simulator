@@ -362,6 +362,13 @@ function getTracerLimits(node, config) {
     return [traceStart, traceEnd];
 }
 
+function getLinkageCenter(){
+    const viewMidX = (viewMaxX+viewMinX)/2;
+    const viewMidY = (viewMaxY+viewMinY)/2;
+
+    return [viewMidX, viewMidY];
+}
+
 function getLinkageProperties() {
 
     const [A_min, A_max ,inputClass] = getInputLimits();
@@ -373,7 +380,10 @@ function getLinkageProperties() {
     const openCrossed = getOpenCrossed();
 
     return `<b>Config:</b> ${openCrossed}<br>
-    <b>Transmission Angle (μ):</b> ${getTransmissionAngle().toFixed(1)}°<br>`;
+    ${viewMinX.toFixed(1)}, ${viewMaxX.toFixed(1)}, ${viewMinY.toFixed(1)}, ${viewMaxY.toFixed(1)}<br>
+    <b>Transmission Angle (μ):</b> ${getTransmissionAngle().toFixed(1)}°<br>
+    ${Math.min(windowWidth/(viewMaxX-viewMinX), windowHeight/(viewMaxY-viewMinY))*.65}`;
+
 
     // `<b>Input Link:</b> ${inputClass}<br>
     // <b>Range of Motion:</b> (${A_min.toFixed(1)}°, ${A_max.toFixed(1)}°)<br>

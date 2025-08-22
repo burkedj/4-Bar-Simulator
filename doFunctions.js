@@ -149,9 +149,10 @@ function rotateText(angle) {
 
 function viewTransform() {
     // const pivot = joints[0]
-    const pivot = {x: (joints[3].x + joints[0].x)/2, y: (joints[3].y + joints[0].y)/2}
-    const cx = pivot.x;
-    const cy = pivot.y;
+    // const pivot = {x: (joints[3].x + joints[0].x)/2, y: (joints[3].y + joints[0].y)/2};
+    const pivot = getLinkageCenter();
+    const cx = pivot[0];
+    const cy = pivot[1];
 
     const rotation = `rotate(${-currentRotation}, ${cx}, ${cy})`
     const zoom = `
@@ -193,6 +194,10 @@ function updateStats() {
 
 function drawTracePaths() {
     // const steps = 500;
+    viewMinX = joints[0].x;
+    viewMaxX = joints[0].x;
+    viewMinY = joints[0].y;
+    viewMaxY = joints[0].y;
     calcNodePath("A1", 100, linkageConfig);
     calcNodePath("B1", 100, linkageConfig);
     calcNodePath("Cp", 1000, linkageConfig);

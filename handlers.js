@@ -42,9 +42,16 @@ document.getElementById("toggleStats").addEventListener("click", () => {
 })
 
 document.getElementById("resetZoom").addEventListener("click", () => {
+    const centerX = getLinkageCenter()[0];
+    const centerY = getLinkageCenter()[1];
+
+    const centerScale = Math.min(windowWidth/(viewMaxX-viewMinX), windowHeight/(viewMaxY-viewMinY))*.65;
+
     svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity
-        .translate(defaultX, defaultY)
-        .scale(defaultScale)
+        // .translate(defaultX, defaultY)
+        .translate(defaultX-centerX*2, defaultY-centerY*2)
+        // .scale(defaultScale)
+        .scale(centerScale)
     );
     rotateDiagram(defaultRotation);
     const rotationSlider = document.getElementById("rotateSlider");

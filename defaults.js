@@ -17,8 +17,12 @@ let aTracersVis = false;
 let bTracersVis = false;
 let cTracersVis = true;
 
-const offsetX = 230;
-const offsetY = 230+25;
+const windowWidth = 600;
+const windowHeight = 500;
+// const offsetX = 230;
+const offsetX = -56.25;
+// const offsetY = 230+25;
+const offsetY = 15;
 
 const linkScale = 10;
 
@@ -38,9 +42,9 @@ const defaultJoints = [
 
 // const traceSteps = 5;
 
-const defaultX = -200;
-const defaultY = -125;
-const defaultScale = 1.75;
+const defaultX = windowWidth/2;
+const defaultY = windowHeight/2;
+const defaultScale = 1.83;
 const defaultRotation = 0;
 
 const linkOpactity = 0.55;
@@ -66,15 +70,15 @@ let currentZoomTransform = d3.zoomIdentity;
 let lastTapTime = 0;
 
 const labCoords = [
-    {id: "rotation", x: 595, y: 15, anchor: "end", weight: "", text: "", visible: false, color: "black"},
-    {id: "inputAngle", x: 10, y: 475, anchor: "start", weight: "bold", text: "", visible: true, color: inputColor},
-    {id: "inputClass", x: 10, y: 493, anchor: "start", weight: "", text: "", visible: true, color: inputColor},
-    {id: "outputAngle", x: 595, y: 475, anchor: "end", weight: "bold", text: "", visible: true, color: outputColor},
-    {id: "outputClass", x: 595, y: 493, anchor: "end", weight: "", text: "", visible: true, color: outputColor},
-    {id: "generalStats", x: 300, y: 475}
+    {id: "rotation", x: windowWidth-5, y: 15, anchor: "end", weight: "", text: "", visible: false, color: "black"},
+    {id: "inputAngle", x: 10, y: windowHeight-25, anchor: "start", weight: "bold", text: "", visible: true, color: inputColor},
+    {id: "inputClass", x: 10, y: windowHeight-7, anchor: "start", weight: "", text: "", visible: true, color: inputColor},
+    {id: "outputAngle", x: windowWidth-5, y: windowHeight-25, anchor: "end", weight: "bold", text: "", visible: true, color: outputColor},
+    {id: "outputClass", x: windowWidth-5, y: windowHeight-7, anchor: "end", weight: "", text: "", visible: true, color: outputColor},
+    {id: "generalStats", x: windowWidth/2, y: windowHeight-25}
 ]
 
-let rotLabVisible = false;
-let inputLabVisible = true;
-let outputLabVisible = true;
-let transLabVisible = true;
+let viewMinX = -50;
+let viewMaxX = 162.5;
+let viewMinY = -80;
+let viewMaxY = 50;
