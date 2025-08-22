@@ -124,6 +124,8 @@ function rotateDiagram(rotAngle) {
         labCoords[0].visible = true;
     }
     labCoords[0].text = `${currentRotation.toFixed(0)}°`;
+
+    viewTransform();
     
 }
 
@@ -496,7 +498,7 @@ function updateDiagram() {
         .style("display", d => d.visible ? "block" : "none");
 
     document.getElementById("linkageSummary").innerHTML = getLinkageProperties() 
-    viewTransform();
+    // viewTransform();
     initializeSlider();
     if (getInputLimits()[2] === "Crank") {
         // document.getElementById("toggleDir").disabled = false;

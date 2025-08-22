@@ -53,12 +53,12 @@ document.getElementById("resetZoom").addEventListener("click", () => {
         // .scale(defaultScale)
         .scale(centerScale)
     );
-    rotateDiagram(defaultRotation);
-    const rotationSlider = document.getElementById("rotateSlider");
-    const rotationValue = document.getElementById("rotateValue");
+    // rotateDiagram(defaultRotation);
+    // const rotationSlider = document.getElementById("rotateSlider");
+    // const rotationValue = document.getElementById("rotateValue");
 
-    rotationSlider.value = currentRotation;
-    rotationValue.textContent = `${currentRotation.toFixed(0)}°`;
+    // rotationSlider.value = currentRotation;
+    // rotationValue.textContent = `${currentRotation.toFixed(0)}°`;
 })
 
 document.getElementById("resetLinkage").addEventListener("click", () => {

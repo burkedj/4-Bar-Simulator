@@ -371,18 +371,16 @@ function getLinkageCenter(){
 
 function getLinkageProperties() {
 
-    const [A_min, A_max ,inputClass] = getInputLimits();
-    const [B_min, B_max ,outputClass] = getOutputLimits();
+    // const [A_min, A_max ,inputClass] = getInputLimits();
+    // const [B_min, B_max ,outputClass] = getOutputLimits();
 
-    const inputAngle = getInputAngle();
-    // const outputAngle = getOutputAngle();
-    const outputAngle = radToDeg(calcOutputAngle(degToRad(inputAngle),linkageConfig));
+    // const inputAngle = getInputAngle();
+    // // const outputAngle = getOutputAngle();
+    // const outputAngle = radToDeg(calcOutputAngle(degToRad(inputAngle),linkageConfig));
     const openCrossed = getOpenCrossed();
 
     return `<b>Config:</b> ${openCrossed}<br>
-    ${viewMinX.toFixed(1)}, ${viewMaxX.toFixed(1)}, ${viewMinY.toFixed(1)}, ${viewMaxY.toFixed(1)}<br>
-    <b>Transmission Angle (μ):</b> ${getTransmissionAngle().toFixed(1)}°<br>
-    ${Math.min(windowWidth/(viewMaxX-viewMinX), windowHeight/(viewMaxY-viewMinY))*.65}`;
+    <b>Transmission Angle (μ):</b> ${getTransmissionAngle().toFixed(1)}°<br>`;
 
 
     // `<b>Input Link:</b> ${inputClass}<br>
