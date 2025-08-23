@@ -44,7 +44,7 @@ const defaultJoints = [
 
 const defaultX = windowWidth/2;
 const defaultY = windowHeight/2;
-const defaultScale = 1.83;
+const defaultScale = 1.98;
 const defaultRotation = 0;
 
 const linkOpactity = 0.55;

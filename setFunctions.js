@@ -44,6 +44,9 @@ function setCouplerVis(state) {
             paths
                 .filter(d => d.id === "Cp")
                 .style("display", "block")
+            fullPaths
+                .filter(d => d.id === "Cp")
+                .style("display", "block")
             tracePoints
                 .filter(d => d.id === "Cp")
                 .style("display", "block")
@@ -57,6 +60,9 @@ function setCouplerVis(state) {
             .filter(d => d.id === "Cp")
             .style("display", "none")
         paths
+            .filter(d => d.id === "Cp")
+            .style("display", "none")
+        fullPaths
             .filter(d => d.id === "Cp")
             .style("display", "none")
         tracePoints
@@ -92,6 +98,9 @@ function setTracerVis(node, state) {
     paths
         .filter(d => d.id === node & d.id === "Cp")
         .style("display", state & couplerVisible ? "block" : "none")
+    fullPaths
+        .filter(d => d.id === node & d.id === "Cp")
+        .style("display", state & couplerVisible ? "block" : "none")
     tracePoints
         .filter(d => d.id === node  & d.id === "Cp")
         .style("display", state & couplerVisible? "block" : "none")
@@ -103,6 +112,9 @@ function setTracerVis(node, state) {
     //     .style("display", state & couplerVisible ? "block" : "none")
 
     paths
+        .filter(d => d.id === node & d.id !== "Cp")
+        .style("display", state ? "block" : "none")
+    fullPaths
         .filter(d => d.id === node & d.id !== "Cp")
         .style("display", state ? "block" : "none")
     tracePoints

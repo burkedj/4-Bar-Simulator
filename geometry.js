@@ -15,6 +15,12 @@ const tracers = [
     {id: "Cp", color: couplerColor, points: []}
 ];
 
+const fullTracers = [
+    {id: "A1", color: inputColor, points: []},
+    {id: "B1", color: outputColor, points: []},
+    {id: "Cp", color: couplerColor, points: []}
+];
+
 const traceLimits = [
     {id: "A1", min: [0,0], max: [0,0], color: inputColor},
     {id: "B1", min: [0,0], max: [0,0], color: outputColor},

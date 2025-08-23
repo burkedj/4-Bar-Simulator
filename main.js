@@ -42,6 +42,20 @@ const paths = pathGroup.selectAll("polyline")
     // .attr("marker-end", "url(#markerCircle)")
     .style("display", "none")
     .style("pointer-events", "none");
+    
+const fullPathGroup = zoomGroup.append("g")
+const fullPaths = fullPathGroup.selectAll("polyline")
+    .data(fullTracers)
+    .enter()
+    .append("polyline")
+    .attr("stroke", d => d.color)
+    .attr("opacity", 0.25)
+    .attr("fill","none")
+    .attr("points", d => d.points)
+    // .attr("stroke-dasharray", "1.5,2.5")
+    .style("stroke-linecap", "round")
+    .style("display", "none")
+    .style("pointer-events", "none");
 
 const tracePointGroup = zoomGroup.append("g")
 const tracePoints = tracePointGroup.selectAll("circle")

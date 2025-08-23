@@ -118,6 +118,50 @@ function calcNodePath(node, steps, config){
     }
 }
 
+function calcFullPath(node, steps, config){
+    const traceNode = fullTracers.findIndex(d => d.id === node); //get the index for the desired node within tracers array
+    fullTracers[traceNode].points.length = 0; //clear the existing points for this node tracer
+    let traceStart = 0;
+    let traceEnd = 0;
+    let tPoint = 0;
+
+    [traceStart, traceEnd] = getFullTracerLimits(node, config);
+
+    for (let i = 0; i < steps; i++) {
+        traceAngle = traceStart + (i/steps) * (traceEnd-traceStart);
+        if (node === "Cp") {
+            tPoint = calcJointPosition(node, traceAngle, config);
+        } else {
+            tPoint = calcNodePosition(node, traceAngle);
+        }
+        fullTracers[traceNode].points.push(tPoint);
+    }
+    let fPoint = [0,0]
+    if (node === "Cp") {
+        fPoint = calcJointPosition(node, traceEnd, config)
+    } else {
+        fPoint = calcNodePosition(node, traceEnd)
+    }
+    fullTracers[traceNode].points.push(fPoint)
+
+    if (node === "Cp" & getInputLimits()[2] !== "Crank") {
+        let opConfig = "";
+        if (config === "Open") {
+            opConfig = "Crossed";
+        } else {
+            opConfig = "Open";
+        }
+        for (let i = 0; i < steps; i++) {
+            traceAngle = traceEnd - (i/steps) * (traceEnd-traceStart);
+            tPoint = calcJointPosition(node, traceAngle, opConfig);
+
+            fullTracers[traceNode].points.push(tPoint);
+        }
+        const sPoint = calcJointPosition(node, traceStart, opConfig)
+        fullTracers[traceNode].points.push(sPoint)
+    }
+}
+
 function calcJointPosition(node, angleDeg, config) {
 
     const a = aLength; // input

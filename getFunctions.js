@@ -362,6 +362,33 @@ function getTracerLimits(node, config) {
     return [traceStart, traceEnd];
 }
 
+function getFullTracerLimits(node, config) {
+    let traceStart = 0;
+    let traceEnd = 360;
+    const inputLims = getInputLimits();
+    const inputMax = inputLims[1];
+    const inputClass = inputLims[2];
+    const outputLims = getOutputLimits();
+    const outputMin = outputLims[0];
+    const outputMax = outputLims[1];
+    const outputClass = outputLims[2];
+
+    const outFromIn = (angle, config) => {
+        return radToDeg(calcOutputAngle(degToRad(angle), config));
+    }
+
+    if (node === "A1") {
+        [traceStart, traceEnd] = inputLims
+    } else if (node === "B1") {
+        [traceStart, traceEnd] = outputLims;
+    } else if (node === "Cp") {
+        [traceStart, traceEnd] = inputLims;
+        traceStart = traceStart+simAngleTol;
+        traceEnd = traceEnd-simAngleTol;
+    }
+    return [traceStart, traceEnd];
+}
+
 function getLinkageCenter(){
     const viewMidX = (viewMaxX+viewMinX)/2;
     const viewMidY = (viewMaxY+viewMinY)/2;

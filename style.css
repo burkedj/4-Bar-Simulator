@@ -31,3 +31,10 @@ label {
     font-size: 9pt;
     font-weight: bold;
 }
+
+a:link {
+    color: black;
+}
+a:visited {
+    color: black;
+}
