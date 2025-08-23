@@ -104,6 +104,8 @@ document.getElementById("snapCoupler").addEventListener("click", () => {
     couplerSnap = !couplerSnap;
     if (couplerSnap) {
         snapCoupler();
+    } else {
+        updateDiagram();
     }
     const button = document.getElementById("snapCoupler");
     button.textContent = couplerSnap ? "Release Coupler Point" : "Snap Coupler Point";

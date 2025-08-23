@@ -446,10 +446,12 @@ function updateDiagram() {
         })
         .attr("stroke", d => {
             if (d.type === "ground") return "black";
+            if (d.id === "Cp" && couplerSnap) return couplerColor
             return "transparent";
         })
         .attr("stroke-width", d => {
         if (d.type === "ground") return 2.2
+        if (d.id === "Cp" && couplerSnap) return 1
         return 6
         })
 
