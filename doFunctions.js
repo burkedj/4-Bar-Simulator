@@ -18,6 +18,7 @@ function loadJointsFromURL(){
 
     const cpVis = params.get("cp") === "1";
     const gVis = params.get("gv") === "1";
+    const cSnap = params.get("cs") === "1";
     const xOver = params.get("xo") === "1";
     const aTraceVis = params.get("at") === "1";
     const bTraceVis = params.get("bt") === "1";
@@ -25,6 +26,8 @@ function loadJointsFromURL(){
 
     couplerVisible = cpVis;
     groundVisible = gVis;
+
+    couplerSnap = cSnap;
 
     crossoverActive = xOver;
 

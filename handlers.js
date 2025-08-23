@@ -128,11 +128,12 @@ document.getElementById("shareConfig").addEventListener("click", () => {
     const cVis = couplerVisible ? 1 : 0;
     const gVis = groundVisible ? 1 : 0;
     const xOver = crossoverActive ? 1 : 0;
+    const cSnap = couplerSnap ? 1 : 0;
     const aTraceVis = aTracersVis ? 1 : 0;
     const bTraceVis = bTracersVis ? 1 : 0; 
     const cTraceVis = cTracersVis ? 1 : 0;
 
-    const configString = `cp=${cVis}&gv=${gVis}&xo=${xOver}&at=${aTraceVis}&bt=${bTraceVis}&ct=${cTraceVis}`;
+    const configString = `cp=${cVis}&gv=${gVis}&cs=${cSnap}&xo=${xOver}&at=${aTraceVis}&bt=${bTraceVis}&ct=${cTraceVis}`;
 
     const coordsVis = coordsVisible ? 1 : 0;
     const lengthsVis = lengthsVisible ? 1 : 0;
