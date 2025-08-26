@@ -56,15 +56,20 @@
     <br>
     <b style="margin-top: 4px; font-size: 9pt; font-family: sans-serif;">Modify: 
     <button id="invertLinkage">Invert</button>
-    <button id="toggleOpenCrossed">Open/Crossed</button>
-    <!-- <button id="swapInOut">Swap Input/Output</button> -->
-     <button id="snapCoupler">Snap Coupler Point</button>
+    <button id="toggleOpenCrossed">Open ⇋ Crossed</button>
+    <!-- <button id="swapInOut">Input ⇋ Output</button> -->
+    <button id="snapCoupler">Snap Coupler Point</button>
     </b>
     <br>
-    <div id="linkageSummary" style="margin-top: 8px; font-family: sans-serif; font-size: 9pt;"></div>
+    <svg id="plotWindow" width="600" height="150"
+        style="border:1px solid black; margin-top: 6px;"
+        viewBox="0 0 600 150">
+    </svg>
+    <div id="linkageSummary" style="margin-top: 6px; font-family: sans-serif; font-size: 9pt;"></div>
     <script src="defaults.js"></script>
     <script src="conversions.js"></script>
     <script src="geometry.js"></script>
+    <script src="plotGeom.js"></script>
     <script src="getFunctions.js"></script>
     <script src="setFunctions.js"></script>
     <script src="calcFunctions.js"></script>

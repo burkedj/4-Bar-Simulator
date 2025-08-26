@@ -24,6 +24,9 @@ const offsetX = -56.25;
 // const offsetY = 230+25;
 const offsetY = 15;
 
+const plotWidth = windowWidth;
+const plotHeight = 150;
+
 const linkScale = 10;
 
 const inputColor = "darkred";

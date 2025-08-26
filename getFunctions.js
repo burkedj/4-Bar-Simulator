@@ -362,7 +362,7 @@ function getTracerLimits(node, config) {
     return [traceStart, traceEnd];
 }
 
-function getFullTracerLimits(node, config) {
+function getFullTracerLimits(node) {
     let traceStart = 0;
     let traceEnd = 360;
     const inputLims = getInputLimits();
@@ -385,6 +385,46 @@ function getLinkageCenter(){
     const viewMidY = (viewMaxY+viewMinY)/2;
 
     return [viewMidX, viewMidY];
+}
+
+function getPlotScale(){
+    const xRange = xMaxTick-xMinTick;
+    const yRange = yMaxTick-yMinTick;
+
+    const inRange = getInputLimits()[1]-getInputLimits()[0];
+    const outRange = getOutputLimits()[1]-getOutputLimits()[0];
+
+    const xScale = xRange/inRange;
+    const yScale = yRange/outRange;
+
+    return [xScale, yScale]
+}
+
+function getPlotCoord() {
+    const inAngle = getInputAngle();
+    let outAngle = getLinkAngles()[1];
+    // const transAngle = getTransmissionAngle();
+
+    let xOff = 0;
+    let yOff = 0;
+
+    if (getInputLimits()[2] !== "Crank") {
+        xOff = -getInputLimits()[0]*getPlotScale()[0];
+    }
+
+    if (outAngle > getOutputLimits()[1]) {
+        outAngle = outAngle-360
+    }
+
+    const plotVar = outAngle
+
+    const xScale = getPlotScale()[0];
+    const yScale = getPlotScale()[1];
+
+    const xCoord = inAngle*xScale+xMinTick + xOff;
+    const yCoord = yMinTick-((getOutputLimits()[0]-plotVar)*yScale);
+
+    return [xCoord, yCoord]
 }
 
 function getLinkageProperties() {

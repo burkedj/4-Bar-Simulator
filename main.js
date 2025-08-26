@@ -111,6 +111,7 @@ const dragnodes = dragGroup.selectAll("circle")
             setLinkLengths();
             setCouplerGeom();
             drawTracePaths();
+            calcPlotPath(linkageConfig);
             updateDiagram();
         })
     );
@@ -196,6 +197,88 @@ svg.selectAll(".trace")
 //         updateDiagram();
 //     });
 
+// Plot stuff
+const plot = d3.select("#plotWindow");
+// const plotGroup = plot.append("g")
+
+const axisGroup = plot.append("g")
+const axes = axisGroup.selectAll("line")
+    .data(plotAxes)
+    .enter()
+    .append("line")
+    .attr("stroke", "black")
+    .attr("stoke-width", 2)
+    .attr("x1", d => d.x1)
+    .attr("y1", d => d.y1)
+    .attr("x2", d => d.x2)
+    .attr("y2", d => d.y2)    
+    .style("stroke-linecap", "round")
+    // .style("display", "none")
+    // .style("pointer-events", "none");
+
+const plotLabGroup = plot.append("g")
+const plotLabs = plotLabGroup.selectAll("text")
+    .data(plotLabels)
+    .enter()
+    .append("text")
+    .attr("x", d => d.x)
+    .attr("y", d => d.y)
+    .text(d => d.text)
+    .attr("font-size", d => d.textSize)
+    .attr("font-family", "sans-serif")
+    .attr("text-anchor", d => d.anchor)
+    .attr("dominant-baseline", d => d.baseline)
+    .attr("font-weight", "bold")
+    .attr("fill", d => d.color)
+    .style("display", d => {
+        if (d.id === "yAxisTitle") return "none";
+    })
+
+const plotLineGroup = plot.append("g")
+const plotLine = plotLineGroup.selectAll("polyline")
+    .data(plotLines)
+    .enter()
+    .append("polyline")
+    .attr("stroke", "black")
+    .attr("stroke-width", 2)
+    .attr("fill", "none")
+    .attr("opacity", d => d.opacity)
+    .attr("points", d => d.points)
+    .attr("stroke-dasharray", d => {
+        if (d.id === "mainLine") return "3.5,4.5"
+    })
+    .style("stroke-linecap", "round")
+
+// const plotPointGroup = plot.append("g")
+const plotPoint = plot.append("circle")//.selectAll("circle")
+    // .attr("cx", getInputAngle())
+    // .attr("cy", yMinTick-50)
+    // .data(plotPoints)
+    .attr("r", 4)
+    .attr("fill", "black")
+const plotDrag = plot.append("circle")
+    // .data(plotPoints)
+    .attr("r", 30)
+    .attr("fill", "black")
+    .attr("opacity", 0.1)
+    .call(d3.drag()
+        .on("drag", function(event) {
+            if (event.x > xMaxTick) return
+            if (event.x < xMinTick) return
+            // d.x = event.x;
+            // d.y = event.y;
+            // let dragX = 0;
+            // if (getInputLimits()[2] !== "Crank") {
+                const dragX = event.x + getInputLimits()[0]*getPlotScale()[0]
+            // }
+            rotateInputLink((dragX-xMinTick)/getPlotScale()[0])
+            // calcPlotPath(linkageConfig);
+            updateDiagram();
+        })
+    );
+
+
+// Initialize
 loadJointsFromURL();
 loadViewFromURL();
 setCouplerGeom()
@@ -210,4 +293,5 @@ setTracerVis("Cp", cTracersVis);
 // setTracePoints("B1");
 // setTracePoints("Cp");
 drawTracePaths();
+calcPlotPath(linkageConfig)
 updateDiagram();

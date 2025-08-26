@@ -156,12 +156,31 @@ function rotateText(angle) {
     })
 }
 
+function fitView(transition) {
+    const centerX = getLinkageCenter()[0];
+    const centerY = getLinkageCenter()[1];
+
+    const dur = transition ? 500 : 0;
+
+    const centerScale = Math.min(windowWidth/(viewMaxX-viewMinX), windowHeight/(viewMaxY-viewMinY))*.7;
+
+    svg.transition().duration(dur).call(zoom.transform, d3.zoomIdentity
+        // .translate(defaultX, defaultY)
+        .translate(defaultX-centerX*2, defaultY-centerY*2)
+        // .scale(defaultScale)
+        .scale(centerScale)
+    );
+}
+
 function viewTransform() {
     // const pivot = joints[0]
     // const pivot = {x: (joints[3].x + joints[0].x)/2, y: (joints[3].y + joints[0].y)/2};
     const pivot = getLinkageCenter();
     const cx = pivot[0];
     const cy = pivot[1];
+
+    const centerX = getLinkageCenter()[0];
+    const centerY = getLinkageCenter()[1];
 
     const rotation = `rotate(${-currentRotation}, ${cx}, ${cy})`
     const zoom = `
@@ -279,48 +298,48 @@ function snapCoupler() {
     updateDiagram();
 }
 
-// function swapInputOutput() {
-//     const inLength = aLength;
-//     const outLength = bLength;
-//     const newInAngle = 180-getLinkAngles()[1];
+function swapInputOutput() {
+    const inLength = aLength;
+    const outLength = bLength;
+    const newInAngle = 180-getLinkAngles()[1];
 
-//     const couplerLink = links.find(l => l.id === "c");
-//     const Cp = couplerLink.nodes[2];
-//     // const th_A1Cp_rad = degToRad(couplerSetAngle - getLinkAngles()[2]);
+    const couplerLink = links.find(l => l.id === "c");
+    const Cp = couplerLink.nodes[2];
+    // const th_A1Cp_rad = degToRad(couplerSetAngle - getLinkAngles()[2]);
     
-//     aLength = outLength;
-//     bLength = inLength;
+    aLength = outLength;
+    bLength = inLength;
 
-//     const A1_new = calcNodePosition("A1", newInAngle);
-//     const b_thNew = calcOutputAngle(degToRad(newInAngle), linkageConfig);
-//     const B1_new = calcNodePosition("B1", radToDeg(b_thNew));
+    const A1_new = calcNodePosition("A1", newInAngle);
+    const b_thNew = calcOutputAngle(degToRad(newInAngle), linkageConfig);
+    const B1_new = calcNodePosition("B1", radToDeg(b_thNew));
 
-//     const newCouplerLength = Math.sqrt((joints[4].x-joints[2].x)*(joints[4].x-joints[2].x) + (joints[4].y-joints[2].y)*(joints[4].y-joints[2].y))
-//     let th_B1Cp = -radToDeg(Math.atan((joints[4].y - joints[2].y) / (joints[4].x - joints[2].x)))
-//     if (joints[4].x > joints[2].x) th_B1Cp = th_B1Cp-180;
+    const newCouplerLength = Math.sqrt((joints[4].x-joints[2].x)*(joints[4].x-joints[2].x) + (joints[4].y-joints[2].y)*(joints[4].y-joints[2].y))
+    let th_B1Cp = -radToDeg(Math.atan((joints[4].y - joints[2].y) / (joints[4].x - joints[2].x)))
+    if (joints[4].x > joints[2].x) th_B1Cp = th_B1Cp-180;
 
-//     joints[1].x = A1_new[0];
-//     joints[1].y = A1_new[1];
-//     joints[2].x = B1_new[0];
-//     joints[2].y = B1_new[1];
+    joints[1].x = A1_new[0];
+    joints[1].y = A1_new[1];
+    joints[2].x = B1_new[0];
+    joints[2].y = B1_new[1];
 
-//     couplerSetLength = newCouplerLength;
+    couplerSetLength = newCouplerLength;
 
-//     Cp.x = joints[1].x + couplerSetLength * Math.cos(degToRad(th_B1Cp))
-//     Cp.y = joints[1].y + couplerSetLength * Math.sin(degToRad(th_B1Cp))
+    Cp.x = joints[1].x + couplerSetLength * Math.cos(degToRad(th_B1Cp))
+    Cp.y = joints[1].y + couplerSetLength * Math.sin(degToRad(th_B1Cp))
 
-//     let viewRotate = 0;
-//     if (currentRotation < 180) {
-//         viewRotate = currentRotation + 180
-//     } else {
-//         viewRotate = currentRotation -180
-//     }
+    let viewRotate = 0;
+    if (currentRotation < 180) {
+        viewRotate = currentRotation + 180
+    } else {
+        viewRotate = currentRotation -180
+    }
 
-//     setLinkLengths();
-//     setCouplerGeom();
-//     invertLinkage();
-//     rotateDiagram(viewRotate);
-// }
+    setLinkLengths();
+    setCouplerGeom();
+    invertLinkage();
+    rotateDiagram(viewRotate);
+}
 
 function rotateInputLink(angleDeg) {
 
@@ -420,10 +439,13 @@ function stopAnimationLoop() {
 function updateDiagram() {
     setOpenCrossed();
     updateStats()
+    calcPlotPath(linkageConfig);
 
     // setTracePoints("A1");
     // setTracePoints("B1");
     // setTracePoints("Cp");
+    // plotPoints.find(d => d.id === "mainPoint").x = getPlotCoord()[0]
+    // plotPoints.find(d => d.id === "mainPoint").y = getPlotCoord()[1]
 
     paths
         .attr("points", d => d.points)
@@ -440,6 +462,7 @@ function updateDiagram() {
     circles
         .attr("cx", d => d.x).attr("cy", d => d.y)
         .attr("r", d => {
+            if(d.id === "Cp" && couplerSnap) return 3.5;
             if(d.type === "node") return 3;
             if(d.type === "joint") return 2.5;
             return 3.5;
@@ -511,6 +534,28 @@ function updateDiagram() {
         .text(d => d.text)
         .style("display", d => d.visible ? "block" : "none");
 
+    plotLabs
+        .text( d => {
+            if (d.id === "xMinLab") return `${getInputLimits()[0].toFixed(0)}°`
+            if (d.id === "xMaxLab") return `${getInputLimits()[1].toFixed(0)}°`
+            if (d.id === "yMinLab") return `${getOutputLimits()[0].toFixed(0)}°`
+            if (d.id === "yMaxLab") return `${getOutputLimits()[1].toFixed(0)}°`
+            return d.text
+        })
+
+    plotPoint
+        .attr("cx", getPlotCoord()[0])
+        .attr("cy", getPlotCoord()[1])
+        // .attr("cx", d => d.x)
+        // .attr("cy", d => d.y)
+    plotDrag
+        .attr("cx", getPlotCoord()[0])
+        .attr("cy", getPlotCoord()[1])
+        // .attr("cx", d => d.x)
+        // .attr("cy", d => d.y)
+    plotLine
+        .attr("points", d => d.points)
+
     document.getElementById("linkageSummary").innerHTML = getLinkageProperties() 
     // viewTransform();
     initializeSlider();
@@ -522,3 +567,19 @@ function updateDiagram() {
         document.getElementById("toggleCross").disabled = false;
     }
 }
+
+// function updatePlot(){
+//     plotPoints.find(d => d.id === "mainPoint").x = getPlotCoord()[0]
+//     plotPoints.find(d => d.id === "mainPoint").y = getPlotCoord()[1]
+
+//     plotPoint
+//         // .attr("cx", getPlotCoord()[0])
+//         // .attr("cy", getPlotCoord()[1])
+//         .attr("cx", d => d.x)
+//         .attr("cy", d => d.y)
+//     plotDrag
+//         // .attr("cx", getPlotCoord()[0])
+//         // .attr("cy", getPlotCoord()[1])
+//         .attr("cx", d => d.x)
+//         .attr("cy", d => d.y)
+// }

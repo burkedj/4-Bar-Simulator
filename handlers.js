@@ -42,17 +42,7 @@ document.getElementById("toggleStats").addEventListener("click", () => {
 })
 
 document.getElementById("resetZoom").addEventListener("click", () => {
-    const centerX = getLinkageCenter()[0];
-    const centerY = getLinkageCenter()[1];
-
-    const centerScale = Math.min(windowWidth/(viewMaxX-viewMinX), windowHeight/(viewMaxY-viewMinY))*.7;
-
-    svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity
-        // .translate(defaultX, defaultY)
-        .translate(defaultX-centerX*2, defaultY-centerY*2)
-        // .scale(defaultScale)
-        .scale(centerScale)
-    );
+    fitView(true)
     // rotateDiagram(defaultRotation);
     // const rotationSlider = document.getElementById("rotateSlider");
     // const rotationValue = document.getElementById("rotateValue");
@@ -113,6 +103,7 @@ document.getElementById("snapCoupler").addEventListener("click", () => {
 
 // document.getElementById("swapInOut").addEventListener("click", () => {
 //     swapInputOutput();
+//     fitView(false);
 //     updateDiagram();
 // });
 

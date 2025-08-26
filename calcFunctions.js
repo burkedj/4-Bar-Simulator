@@ -67,6 +67,7 @@ function calcNodePosition(node, angle){
 function calcNodePath(node, steps, config){
     const traceNode = tracers.findIndex(d => d.id === node); //get the index for the desired node within tracers array
     tracers[traceNode].points.length = 0; //clear the existing points for this node tracer
+    let traceAngle = 0;
     let traceStart = 0;
     let traceEnd = 0;
     let tPoint = 0;
@@ -75,8 +76,18 @@ function calcNodePath(node, steps, config){
 
     for (let i = 0; i < steps; i++) {
         traceAngle = traceStart + (i/steps) * (traceEnd-traceStart);
+
         if (node === "Cp") {
             tPoint = calcJointPosition(node, traceAngle, config);
+        } else if (node === "B1" & getOutputLimits()[2] == "Crank" & getInputLimits()[2] === "Rocker" & joints[1].y > joints[0].y){
+            let opConfig = "";
+            if (config === "Open") {
+                opConfig = "Crossed"
+            } else {
+                opConfig = "Open"
+            }
+            [traceStart, traceEnd] = getTracerLimits(node, opConfig);
+            tPoint = calcNodePosition(node, traceAngle);
         } else {
             tPoint = calcNodePosition(node, traceAngle);
         }
@@ -93,9 +104,14 @@ function calcNodePath(node, steps, config){
     } else {
         fPoint = calcNodePosition(node, traceEnd)
     }
+        // const plotCoords = [
+        //     radToDeg(traceEnd)*getPlotScale()[0]+xMinTick,
+        //     yMinTick-((getOutputLimits()[0]-radToDeg(calcOutputAngle(traceEnd,config)))*getPlotScale()[1])
+        // ]
+        // plotLines[pLine].points.push(plotCoords);
     tracers[traceNode].points.push(fPoint)
 
-    if (node === "Cp" & getInputLimits()[2] !== "Crank" & crossoverActive) {
+    if ((node === "Cp" & getInputLimits()[2] !== "Crank" & crossoverActive)) {
         let opConfig = "";
         if (config === "Open") {
             opConfig = "Crossed";
@@ -115,7 +131,11 @@ function calcNodePath(node, steps, config){
         }
         const sPoint = calcJointPosition(node, traceStart, opConfig)
         tracers[traceNode].points.push(sPoint)
-    }
+    } 
+    // else if (node === "B1"){//} & getOutputLimits()[2] == "Crank" & getInputLimits()[2] === "Rocker" & joints[1].y > joints[0].y) {
+    //     tPoint = calcNodePosition(node, traceAngle);
+    //     // return
+    // }
 }
 
 function calcFullPath(node, steps, config){
@@ -125,10 +145,11 @@ function calcFullPath(node, steps, config){
     let traceEnd = 0;
     let tPoint = 0;
 
-    [traceStart, traceEnd] = getFullTracerLimits(node, config);
-
+    [traceStart, traceEnd] = getFullTracerLimits(node);
+    
     for (let i = 0; i < steps; i++) {
         traceAngle = traceStart + (i/steps) * (traceEnd-traceStart);
+
         if (node === "Cp") {
             tPoint = calcJointPosition(node, traceAngle, config);
         } else {
@@ -206,4 +227,82 @@ function calcJointPosition(node, angleDeg, config) {
     } else if (node === "B1") {
         return [B1x, B1y]
     }
+}
+
+function calcPlotPath(config) {
+    const steps = 10000;
+    let traceStart = 0;
+    let traceEnd = 0;
+    // let tPoint = 0;
+
+    // [traceStart, traceEnd] = getFullTracerLimits(node, config);
+
+    traceStart = getTracerLimits("Cp", config)[0];
+    traceEnd = getTracerLimits("Cp", config)[1];
+
+    let xOff = 0;
+    let yOff = 0;
+
+    if (getInputLimits()[2] !== "Crank") {
+        xOff = -getInputLimits()[0]*getPlotScale()[0];
+    } 
+    // if (getOutputLimits()[2] === "0-Rocker" & config === "Crossed") {
+    //     yOff = getInputLimits()[0]*getPlotScale()[0]
+    // }
+
+    // if (getOutputLimits()[2] === "0-Rocker") {
+    //     yOff = getOutputLimits()[0]*getPlotScale()[1]
+    // }
+
+
+    const pLine = plotLines.find(d => d.id === "mainLine");
+    pLine.points.length = 0;
+
+    const fLine = plotLines.find(d => d.id === "fullLine");
+    fLine.points.length = 0;
+
+    for (let i = 0; i < steps; i++) {
+        traceAngle = traceStart + (i/steps) * (traceEnd-traceStart);
+
+        let outAngle = radToDeg(calcOutputAngle(degToRad(traceAngle),config))
+        if (outAngle > getOutputLimits()[1]) {
+            outAngle = outAngle-360
+        }
+
+        const plotCoords = [
+            traceAngle*getPlotScale()[0]+xMinTick+xOff,
+            yMinTick-((getOutputLimits()[0]-outAngle)*getPlotScale()[1]) + yOff
+        ]
+        pLine.points.push(plotCoords);
+        fLine.points.push(plotCoords);
+    }
+
+    [traceStart, traceEnd] = getFullTracerLimits("Cp")
+
+    if (getInputLimits()[2] !== "Crank") {
+        let opConfig = "Open";
+        if (config === "Open") opConfig = "Crossed";
+
+        // let outAngle = radToDeg(calcOutputAngle(degToRad(traceAngle),opConfig))
+        // if (outAngle > getOutputLimits()[1]) {
+        //     outAngle = outAngle-360
+        // }
+
+        for (let i = 0; i < steps; i++) {
+            traceAngle = traceEnd - (i/steps) * (traceEnd-traceStart);
+            
+            let outAngle = radToDeg(calcOutputAngle(degToRad(traceAngle),opConfig))
+            if (outAngle > getOutputLimits()[1]) {
+                outAngle = outAngle-360
+            }
+
+            const plotCoords = [
+                traceAngle*getPlotScale()[0]+xMinTick+xOff,
+                yMinTick-((getOutputLimits()[0]-outAngle)*getPlotScale()[1])
+            ]
+            // pLine.points.push(plotCoords);
+            fLine.points.push(plotCoords);
+        }
+    }
+
 }
