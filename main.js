@@ -260,7 +260,7 @@ const plotDrag = plot.append("circle")
     // .data(plotPoints)
     .attr("r", 30)
     .attr("fill", "black")
-    .attr("opacity", 0.1)
+    .attr("opacity", 0.05)
     .call(d3.drag()
         .on("drag", function(event) {
             if (event.x > xMaxTick) return
