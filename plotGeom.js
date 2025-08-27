@@ -22,7 +22,9 @@ const plotAxes = [
     {id: "xMinTick", x1: xMinTick, x2: xMinTick, y1: xTickTop, y2: xTickBottom},
     {id: "xMaxTick", x1: xMaxTick, x2: xMaxTick, y1: xTickTop, y2: xTickBottom},
     {id: "yMinTick", x1: yTickLeft, x2: yTickRight, y1: yMinTick, y2: yMinTick},
-    {id: "yMaxTick", x1: yTickLeft, x2: yTickRight, y1: yMaxTick, y2: yMaxTick}
+    {id: "yMaxTick", x1: yTickLeft, x2: yTickRight, y1: yMaxTick, y2: yMaxTick},
+    {id: "xValTick", x1: (xMaxTick+xMinTick)/2, x2: (xMaxTick+xMinTick)/2, y1: xTickTop, y2: xTickBottom},
+    {id: "yValTick", x1: yTickLeft, x2: yTickRight, y1: (yMaxTick+yMinTick)/2, y2: (yMaxTick+yMinTick)/2},
 ]
 
 const plotLabels = [
@@ -33,6 +35,8 @@ const plotLabels = [
     {id: "xMaxLab", x: xMaxTick, y: xTickBottom+2.5, text: "360", textSize: "12px", anchor: "middle", baseline: "hanging", color: inputColor, weight: "medium"},
     {id: "yMinLab", x: yTickLeft-1, y: yMinTick, text: "38", textSize: "12px", anchor: "end", baseline: "middle", color: outputColor, weight: "medium"},
     {id: "yMaxLab", x: yTickLeft-1, y: yMaxTick, text: "136", textSize: "12px", anchor: "end", baseline: "middle", color: outputColor, weight: "medium"},
+    {id: "xValLab", x: (xMaxTick+xMinTick)/2, y: xTickBottom+2.5, text: "90", textSize: "12px", anchor: "middle", baseline: "hanging", color: inputColor, weight: "bold"},
+    {id: "yValLab", x: yTickLeft-1, y: (yMaxTick+yMinTick)/2, text: "90", textSize: "12px", anchor: "end", baseline: "middle", color: outputColor, weight: "bold"}
 ]
 
 const plotPoints = [

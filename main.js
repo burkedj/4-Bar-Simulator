@@ -257,10 +257,11 @@ const plotPoint = plot.append("circle")//.selectAll("circle")
 const plotDrag = plot.append("circle")
     .attr("r", 30)
     .attr("fill", "black")
-    .attr("opacity", 0.05)
+    .attr("opacity", 0)
     .call(d3.drag()
         .on("start", (event) => {
             configToggled = false;
+            plotDrag.attr("opacity", 0.05);
         })
         .on("drag", function(event) {
             if (!crossoverActive) configToggled = true;
@@ -269,14 +270,14 @@ const plotDrag = plot.append("circle")
             }
             let dragX = event.x + getInputLimits()[0]*getPlotScale()[0]
             if (event.x > xMaxTick) {
-                if (!configToggled) {
+                if (!configToggled && getInputLimits()[2] !== "Crank") {
                     toggleOpenCrossed();
                     configToggled = true;
                 }
                 dragX = (getInputLimits()[1] - simAngleTol)*getPlotScale()[0] + xMinTick
             }
             if (event.x < xMinTick) {
-                if (!configToggled) {
+                if (!configToggled && getInputLimits()[2] !== "Crank") {
                     toggleOpenCrossed();
                     configToggled = true;
                 }
@@ -287,6 +288,7 @@ const plotDrag = plot.append("circle")
         })
         .on("end", (event) => {
             configToggled = false;
+            plotDrag.attr("opacity", 0)
         })
     );
 

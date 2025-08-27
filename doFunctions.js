@@ -532,13 +532,54 @@ function updateDiagram() {
         .text(d => d.text)
         .style("display", d => d.visible ? "block" : "none");
 
+    axes
+        .attr("x1", d => {
+            if (d.id === "xValTick") return getPlotCoord()[0]
+            return d.x1
+        })
+        .attr("x2", d => {
+            if (d.id === "xValTick") return getPlotCoord()[0]
+            return d.x2
+        })
+        .attr("y1", d => {
+            if (d.id === "yValTick") return getPlotCoord()[1]
+            return d.y1
+        })
+        .attr("y2", d => {
+            if (d.id === "yValTick") return getPlotCoord()[1]
+            return d.y2
+        })
+
+    let outLinkAngle = getLinkAngles()[1]
+    if (getOutputLimits()[2] === "0-Rocker") {
+        if (outLinkAngle > 180) {
+            outLinkAngle = outLinkAngle-360
+        }
+    }
     plotLabs
         .text( d => {
             if (d.id === "xMinLab") return `${getInputLimits()[0].toFixed(0)}°`
             if (d.id === "xMaxLab") return `${getInputLimits()[1].toFixed(0)}°`
             if (d.id === "yMinLab") return `${getOutputLimits()[0].toFixed(0)}°`
             if (d.id === "yMaxLab") return `${getOutputLimits()[1].toFixed(0)}°`
+            if (d.id === "xValLab") return `${getInputAngle().toFixed(0)}°`
+            if (d.id === "yValLab") return `${outLinkAngle.toFixed(0)}°`
             return d.text
+        })
+        .attr("x", d => {
+            if (d.id === "xValLab") return getPlotCoord()[0]
+            return d.x
+        })
+        .attr("y", d => {
+            if (d.id === "yValLab") return getPlotCoord()[1]
+            return d.y
+        })
+        .attr("fill", d => {
+            if (d.id === "xMinLab" && getPlotCoord()[0] < xMinTick+20) return "transparent"
+            if (d.id === "xMaxLab" && getPlotCoord()[0] > xMaxTick-20) return "transparent"
+            if (d.id === "yMinLab" && getPlotCoord()[1] > yMinTick-10) return "transparent"
+            if (d.id === "yMaxLab" && getPlotCoord()[1] < yMaxTick+10) return "transparent"
+            return d.color
         })
 
     plotPoint
