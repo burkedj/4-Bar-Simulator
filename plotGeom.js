@@ -28,7 +28,7 @@ const plotAxes = [
 ]
 
 const plotLabels = [
-    {id: "plotTitle", x: plotWidth/2, y: 15, text: "Output Angle vs Input Angle", textSize: "13px", anchor: "middle", baseline: "middle", color: "black", weight: "bold"},
+    {id: "plotTitle", x: plotWidth/2, y: 15, text: "Output Anglez vs Input Angle", textSize: "13px", anchor: "middle", baseline: "middle", color: "black", weight: "bold"},
     {id: "xAxisTitle", x: plotWidth/2, y: plotHeight-10, text: "", textSize: "12px", anchor: "middle", baseline: "middle", color: inputColor, weight: "medium"},
     {id: "yAxisTitle", x: 15, y: plotHeight/2, text: "Output Angle (°)", textSize: "12px", anchor: "middle", baseline: "middle", color: outputColor, weight: "medium"},
     {id: "xMinLab", x: xMinTick, y: xTickBottom+2.5, text: "0", textSize: "12px", anchor: "middle", baseline: "hanging", color: inputColor, weight: "medium"},
@@ -45,5 +45,5 @@ const plotPoints = [
 ]
 const plotLines = [
     {id: "mainLine", points: [], opacity: 1},
-    {id: "fullLine", points: [], opacity: 0.25},
+    {id: "fullLine", points: [], opacity: 0.15},
 ]

@@ -86,3 +86,7 @@ let viewMinX = -50;
 let viewMaxX = 162.5;
 let viewMinY = -80;
 let viewMaxY = 50;
+
+let plotVariable = "Transmission Angle";
+const transMin = 0;
+const transMax = 180;

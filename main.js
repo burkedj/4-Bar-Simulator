@@ -240,12 +240,12 @@ const plotLine = plotLineGroup.selectAll("polyline")
     .enter()
     .append("polyline")
     .attr("stroke", "black")
-    .attr("stroke-width", 2)
+    .attr("stroke-width", 1.9)
     .attr("fill", "none")
     .attr("opacity", d => d.opacity)
     .attr("points", d => d.points)
     .attr("stroke-dasharray", d => {
-        if (d.id === "mainLine") return "3.5,4.5"
+        if (d.id === "mainLine") return "3,5"
     })
     .style("stroke-linecap", "round")
     
@@ -299,8 +299,9 @@ loadViewFromURL();
 setCouplerGeom()
 // setupSimulationControls();
 // initializeSlider();
-// setupRotationControls()
+setupRotationControls()
 setupAnimationSpeed()
+setupPlotVarSelect();
 setTracerVis("A1", aTracersVis);
 setTracerVis("B1", bTracersVis);
 setTracerVis("Cp", cTracersVis);

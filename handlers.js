@@ -204,6 +204,16 @@ inputAngleSlider.addEventListener("pointerdown", () => {
 
 // }
 
+function setupPlotVarSelect() {
+    document.querySelectorAll('input[name="plotVarOption"]').forEach((radio) => {
+        radio.addEventListener("change", (event) => {
+            const plotVarSelection = event.target.value;
+            plotVariable = plotVarSelection;
+            updateDiagram();
+        });
+    });
+}
+
 function setupRotationControls() {
     const rotationSlider = document.getElementById("rotateSlider");
     // const rotationValue = document.getElementById("rotateValue");

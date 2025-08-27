@@ -395,8 +395,16 @@ function getPlotScale(){
     const xRange = xMaxTick-xMinTick;
     const yRange = yMaxTick-yMinTick;
 
-    const inRange = getInputLimits()[1]-getInputLimits()[0];
-    const outRange = getOutputLimits()[1]-getOutputLimits()[0];
+
+    const inRange = getInputLimits()[1]-getInputLimits()[0];;
+    let outRange = 1;
+
+    if (plotVariable === "Output Angle") {
+        // inRange = getInputLimits()[1]-getInputLimits()[0];
+        outRange = getOutputLimits()[1]-getOutputLimits()[0];
+    } else if (plotVariable === "Transmission Angle") {
+        outRange = transMax-transMin;
+    }
 
     const xScale = xRange/inRange;
     const yScale = yRange/outRange;
@@ -407,7 +415,7 @@ function getPlotScale(){
 function getPlotCoord() {
     const inAngle = getInputAngle();
     let outAngle = getLinkAngles()[1];
-    // const transAngle = getTransmissionAngle();
+    const transAngle = getTransmissionAngle();
 
     let xOff = 0;
     let yOff = 0;
@@ -420,15 +428,52 @@ function getPlotCoord() {
         outAngle = outAngle-360
     }
 
-    const plotVar = outAngle
+    let plotVar = 0;
+    if (plotVariable === "Output Angle") {
+        plotVar = outAngle;
+    } else if (plotVariable === "Transmission Angle") {
+        plotVar = transAngle;
+    }
+    
 
     const xScale = getPlotScale()[0];
     const yScale = getPlotScale()[1];
 
     const xCoord = inAngle*xScale+xMinTick + xOff;
-    const yCoord = yMinTick-((getOutputLimits()[0]-plotVar)*yScale);
+    const yCoord = yMinTick-((getPlotLimits()[2]-plotVar)*yScale);
 
     return [xCoord, yCoord]
+}
+
+function getPlotVarValue() {
+    let plotVal = 0;
+    if (plotVariable === "Output Angle") {
+        plotVal = getLinkAngles()[1]
+        if (getOutputLimits()[2] === "0-Rocker") {
+            if (plotVal > 180) {
+                plotVal = plotVal-360
+            }
+        }
+    } else if (plotVariable === "Transmission Angle") {
+        plotVal = getTransmissionAngle()
+    }
+    return plotVal
+}
+function getPlotLimits() {
+    let xMin = 0;
+    let xMax = 0;
+    let yMin = 0;
+    let yMax = 0;
+
+    if (plotVariable === "Output Angle") {
+        yMin = getOutputLimits()[0];
+        yMax = getOutputLimits()[1];
+    } else if (plotVariable === "Transmission Angle") {
+        yMin = transMin;
+        yMax = transMax;
+    }
+
+    return [xMin, xMax, yMin, yMax]
 }
 
 function getLinkageProperties() {

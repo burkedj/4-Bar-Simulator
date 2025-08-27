@@ -437,10 +437,16 @@ function stopAnimationLoop() {
     }
 }
 
+function updatePlotSelection() {
+    const plotVarSelect = document.querySelector('input[name="plotVarOption"]:checked').value;
+    plotVariable = plotVarSelect;
+}
+
 function updateDiagram() {
     setOpenCrossed();
     updateStats()
     calcPlotPath(linkageConfig);
+    updatePlotSelection()
 
     // setTracePoints("A1");
     // setTracePoints("B1");
@@ -550,20 +556,15 @@ function updateDiagram() {
             return d.y2
         })
 
-    let outLinkAngle = getLinkAngles()[1]
-    if (getOutputLimits()[2] === "0-Rocker") {
-        if (outLinkAngle > 180) {
-            outLinkAngle = outLinkAngle-360
-        }
-    }
     plotLabs
         .text( d => {
             if (d.id === "xMinLab") return `${getInputLimits()[0].toFixed(0)}°`
             if (d.id === "xMaxLab") return `${getInputLimits()[1].toFixed(0)}°`
-            if (d.id === "yMinLab") return `${getOutputLimits()[0].toFixed(0)}°`
-            if (d.id === "yMaxLab") return `${getOutputLimits()[1].toFixed(0)}°`
+            if (d.id === "yMinLab") return `${getPlotLimits()[2].toFixed(0)}°`
+            if (d.id === "yMaxLab") return `${getPlotLimits()[3].toFixed(0)}°`
             if (d.id === "xValLab") return `${getInputAngle().toFixed(0)}°`
-            if (d.id === "yValLab") return `${outLinkAngle.toFixed(0)}°`
+            if (d.id === "yValLab") return `${getPlotVarValue().toFixed(0)}°`
+            if (d.id === "plotTitle") return `${plotVariable} vs Input Angle`
             return d.text
         })
         .attr("x", d => {
@@ -586,8 +587,9 @@ function updateDiagram() {
         .attr("cx", getPlotCoord()[0])
         .attr("cy", getPlotCoord()[1])
         .attr("fill", (linkageConfig === "Crossed") ? "black" : "white")
-        .attr("stroke-width", (linkageConfig === "Crossed") ? 0 : 2)
+        .attr("stroke-width", (linkageConfig === "Crossed") ? 0 : 1.9)
         .attr("stroke", (linkageConfig === "Crossed") ? "none" : "black")
+        .attr("r", (linkageConfig === "Crossed") ? 4.5 : 3.75)
         // .attr("cx", d => d.x)
         // .attr("cy", d => d.y)
     plotDrag
@@ -598,7 +600,7 @@ function updateDiagram() {
     plotLine
         .attr("points", d => d.points)
 
-    document.getElementById("linkageSummary").innerHTML = getLinkageProperties() 
+    // document.getElementById("linkageSummary").innerHTML = getLinkageProperties() 
     // viewTransform();
     // initializeSlider();
     if (getInputLimits()[2] === "Crank") {

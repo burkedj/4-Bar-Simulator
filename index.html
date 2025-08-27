@@ -48,6 +48,14 @@
         viewBox="0 0 600 150">
     </svg>
     <br>
+    <div id="plotVarRadio" class="radio-group" style="margin-bottom: 10px; margin-top: 4px">
+        <b style="margin-top: 0px; font-size: 9pt; font-family: sans-serif;">Plot Variable:</b>
+        <label><input type="radio" name="plotVarOption" checked value="Output Angle">Output Angle</label>
+        <label><input type="radio" name="plotVarOption" value="Transmission Angle">Transmission Angle</label>
+        <!-- <label><input type="radio" name="plotVarOption" value="Speed Ratio">Speed Ratio</label> -->
+        <!-- <label><input type="radio" name="plotVarOption" value="Torque Ratio">Torque Ratio</label> -->
+        <!-- </b> -->
+    </div>
     <b style="margin-top: 0px; font-size: 9pt; font-family: sans-serif;">Controls: 
     <button id="toggleAnimation">Play</button>
     <button id="toggleDir">Reverse</button>
@@ -60,12 +68,12 @@
         <!-- <input type="range" id="inputSpeedSlider" orient="horizontal" value="10" min="0" max="100" step="1" style="display: none">
         <span id="speedValue"></span> -->
         <br>
-        <label for="inputSpeedSlider">Drive Speed:</label>
+        <b><label for="inputSpeedSlider" style="font-weight: bold">Drive Speed:</label></b>
         <input type="range" id="inputSpeedSlider" orient="horizontal" value="10" min="0" max="100" step="1">
         <span id="speedValue"></span>
     </div>
     <br>
-    <div id="linkageSummary" style="margin-top: 6px; font-family: sans-serif; font-size: 9pt;"></div>
+    <!-- <div id="linkageSummary" style="margin-top: 6px; font-family: sans-serif; font-size: 9pt;"></div> -->
     <script src="defaults.js"></script>
     <script src="conversions.js"></script>
     <script src="geometry.js"></script>

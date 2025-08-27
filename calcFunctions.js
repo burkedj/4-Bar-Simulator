@@ -1,4 +1,16 @@
 function calcLinkAngle(startJoint, endJoint) {
+    let theta = -radToDeg(Math.atan((endJoint[1]-startJoint[1])/(endJoint[0]-startJoint[0])));
+    if (endJoint[0] < startJoint[0]) {
+        theta = 180 + theta;
+    } else if (endJoint[1] > startJoint[1]) {
+        theta = 360 + theta;
+    }
+    if (theta < 0 )  theta = 360 + theta;
+
+    return [theta]
+}
+
+function getLinkAngle(startJoint, endJoint) {
     const endJ = joints.find(d => d.id === endJoint);
     const startJ = joints.find(d => d.id === startJoint);
 
@@ -229,7 +241,28 @@ function calcJointPosition(node, angleDeg, config) {
     }
 }
 
+function calcCouplerLinkAngle(inAngle) {
+    const joint1 = calcJointPosition("A1",inAngle);
+    const joint2 = calcJointPosition("B1",inAngle);
+    const c_th = calcLinkAngle(joint1, joint2)
+
+    return c_th
+}
+function calcTransmissionAngle(inAngle) {
+    const c_th = calcCouplerLinkAngle(inAngle)
+    const b_th = radToDeg(calcOutputAngle(degToRad(inAngle)))
+
+    let th_trans = Math.abs(b_th - c_th);
+
+    if (th_trans > 180) th_trans = 360 - th_trans
+
+    // if (linkageConfig === "Crossed") th_trans = -th_trans;
+
+    return th_trans;
+}
+
 function calcPlotPath(config) {
+    // if (plotVariable === "Transmission Angle")
     const steps = 10000;
     let traceStart = 0;
     let traceEnd = 0;
@@ -264,17 +297,20 @@ function calcPlotPath(config) {
     for (let i = 0; i < steps; i++) {
         traceAngle = traceStart + (i/steps) * (traceEnd-traceStart);
 
-        let outAngle = radToDeg(calcOutputAngle(degToRad(traceAngle),config))
-        if (outAngle > getOutputLimits()[1]) {
-            outAngle = outAngle-360
-        }
+        if (plotVariable === "Output Angle") {
+            let outAngle = radToDeg(calcOutputAngle(degToRad(traceAngle),config))
+            if (outAngle > getOutputLimits()[1]) {
+                outAngle = outAngle-360
+            }
 
-        const plotCoords = [
-            traceAngle*getPlotScale()[0]+xMinTick+xOff,
-            yMinTick-((getOutputLimits()[0]-outAngle)*getPlotScale()[1]) + yOff
-        ]
-        pLine.points.push(plotCoords);
-        fLine.points.push(plotCoords);
+            const plotCoords = [
+                traceAngle*getPlotScale()[0]+xMinTick+xOff,
+                yMinTick-((getOutputLimits()[0]-outAngle)*getPlotScale()[1]) + yOff
+            ]
+            pLine.points.push(plotCoords);
+            fLine.points.push(plotCoords);
+        }
+        
     }
 
     [traceStart, traceEnd] = getFullTracerLimits("Cp")
@@ -286,17 +322,27 @@ function calcPlotPath(config) {
         for (let i = 0; i < steps; i++) {
             traceAngle = traceEnd - (i/steps) * (traceEnd-traceStart);
             
-            let outAngle = radToDeg(calcOutputAngle(degToRad(traceAngle),opConfig))
-            if (outAngle > getOutputLimits()[1]) {
-                outAngle = outAngle-360
-            }
+            if (plotVariable === "Output Angle") {
+                let outAngle = radToDeg(calcOutputAngle(degToRad(traceAngle),opConfig))
+                if (outAngle > getOutputLimits()[1]) {
+                    outAngle = outAngle-360
+                }
 
-            const plotCoords = [
-                traceAngle*getPlotScale()[0]+xMinTick+xOff,
-                yMinTick-((getOutputLimits()[0]-outAngle)*getPlotScale()[1])
-            ]
-            fLine.points.push(plotCoords);
-            if (crossoverActive) {
+                const plotCoords = [
+                    traceAngle*getPlotScale()[0]+xMinTick+xOff,
+                    yMinTick-((getOutputLimits()[0]-outAngle)*getPlotScale()[1])
+                ]
+                fLine.points.push(plotCoords);
+                if (crossoverActive) {
+                    pLine.points.push(plotCoords);
+                }
+            } 
+            else if (plotVariable === "Transmission Angle") {
+                const plotCoords = [
+                    traceAngle*getPlotScale()[0]+xMinTick+xOff,
+                    yMinTick-((getPlotLimits()[2]-calcTransmissionAngle(traceAngle))*getPlotScale()[1])
+                ]
+                fLine.points.push(plotCoords);
                 pLine.points.push(plotCoords);
             }
         }
