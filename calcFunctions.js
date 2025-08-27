@@ -309,6 +309,13 @@ function calcPlotPath(config) {
             ]
             pLine.points.push(plotCoords);
             fLine.points.push(plotCoords);
+        } else if (plotVariable === "Transmission Angle") {
+            const plotCoords = [
+                traceAngle*getPlotScale()[0]+xMinTick+xOff,
+                yMinTick-((getPlotLimits()[2]-calcTransmissionAngle(traceAngle))*getPlotScale()[1])
+            ]
+            fLine.points.push(plotCoords);
+            pLine.points.push(plotCoords);
         }
         
     }
@@ -337,14 +344,14 @@ function calcPlotPath(config) {
                     pLine.points.push(plotCoords);
                 }
             } 
-            else if (plotVariable === "Transmission Angle") {
-                const plotCoords = [
-                    traceAngle*getPlotScale()[0]+xMinTick+xOff,
-                    yMinTick-((getPlotLimits()[2]-calcTransmissionAngle(traceAngle))*getPlotScale()[1])
-                ]
-                fLine.points.push(plotCoords);
-                pLine.points.push(plotCoords);
-            }
+            // else if (plotVariable === "Transmission Angle") {
+            //     const plotCoords = [
+            //         traceAngle*getPlotScale()[0]+xMinTick+xOff,
+            //         yMinTick-((getPlotLimits()[2]-calcTransmissionAngle(traceAngle))*getPlotScale()[1])
+            //     ]
+            //     fLine.points.push(plotCoords);
+            //     pLine.points.push(plotCoords);
+            // }
         }
     }
 
