@@ -228,7 +228,7 @@ const plotLabs = plotLabGroup.selectAll("text")
     .attr("font-family", "sans-serif")
     .attr("text-anchor", d => d.anchor)
     .attr("dominant-baseline", d => d.baseline)
-    .attr("font-weight", "bold")
+    .attr("font-weight", d => d.weight)
     .attr("fill", d => d.color)
     .style("display", d => {
         if (d.id === "yAxisTitle") return "none";
@@ -248,32 +248,45 @@ const plotLine = plotLineGroup.selectAll("polyline")
         if (d.id === "mainLine") return "3.5,4.5"
     })
     .style("stroke-linecap", "round")
-
-// const plotPointGroup = plot.append("g")
+    
 const plotPoint = plot.append("circle")//.selectAll("circle")
     // .attr("cx", getInputAngle())
     // .attr("cy", yMinTick-50)
-    // .data(plotPoints)
     .attr("r", 4)
     .attr("fill", "black")
 const plotDrag = plot.append("circle")
-    // .data(plotPoints)
     .attr("r", 30)
     .attr("fill", "black")
     .attr("opacity", 0.05)
     .call(d3.drag()
+        .on("start", (event) => {
+            configToggled = false;
+        })
         .on("drag", function(event) {
-            if (event.x > xMaxTick) return
-            if (event.x < xMinTick) return
-            // d.x = event.x;
-            // d.y = event.y;
-            // let dragX = 0;
-            // if (getInputLimits()[2] !== "Crank") {
-                const dragX = event.x + getInputLimits()[0]*getPlotScale()[0]
-            // }
+            if (!crossoverActive) configToggled = true;
+            if (configToggled && event.x < xMaxTick-5 && event.x > xMinTick+5) {
+                    configToggled = false;
+            }
+            let dragX = event.x + getInputLimits()[0]*getPlotScale()[0]
+            if (event.x > xMaxTick) {
+                if (!configToggled) {
+                    toggleOpenCrossed();
+                    configToggled = true;
+                }
+                dragX = (getInputLimits()[1] - simAngleTol)*getPlotScale()[0] + xMinTick
+            }
+            if (event.x < xMinTick) {
+                if (!configToggled) {
+                    toggleOpenCrossed();
+                    configToggled = true;
+                }
+                dragX = (getInputLimits()[0] + simAngleTol)*getPlotScale()[0] + xMinTick
+            }
             rotateInputLink((dragX-xMinTick)/getPlotScale()[0])
-            // calcPlotPath(linkageConfig);
             updateDiagram();
+        })
+        .on("end", (event) => {
+            configToggled = false;
         })
     );
 
@@ -282,16 +295,13 @@ const plotDrag = plot.append("circle")
 loadJointsFromURL();
 loadViewFromURL();
 setCouplerGeom()
-setupSimulationControls();
-initializeSlider();
-setupRotationControls()
+// setupSimulationControls();
+// initializeSlider();
+// setupRotationControls()
 setupAnimationSpeed()
 setTracerVis("A1", aTracersVis);
 setTracerVis("B1", bTracersVis);
 setTracerVis("Cp", cTracersVis);
-// setTracePoints("A1");
-// setTracePoints("B1");
-// setTracePoints("Cp");
 drawTracePaths();
 calcPlotPath(linkageConfig)
 updateDiagram();

@@ -1,6 +1,6 @@
 
 const xAxisMargin = 37.5;
-const yAxisMargin = 20;
+const yAxisMargin = 22.5;
 const TickLength = 10;
 const TickOffset = 10;
 
@@ -26,17 +26,18 @@ const plotAxes = [
 ]
 
 const plotLabels = [
-    {id: "plotTitle", x: plotWidth/2, y: 15, text: "Output Angle", textSize: "13px", anchor: "middle", baseline: "middle", color: "black"},
-    {id: "xAxisTitle", x: plotWidth/2, y: plotHeight-10, text: "Input Angle", textSize: "12px", anchor: "middle", baseline: "middle", color: inputColor},
-    {id: "yAxisTitle", x: 15, y: plotHeight/2, text: "Output Angle (°)", textSize: "12px", anchor: "middle", baseline: "middle", color: outputColor},
-    {id: "xMinLab", x: xMinTick, y: xTickBottom+2.5, text: "0", textSize: "12px", anchor: "middle", baseline: "hanging", color: inputColor},
-    {id: "xMaxLab", x: xMaxTick, y: xTickBottom+2.5, text: "360", textSize: "12px", anchor: "middle", baseline: "hanging", color: inputColor},
-    {id: "yMinLab", x: yTickLeft-1, y: yMinTick, text: "38", textSize: "12px", anchor: "end", baseline: "middle", color: outputColor},
-    {id: "yMaxLab", x: yTickLeft-1, y: yMaxTick, text: "136", textSize: "12px", anchor: "end", baseline: "middle", color: outputColor},
+    {id: "plotTitle", x: plotWidth/2, y: 15, text: "Output Angle vs Input Angle", textSize: "13px", anchor: "middle", baseline: "middle", color: "black", weight: "bold"},
+    {id: "xAxisTitle", x: plotWidth/2, y: plotHeight-10, text: "", textSize: "12px", anchor: "middle", baseline: "middle", color: inputColor, weight: "medium"},
+    {id: "yAxisTitle", x: 15, y: plotHeight/2, text: "Output Angle (°)", textSize: "12px", anchor: "middle", baseline: "middle", color: outputColor, weight: "medium"},
+    {id: "xMinLab", x: xMinTick, y: xTickBottom+2.5, text: "0", textSize: "12px", anchor: "middle", baseline: "hanging", color: inputColor, weight: "medium"},
+    {id: "xMaxLab", x: xMaxTick, y: xTickBottom+2.5, text: "360", textSize: "12px", anchor: "middle", baseline: "hanging", color: inputColor, weight: "medium"},
+    {id: "yMinLab", x: yTickLeft-1, y: yMinTick, text: "38", textSize: "12px", anchor: "end", baseline: "middle", color: outputColor, weight: "medium"},
+    {id: "yMaxLab", x: yTickLeft-1, y: yMaxTick, text: "136", textSize: "12px", anchor: "end", baseline: "middle", color: outputColor, weight: "medium"},
 ]
 
 const plotPoints = [
-    {id: "mainPoint", x: "", y: ""}
+    {id: "minXO", x: "", y: "", opacity: 0.25},
+    {id: "maxXO", x: "", y: "", opacity: 0.25}
 ]
 const plotLines = [
     {id: "mainLine", points: [], opacity: 1},

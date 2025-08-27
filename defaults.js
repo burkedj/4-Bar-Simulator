@@ -56,7 +56,8 @@ const labelOffsetX = 5;
 const labelOffsetY = -3;
 
 // let lockedConfig = null;
-let linkageConfig = "Open"
+let linkageConfig = "Open";
+let configToggled = false;
 
 let couplerSetLength = 0;
 let couplerSetAngle = 0;

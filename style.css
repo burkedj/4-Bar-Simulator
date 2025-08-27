@@ -10,8 +10,8 @@ button {
 }
 
 input[type="range"][orient="horizontal"] {
-    width: 300px;
-    margin-top: 4px;
+    width: 400px;
+    margin-top: 0px;
 }
 input[type="range"][orient="vertical"] {
     /* writing-mode: vertical-lr; */

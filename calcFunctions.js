@@ -283,11 +283,6 @@ function calcPlotPath(config) {
         let opConfig = "Open";
         if (config === "Open") opConfig = "Crossed";
 
-        // let outAngle = radToDeg(calcOutputAngle(degToRad(traceAngle),opConfig))
-        // if (outAngle > getOutputLimits()[1]) {
-        //     outAngle = outAngle-360
-        // }
-
         for (let i = 0; i < steps; i++) {
             traceAngle = traceEnd - (i/steps) * (traceEnd-traceStart);
             
@@ -300,8 +295,10 @@ function calcPlotPath(config) {
                 traceAngle*getPlotScale()[0]+xMinTick+xOff,
                 yMinTick-((getOutputLimits()[0]-outAngle)*getPlotScale()[1])
             ]
-            // pLine.points.push(plotCoords);
             fLine.points.push(plotCoords);
+            if (crossoverActive) {
+                pLine.points.push(plotCoords);
+            }
         }
     }
 

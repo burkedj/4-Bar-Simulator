@@ -28,24 +28,6 @@
         <input type="range" id="rotateSlider" orient="vertical" value="0" min="0" max="360" step="1">
         <!-- <span id = "rotateValue" style="margin-top: 510px; margin-bottom: -5px; font-family: sans-serif; font-size: 10pt"></span> -->
     </div>
-    <div id="simControls" style="margin-top: 0px; margin-bottom: 9px; display: block; font-family: sans-serif; font-size: 9pt">
-        <label id="sliderLabel">Drive Angle:</label>
-        <input type="range" id="inputAngleSlider" orient="horizontal" value="90" min="0" max="360" step="0.001">
-        <span id="angleValue"></span>
-        <!-- <input type="range" id="inputSpeedSlider" orient="horizontal" value="10" min="0" max="100" step="1" style="display: none">
-        <span id="speedValue"></span> -->
-        <br>
-        <label for="inputSpeedSlider">Drive Speed:</label>
-        <input type="range" id="inputSpeedSlider" orient="horizontal" value="10" min="0" max="100" step="1">
-        <span id="speedValue"></span>
-    </div>
-    
-    <b style="margin-top: 4px; font-size: 9pt; font-family: sans-serif;">Controls: 
-        <button id="toggleAnimation">Play</button>
-        <button id="toggleDir">Reverse</button>
-        <button id="toggleCross">Crossover</button>
-    </b>
-    <br>
     <b style="margin-top: 4px; font-size: 9pt; font-family: sans-serif;">Show/Hide: 
     <button id="toggleStats">Input/Ouput Stats</button>
     <button id="toggleLengths">Link Lengths</button>
@@ -65,6 +47,23 @@
         style="border:1px solid black; margin-top: 6px;"
         viewBox="0 0 600 150">
     </svg>
+    <b style="margin-top: 0px; font-size: 9pt; font-family: sans-serif;">Controls: 
+    <button id="toggleAnimation">Play</button>
+    <button id="toggleDir">Reverse</button>
+    <button id="toggleCross">Crossover</button>
+    </b>
+    <div id="simControls" style="margin-top: 0px; margin-bottom: 6px; display: block; font-family: sans-serif; font-size: 9pt">
+        <!-- <label id="sliderLabel">Drive Angle:</label>
+        <input type="range" id="inputAngleSlider" orient="horizontal" value="90" min="0" max="360" step="0.001">
+        <span id="angleValue"></span> -->
+        <!-- <input type="range" id="inputSpeedSlider" orient="horizontal" value="10" min="0" max="100" step="1" style="display: none">
+        <span id="speedValue"></span> -->
+        <br>
+        <label for="inputSpeedSlider">Drive Speed:</label>
+        <input type="range" id="inputSpeedSlider" orient="horizontal" value="10" min="0" max="100" step="1">
+        <span id="speedValue"></span>
+    </div>
+    <br>
     <div id="linkageSummary" style="margin-top: 6px; font-family: sans-serif; font-size: 9pt;"></div>
     <script src="defaults.js"></script>
     <script src="conversions.js"></script>

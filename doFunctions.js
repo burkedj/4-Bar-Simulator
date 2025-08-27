@@ -100,25 +100,25 @@ function toggleCoupler(link) {
     }
 }
 
-function initializeSlider() {
-    let [minAngle, maxAngle, inputClass] = getInputLimits(); // in degrees
-    let currentAngle = getInputAngle(); // in degrees
+// function initializeSlider() {
+//     let [minAngle, maxAngle, inputClass] = getInputLimits(); // in degrees
+//     let currentAngle = getInputAngle(); // in degrees
 
-    const inputSlider = document.getElementById("inputAngleSlider");
-    const angleDisplay = document.getElementById("angleValue");
+//     const inputSlider = document.getElementById("inputAngleSlider");
+//     const angleDisplay = document.getElementById("angleValue");
 
-    if (inputClass === "0-Rocker") {
-        if (currentAngle > 180) {
-            currentAngle = currentAngle -360
-        }
-    }
+//     if (inputClass === "0-Rocker") {
+//         if (currentAngle > 180) {
+//             currentAngle = currentAngle -360
+//         }
+//     }
 
-    inputSlider.min = minAngle + simAngleTol;
-    inputSlider.max = maxAngle - simAngleTol;
-    inputSlider.value = currentAngle;
+//     inputSlider.min = minAngle + simAngleTol;
+//     inputSlider.max = maxAngle - simAngleTol;
+//     inputSlider.value = currentAngle;
     
-    angleDisplay.textContent = `${currentAngle.toFixed(0)}°`; 
-}
+//     angleDisplay.textContent = `${currentAngle.toFixed(0)}°`; 
+// }
 
 function rotateDiagram(rotAngle) {
     currentRotation = rotAngle;
@@ -282,14 +282,15 @@ function invertLinkage() {
 }
 
 function toggleOpenCrossed() {
-    if (linkageConfig === "Open") {
+    if (configToggled) return
+    if (linkageConfig == "Open") {
         linkageConfig = "Crossed";
     } else {
         linkageConfig = "Open";
     }
-    rotateInputLink(getInputAngle());
-    drawTracePaths();
-    updateDiagram();
+    // rotateInputLink(getInputAngle());
+    // drawTracePaths();
+    // updateDiagram();
 }
 
 function snapCoupler() {
@@ -444,9 +445,6 @@ function updateDiagram() {
     // setTracePoints("A1");
     // setTracePoints("B1");
     // setTracePoints("Cp");
-    // plotPoints.find(d => d.id === "mainPoint").x = getPlotCoord()[0]
-    // plotPoints.find(d => d.id === "mainPoint").y = getPlotCoord()[1]
-
     paths
         .attr("points", d => d.points)
     fullPaths
@@ -546,6 +544,9 @@ function updateDiagram() {
     plotPoint
         .attr("cx", getPlotCoord()[0])
         .attr("cy", getPlotCoord()[1])
+        .attr("fill", (linkageConfig === "Crossed") ? "black" : "white")
+        .attr("stroke-width", (linkageConfig === "Crossed") ? 0 : 2)
+        .attr("stroke", (linkageConfig === "Crossed") ? "none" : "black")
         // .attr("cx", d => d.x)
         // .attr("cy", d => d.y)
     plotDrag
@@ -558,7 +559,7 @@ function updateDiagram() {
 
     document.getElementById("linkageSummary").innerHTML = getLinkageProperties() 
     // viewTransform();
-    initializeSlider();
+    // initializeSlider();
     if (getInputLimits()[2] === "Crank") {
         // document.getElementById("toggleDir").disabled = false;
         document.getElementById("toggleCross").disabled = true;
@@ -567,19 +568,3 @@ function updateDiagram() {
         document.getElementById("toggleCross").disabled = false;
     }
 }
-
-// function updatePlot(){
-//     plotPoints.find(d => d.id === "mainPoint").x = getPlotCoord()[0]
-//     plotPoints.find(d => d.id === "mainPoint").y = getPlotCoord()[1]
-
-//     plotPoint
-//         // .attr("cx", getPlotCoord()[0])
-//         // .attr("cy", getPlotCoord()[1])
-//         .attr("cx", d => d.x)
-//         .attr("cy", d => d.y)
-//     plotDrag
-//         // .attr("cx", getPlotCoord()[0])
-//         // .attr("cy", getPlotCoord()[1])
-//         .attr("cx", d => d.x)
-//         .attr("cy", d => d.y)
-// }

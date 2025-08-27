@@ -88,6 +88,9 @@ document.getElementById("invertLinkage").addEventListener("click", () => {
 });
 document.getElementById("toggleOpenCrossed").addEventListener("click", () => {
     toggleOpenCrossed();
+    rotateInputLink(getInputAngle());
+    drawTracePaths();
+    updateDiagram();
 });
 
 document.getElementById("snapCoupler").addEventListener("click", () => {
@@ -187,19 +190,19 @@ inputAngleSlider.addEventListener("pointerdown", () => {
     setCouplerGeom();
 })
 
-function setupSimulationControls() {
-    const inputSlider = document.getElementById("inputAngleSlider");
-    const angleDisplay = document.getElementById("angleValue");
+// function setupSimulationControls() {
+//     const inputSlider = document.getElementById("inputAngleSlider");
+//     const angleDisplay = document.getElementById("angleValue");
 
-    inputSlider.addEventListener("input", () => {
-        const angleDeg = parseFloat(inputSlider.value);
-        angleDisplay.textContent = `${angleDeg.toFixed(1)}°`;
+//     inputSlider.addEventListener("input", () => {
+//         const angleDeg = parseFloat(inputSlider.value);
+//         angleDisplay.textContent = `${angleDeg.toFixed(1)}°`;
 
-        rotateInputLink(angleDeg);
-        updateDiagram();
-    });
+//         rotateInputLink(angleDeg);
+//         updateDiagram();
+//     });
 
-}
+// }
 
 function setupRotationControls() {
     const rotationSlider = document.getElementById("rotateSlider");

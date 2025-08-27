@@ -275,17 +275,21 @@ function getOpenCrossed() {
     }
     if (crossoverActive & ((getOutputLimits()[2] !== "Rocker" | (getOutputLimits()[2] === "Rocker" & getInputLimits()[2] === "Rocker")) & getInputLimits()[2] !== "Crank")) {
         if (tempAngle < (getInputLimits()[0]+simAngleTol*2)) {
-            if (linkageConfig == "Open") {
+            if (!configToggled) {
+                if (linkageConfig === "Open") {
                 linkConfig = "Crossed";
-            } else {
-                linkConfig = "Open";
+                } else {
+                    linkConfig = "Open";
+                }
             }
         } 
         else if ((tempAngle > (getInputLimits()[1]-simAngleTol*2)) & getInputLimits()[2] !== "Crank") {
-            if (linkageConfig == "Open") {
+            if (!configToggled) {
+                if (linkageConfig === "Open") {
                 linkConfig = "Crossed";
-            } else {
-                linkConfig = "Open";
+                } else {
+                    linkConfig = "Open";
+                }
             }
         }
     }
@@ -437,10 +441,9 @@ function getLinkageProperties() {
     // const outputAngle = radToDeg(calcOutputAngle(degToRad(inputAngle),linkageConfig));
     const openCrossed = getOpenCrossed();
 
-    return `<b>Config:</b> ${openCrossed}<br>
-    <b>Transmission Angle (μ):</b> ${getTransmissionAngle().toFixed(1)}°<br>`;
+    return `<b>Transmission Angle (μ):</b> ${getTransmissionAngle().toFixed(1)}°<br>`;
 
-
+    // <b>Config:</b> ${openCrossed}<br></br>
     // `<b>Input Link:</b> ${inputClass}<br>
     // <b>Range of Motion:</b> (${A_min.toFixed(1)}°, ${A_max.toFixed(1)}°)<br>
     // <b>Current Angle:</b> ${inputAngle.toFixed(1)}°<br>
