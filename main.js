@@ -212,9 +212,17 @@ const axes = axisGroup.selectAll("line")
     .attr("y1", d => d.y1)
     .attr("x2", d => d.x2)
     .attr("y2", d => d.y2)    
-    .style("stroke-linecap", "round")
+    .style("stroke-linecap", "round");
     // .style("display", "none")
     // .style("pointer-events", "none");
+
+const trans45 = yMinTick+(yMaxTick-yMinTick)*.25
+const trasn135 = yMinTick+(yMaxTick-yMinTick)*.75
+const transIdeal = plot.append("polygon")
+    .attr("stroke", "black")
+    .attr("opacity", 0.1)
+    .attr("points", `${axesOrigin[0]},${trasn135},${xMaxTick+TickOffset},${trasn135},${xMaxTick+TickOffset},${trans45},${axesOrigin[0]},${trans45}`)
+    .style("display", plotVariable === "Transmission Angle" ? "block" : "none")
 
 const plotLabGroup = plot.append("g")
 const plotLabs = plotLabGroup.selectAll("text")
@@ -233,6 +241,7 @@ const plotLabs = plotLabGroup.selectAll("text")
     .style("display", d => {
         if (d.id === "yAxisTitle") return "none";
     })
+    // .style("pointer-events", "none");
 
 const plotLineGroup = plot.append("g")
 const plotLine = plotLineGroup.selectAll("polyline")
@@ -245,7 +254,7 @@ const plotLine = plotLineGroup.selectAll("polyline")
     .attr("opacity", d => d.opacity)
     .attr("points", d => d.points)
     .attr("stroke-dasharray", d => {
-        if (d.id === "mainLine") return "3,5"
+        if (d.id === "mainLine") return "3,6"
     })
     .style("stroke-linecap", "round")
     

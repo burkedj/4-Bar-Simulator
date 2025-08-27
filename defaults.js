@@ -18,7 +18,7 @@ let bTracersVis = false;
 let cTracersVis = true;
 
 const windowWidth = 600;
-const windowHeight = 500;
+const windowHeight = 400;
 // const offsetX = 230;
 const offsetX = -56.25;
 // const offsetY = 230+25;
@@ -46,7 +46,7 @@ const defaultJoints = [
 // const traceSteps = 5;
 
 const defaultX = windowWidth/2;
-const defaultY = windowHeight/2;
+const defaultY = windowHeight/2+25;
 const defaultScale = 1.98;
 const defaultRotation = 0;
 

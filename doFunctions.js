@@ -576,10 +576,28 @@ function updateDiagram() {
             return d.y
         })
         .attr("fill", d => {
+            if (d.id === "yMinLab") {
+                if (getPlotCoord()[1] > yMinTick-10) {
+                    return "transparent"
+                } else if (plotVariable === "Output Angle") {
+                    return outputColor
+                }
+            }
+            if (d.id === "yMaxLab") {
+                if (getPlotCoord()[1] < yMaxTick+10) {
+                    return "transparent"
+                } else if (plotVariable === "Output Angle") {
+                    return outputColor
+                }
+            }
+            if (d.id === "yValLab" && plotVariable === "Output Angle") {
+                return outputColor
+            }
+
             if (d.id === "xMinLab" && getPlotCoord()[0] < xMinTick+20) return "transparent"
             if (d.id === "xMaxLab" && getPlotCoord()[0] > xMaxTick-20) return "transparent"
-            if (d.id === "yMinLab" && getPlotCoord()[1] > yMinTick-10) return "transparent"
-            if (d.id === "yMaxLab" && getPlotCoord()[1] < yMaxTick+10) return "transparent"
+            // if (d.id === "yMinLab" && getPlotCoord()[1] > yMinTick-10) return "transparent"
+            // if (d.id === "yMaxLab" && getPlotCoord()[1] < yMaxTick+10) return "transparent"
             return d.color
         })
 
@@ -599,6 +617,8 @@ function updateDiagram() {
         // .attr("cy", d => d.y)
     plotLine
         .attr("points", d => d.points)
+    transIdeal
+        .style("display", plotVariable === "Transmission Angle" ? "block" : "none")
 
     // document.getElementById("linkageSummary").innerHTML = getLinkageProperties() 
     // viewTransform();
