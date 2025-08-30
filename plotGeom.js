@@ -28,20 +28,25 @@ const plotAxes = [
 ]
 
 const plotLabels = [
-    {id: "plotTitle", x: plotWidth/2, y: 15, text: "Output Anglez vs Input Angle", textSize: "13px", anchor: "middle", baseline: "middle", color: "black", weight: "bold"},
-    {id: "xAxisTitle", x: plotWidth/2, y: plotHeight-10, text: "", textSize: "12px", anchor: "middle", baseline: "middle", color: inputColor, weight: "medium"},
-    {id: "yAxisTitle", x: 15, y: plotHeight/2, text: "Output Angle (°)", textSize: "12px", anchor: "middle", baseline: "middle", color: "black", weight: "medium"},
-    {id: "xMinLab", x: xMinTick, y: xTickBottom+2.5, text: "0", textSize: "12px", anchor: "middle", baseline: "hanging", color: inputColor, weight: "medium"},
-    {id: "xMaxLab", x: xMaxTick, y: xTickBottom+2.5, text: "360", textSize: "12px", anchor: "middle", baseline: "hanging", color: inputColor, weight: "medium"},
-    {id: "yMinLab", x: yTickLeft-1, y: yMinTick, text: "38", textSize: "12px", anchor: "end", baseline: "middle", color: "black", weight: "medium"},
-    {id: "yMaxLab", x: yTickLeft-1, y: yMaxTick, text: "136", textSize: "12px", anchor: "end", baseline: "middle", color: "black", weight: "medium"},
-    {id: "xValLab", x: (xMaxTick+xMinTick)/2, y: xTickBottom+2.5, text: "90", textSize: "12px", anchor: "middle", baseline: "hanging", color: inputColor, weight: "bold"},
-    {id: "yValLab", x: yTickLeft-1, y: (yMaxTick+yMinTick)/2, text: "90", textSize: "12px", anchor: "end", baseline: "middle", color: "black", weight: "bold"}
+    {id: "plotTitle", x: plotWidth/2, y: 15, text: "Output Anglez vs Input Angle", textSize: "13px", anchor: "middle", baseline: "middle", color: "black", weight: "bold", opacity: 1},
+    {id: "xAxisTitle", x: plotWidth/2, y: plotHeight-10, text: "", textSize: "12px", anchor: "middle", baseline: "middle", color: inputColor, weight: "medium", opacity: 1},
+    {id: "yAxisTitle", x: 15, y: plotHeight/2, text: "Output Angle (°)", textSize: "12px", anchor: "middle", baseline: "middle", color: "black", weight: "medium", opacity: 1},
+    {id: "xMinLab", x: xMinTick, y: xTickBottom+2.5, text: "0", textSize: "12px", anchor: "middle", baseline: "hanging", color: inputColor, weight: "medium", opacity: 1},
+    {id: "xMaxLab", x: xMaxTick, y: xTickBottom+2.5, text: "360", textSize: "12px", anchor: "middle", baseline: "hanging", color: inputColor, weight: "medium", opacity: 1},
+    {id: "yMinLab", x: yTickLeft-1, y: yMinTick, text: "38", textSize: "12px", anchor: "end", baseline: "middle", color: "black", weight: "medium", opacity: 1},
+    {id: "yMaxLab", x: yTickLeft-1, y: yMaxTick, text: "136", textSize: "12px", anchor: "end", baseline: "middle", color: "black", weight: "medium", opacity: 1},
+    {id: "xValLab", x: (xMaxTick+xMinTick)/2, y: xTickBottom+2.5, text: "90", textSize: "12px", anchor: "middle", baseline: "hanging", color: inputColor, weight: "bold", opacity: 1},
+    {id: "yValLab", x: yTickLeft-1, y: (yMaxTick+yMinTick)/2, text: "90", textSize: "12px", anchor: "end", baseline: "middle", color: "black", weight: "bold", opacity: 1},
+    {id: "openKey", x: 550, y: 12, text: "Open", textSize: "12px", anchor: "start", baseline: "central", color: "black", weight: "medium", opacity: 1},
+    {id: "crossedKey", x: 550, y: 26, text: "Crossed", textSize: "12px", anchor: "start", baseline: "central", color: "black", weight: "medium", opacity: 1},
 ]
-
+// alphabetic
 const plotPoints = [
-    {id: "minXO", x: "", y: "", opacity: 0.25},
-    {id: "maxXO", x: "", y: "", opacity: 0.25}
+    {id: "mainPoint", x: 0, y: 0, r: 4, opacity: 1, fill: "black", stroke: "black", strokeWidth: 1.9},
+    // {id: "minXO", x: "", y: "", r: 4, opacity: 0.25, fill: "black", stroke: "black", strokeWidth: 1.75},
+    // {id: "maxXO", x: "", y: "", r: 4, opacity: 0.25, fill: "black", stroke: "black", strokeWidth: 1.75},
+    {id: "openKey", x: 542, y: 12, r: 4, opacity: 1, fill: "white", stroke: "black", strokeWidth: 1.9},
+    {id: "crossedKey", x: 542, y: 26, r: 4, opacity: 0.25, fill: "black", stroke: "black", strokeWidth: 1.9},
 ]
 const plotLines = [
     {id: "mainLine", points: [], opacity: 1},

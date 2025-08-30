@@ -404,6 +404,8 @@ function getPlotScale(){
         outRange = getOutputLimits()[1]-getOutputLimits()[0];
     } else if (plotVariable === "Transmission Angle") {
         outRange = transMax-transMin;
+    } else if (plotVariable === "Torque Ratio") {
+        outRange = 10
     }
 
     const xScale = xRange/inRange;
@@ -412,10 +414,29 @@ function getPlotScale(){
     return [xScale, yScale]
 }
 
+function getTorqueRatio() {
+    const lambda = degToRad(getTransmissionAngle());
+    let beta = 180 - getLinkAngles()[0] + getLinkAngles()[2];
+    const a_length = getLinkLengths()["a"];
+    const b_length = getLinkLengths()["b"];
+
+    if (beta > 180) beta = 360 - beta
+    beta = Math.abs(beta)
+    
+    beta = degToRad(beta)
+
+    const torqueRatio = (b_length * Math.sin(lambda))/(a_length * Math.sin(beta));
+
+
+
+    return torqueRatio;
+}
+
 function getPlotCoord() {
     const inAngle = getInputAngle();
     let outAngle = getLinkAngles()[1];
     const transAngle = getTransmissionAngle();
+    const torqueRatio = getTorqueRatio();
 
     let xOff = 0;
     let yOff = 0;
@@ -433,6 +454,8 @@ function getPlotCoord() {
         plotVar = outAngle;
     } else if (plotVariable === "Transmission Angle") {
         plotVar = transAngle;
+    } else if (plotVariable === "Torque Ratio") {
+        plotVar = torqueRatio;
     }
     
 
@@ -456,7 +479,10 @@ function getPlotVarValue() {
         }
     } else if (plotVariable === "Transmission Angle") {
         plotVal = getTransmissionAngle()
+    } else if (plotVariable === "Torque Ratio") {
+        plotVal = getTorqueRatio()
     }
+
     return plotVal
 }
 function getPlotLimits() {
@@ -471,6 +497,9 @@ function getPlotLimits() {
     } else if (plotVariable === "Transmission Angle") {
         yMin = transMin;
         yMax = transMax;
+    } else if (plotVariable === "Torque Ratio") {
+        yMin = 0;
+        yMax = 10;
     }
 
     return [xMin, xMax, yMin, yMax]

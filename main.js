@@ -239,9 +239,9 @@ const plotLabs = plotLabGroup.selectAll("text")
     .attr("font-weight", d => d.weight)
     .attr("fill", d => d.color)
     .style("display", d => {
-        if (d.id === "yAxisTitle") return "none";
+        if (d.id === "yAxisTitle") return "none"
     })
-    // .style("pointer-events", "none");
+    .style("pointer-events", "none");
 
 const plotLineGroup = plot.append("g")
 const plotLine = plotLineGroup.selectAll("polyline")
@@ -257,12 +257,18 @@ const plotLine = plotLineGroup.selectAll("polyline")
         if (d.id === "mainLine") return "3,6"
     })
     .style("stroke-linecap", "round")
-    
-const plotPoint = plot.append("circle")//.selectAll("circle")
-    // .attr("cx", getInputAngle())
-    // .attr("cy", yMinTick-50)
+
+const plotPointsGroup = plot.append("g")
+const plotPoint = plotPointsGroup.selectAll("circle")//.selectAll("circle")
+    .data(plotPoints)
+    .enter()
+    .append("circle")
+    .attr("cx", d => d.x)
+    .attr("cy", d => d.y)
     .attr("r", 4)
-    .attr("fill", "black")
+    .attr("fill",d => d.fill)
+    .attr("stroke", "black")
+    .attr("stroke-width", 1.9)
 const plotDrag = plot.append("circle")
     .attr("r", 30)
     .attr("fill", "black")

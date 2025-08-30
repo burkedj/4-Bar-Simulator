@@ -556,6 +556,8 @@ function updateDiagram() {
             return d.y2
         })
 
+    plotLabels.find(d => d.id === "openKey").opacity = (linkageConfig === "Crossed") ? 0.35 : 1;
+    plotLabels.find(d => d.id === "crossedKey").opacity = (linkageConfig === "Crossed") ? 1 : 0.35;
     plotLabs
         .text( d => {
             if (d.id === "xMinLab") return `${getInputLimits()[0].toFixed(0)}°`
@@ -600,16 +602,20 @@ function updateDiagram() {
             // if (d.id === "yMaxLab" && getPlotCoord()[1] < yMaxTick+10) return "transparent"
             return d.color
         })
+        .attr("opacity", d => d.opacity)
+
+    plotPoints[0].x = getPlotCoord()[0];
+    plotPoints[0].y = getPlotCoord()[1];
+    plotPoints[0].fill = (linkageConfig === "Crossed") ? "black" : "white";
+    plotPoints.find(d => d.id === "openKey").opacity = (linkageConfig === "Crossed") ? 0.35 : 1;
+    plotPoints.find(d => d.id === "crossedKey").opacity = (linkageConfig === "Crossed") ? 1 : 0.35;
 
     plotPoint
-        .attr("cx", getPlotCoord()[0])
-        .attr("cy", getPlotCoord()[1])
-        .attr("fill", (linkageConfig === "Crossed") ? "black" : "white")
-        .attr("stroke-width", (linkageConfig === "Crossed") ? 0 : 1.9)
-        .attr("stroke", (linkageConfig === "Crossed") ? "none" : "black")
-        .attr("r", (linkageConfig === "Crossed") ? 4.5 : 3.75)
-        // .attr("cx", d => d.x)
-        // .attr("cy", d => d.y)
+        .attr("cx", d => d.x)
+        .attr("cy", d => d.y)
+        .attr("fill", d => d.fill)
+        .attr("opacity", d => d.opacity)
+
     plotDrag
         .attr("cx", getPlotCoord()[0])
         .attr("cy", getPlotCoord()[1])
@@ -620,7 +626,7 @@ function updateDiagram() {
     transIdeal
         .style("display", plotVariable === "Transmission Angle" ? "block" : "none")
 
-    // document.getElementById("linkageSummary").innerHTML = getLinkageProperties() 
+    document.getElementById("linkageSummary").innerHTML = getLinkageProperties() 
     // viewTransform();
     // initializeSlider();
     if (getInputLimits()[2] === "Crank") {
