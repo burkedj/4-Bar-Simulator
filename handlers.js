@@ -92,6 +92,9 @@ document.getElementById("toggleOpenCrossed").addEventListener("click", () => {
     drawTracePaths();
     updateDiagram();
 });
+document.getElementById("manualLimits").addEventListener("click", () => {
+    enableManualLimits = !enableManualLimits;
+})
 
 document.getElementById("snapCoupler").addEventListener("click", () => {
     couplerSnap = !couplerSnap;

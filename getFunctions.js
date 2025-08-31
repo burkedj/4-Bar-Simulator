@@ -513,9 +513,11 @@ function getLinkageProperties() {
     // const inputAngle = getInputAngle();
     // // const outputAngle = getOutputAngle();
     // const outputAngle = radToDeg(calcOutputAngle(degToRad(inputAngle),linkageConfig));
-    const openCrossed = getOpenCrossed();
+    // const openCrossed = getOpenCrossed();
 
-    return `<b>Transmission Angle (μ):</b> ${getTransmissionAngle().toFixed(1)}°<br>`;
+    return ``
+    
+    // <b>Transmission Angle (μ):</b> ${getTransmissionAngle().toFixed(1)}°<br>`;
 
     // <b>Config:</b> ${openCrossed}<br></br>
     // `<b>Input Link:</b> ${inputClass}<br>

@@ -90,3 +90,5 @@ let viewMaxY = 50;
 let plotVariable = "Output Angle";
 const transMin = 0;
 const transMax = 180;
+
+let enableManualLimits = false;

@@ -443,6 +443,7 @@ function updatePlotSelection() {
 }
 
 function updateDiagram() {
+    if (coordsVisible || lengthsVisible) rotateText(currentRotation)
     setOpenCrossed();
     updateStats()
     calcPlotPath(linkageConfig);
@@ -609,12 +610,14 @@ function updateDiagram() {
     plotPoints[0].fill = (linkageConfig === "Crossed") ? "black" : "white";
     plotPoints.find(d => d.id === "openKey").opacity = (linkageConfig === "Crossed") ? 0.35 : 1;
     plotPoints.find(d => d.id === "crossedKey").opacity = (linkageConfig === "Crossed") ? 1 : 0.35;
+    plotPoints.find(d => d.id === "minLim" || d.id === "maxLim").visible = enableManualLimits ? "block" : "none";
 
     plotPoint
         .attr("cx", d => d.x)
         .attr("cy", d => d.y)
         .attr("fill", d => d.fill)
         .attr("opacity", d => d.opacity)
+        .style("display", d => d.visible)
 
     plotDrag
         .attr("cx", getPlotCoord()[0])

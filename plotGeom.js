@@ -42,11 +42,11 @@ const plotLabels = [
 ]
 // alphabetic
 const plotPoints = [
-    {id: "mainPoint", x: 0, y: 0, r: 4, opacity: 1, fill: "black", stroke: "black", strokeWidth: 1.9},
-    // {id: "minXO", x: "", y: "", r: 4, opacity: 0.25, fill: "black", stroke: "black", strokeWidth: 1.75},
-    // {id: "maxXO", x: "", y: "", r: 4, opacity: 0.25, fill: "black", stroke: "black", strokeWidth: 1.75},
-    {id: "openKey", x: 542, y: 12, r: 4, opacity: 1, fill: "white", stroke: "black", strokeWidth: 1.9},
-    {id: "crossedKey", x: 542, y: 26, r: 4, opacity: 0.25, fill: "black", stroke: "black", strokeWidth: 1.9},
+    {id: "mainPoint", x: 0, y: 0, r: 4, opacity: 1, fill: "black", stroke: "black", strokeWidth: 1.9, visible: "block"},
+    {id: "minLim", x: "", y: "", r: 4, opacity: 0.25, fill: "black", stroke: "black", strokeWidth: 1.75, visible: "none"},
+    {id: "maxLim", x: "", y: "", r: 4, opacity: 0.25, fill: "black", stroke: "black", strokeWidth: 1.75, visible: "none"},
+    {id: "openKey", x: 542, y: 12, r: 4, opacity: 1, fill: "white", stroke: "black", strokeWidth: 1.9, visible: "block"},
+    {id: "crossedKey", x: 542, y: 26, r: 4, opacity: 0.25, fill: "black", stroke: "black", strokeWidth: 1.9, visible: "block"},
 ]
 const plotLines = [
     {id: "mainLine", points: [], opacity: 1},
